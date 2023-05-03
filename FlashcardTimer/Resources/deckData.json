@@ -1,0 +1,62 @@
+//
+//  deck.json
+//  FlashcardTimer
+//
+//  Created by Leandro Silva on 03/05/23.
+//
+[
+    {
+        "deckId": 1,
+        "deckName": "Geografia",
+        "complete": false,
+        "numberPerTest": 3,
+        "flashcards": [
+            {
+            "flashcardId": 1,
+            "question": "Quantos estados tem o Brasil?",
+            "answer": "26"
+            },
+            {
+            "flashcardId": 2,
+            "question": "Qual a capital de São paulo?",
+            "answer": "São Paulo"
+            },
+            {
+            "flashcardId": 3,
+            "question": "Qual a capital do Rio de Janeiro?",
+            "answer": "Rio de Janeiro"
+            }
+        ]
+    },
+    {
+        "deckId": 2,
+        "deckName": "História",
+        "complete": false,
+        "numberPerTest": 5,
+        "flashcards": [
+            {
+            "flashcardId": 10,
+            "question": "Quem descobriu o Brasil?",
+            "answer": "Pedro Alvares Cabral"
+            },
+            {
+            "flashcardId": 11,
+            "question": "Quem proclamou a independencia do BrasiL?",
+            "answer": "Dom Pedro I"
+            }
+        ]
+    },
+    {
+        "deckId": 3,
+        "deckName": "Biologia",
+        "complete": false,
+        "numberPerTest": 4,
+        "flashcards": [
+            {
+            "flashcardId": 20,
+            "question": "Qual o maior mamífero existente?",
+            "answer": "Baleia"
+            }
+        ]
+    }
+]
