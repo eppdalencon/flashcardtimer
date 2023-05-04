@@ -14,5 +14,5 @@ struct Deck: Hashable, Codable{
     var complete: Bool
     var numberPerTest: Int
     var flashcards: [Flashcard]
-    
 }
+
