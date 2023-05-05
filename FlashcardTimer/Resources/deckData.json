@@ -7,55 +7,118 @@
 [
     {
         "deckId": 1,
-        "deckName": "Geografia",
+        "deckName": "História do Brasil",
         "complete": false,
-        "numberPerTest": 3,
+        "numberPerTest": 8,
         "flashcards": [
             {
-            "flashcardId": 1,
-            "question": "Quantos estados tem o Brasil?",
-            "answer": "26"
+                "flashcardId": 1,
+                "question": "Qual foi o período da colonização portuguesa no Brasil?",
+                "answer": "A colonização portuguesa no Brasil durou de 1500 a 1822."
             },
+            
             {
-            "flashcardId": 2,
-            "question": "Qual a capital de São paulo?",
-            "answer": "São Paulo"
+                "flashcardId": 2,
+                "question": "Quem foi o primeiro governante do Brasil independente?",
+                "answer": "Dom Pedro I foi o primeiro governante do Brasil independente."
             },
+            
             {
-            "flashcardId": 3,
-            "question": "Qual a capital do Rio de Janeiro?",
-            "answer": "Rio de Janeiro"
+                "flashcardId": 3,
+                "question": "Qual foi o período do regime militar no Brasil?",
+                "answer": "O regime militar no Brasil durou de 1964 a 1985."
+            },
+            
+            {
+                "flashcardId": 4,
+                "question": "Qual foi a principal consequência da abolição da escravatura no Brasil?",
+                "answer": "A principal consequência da abolição da escravatura no Brasil foi a liberdade dos escravos."
+            },
+            
+            {
+                "flashcardId": 5,
+                "question": "Quem foi o primeiro presidente do Brasil?",
+                "answer": "Deodoro da Fonseca foi o primeiro presidente do Brasil após a Proclamação da República em 1889."
+            },
+            
+            {
+                "flashcardId": 6,
+                "question": "Qual foi o principal motivo da Guerra do Paraguai?",
+                "answer": "O principal motivo da Guerra do Paraguai foi a disputa pela hegemonia na região do Rio da Prata."
+            },
+            
+            {
+                "flashcardId": 7,
+                "question": "Qual foi o evento que marcou o início da Revolução de 1930 no Brasil?",
+                "answer": "A derrota de São Paulo nas eleições presidenciais de 1930 marcou o início da Revolução de 1930 no Brasil."
+            },
+            
+            {
+                "flashcardId": 8,
+                "question": "Qual foi a primeira capital do Brasil?",
+                "answer": "Salvador foi a primeira capital do Brasil, durante o período colonial."
             }
         ]
     },
     {
         "deckId": 2,
-        "deckName": "História",
+        "deckName": "Biologia",
         "complete": false,
         "numberPerTest": 5,
         "flashcards": [
             {
-            "flashcardId": 10,
-            "question": "Quem descobriu o Brasil?",
-            "answer": "Pedro Alvares Cabral"
+                "flashcardId": 9,
+                "question": "O que é fotossíntese?",
+                "answer": "Fotossíntese é o processo pelo qual as plantas convertem a energia solar em energia química, usando dióxido de carbono e água para produzir açúcares e oxigênio."
             },
+            
             {
-            "flashcardId": 11,
-            "question": "Quem proclamou a independencia do BrasiL?",
-            "answer": "Dom Pedro I"
+                "flashcardId": 10,
+                "question": "O que é o DNA?",
+                "answer": "DNA é uma molécula que contém as informações genéticas necessárias para o desenvolvimento e funcionamento de todos os organismos vivos."
+            },
+            
+            {
+                "flashcardId": 11,
+                "question": "O que é mitose?",
+                "answer": "Mitose é o processo de divisão celular que resulta em duas células filhas geneticamente idênticas à célula mãe."
+            },
+            
+            {
+                "flashcardId:": 12,
+                "question": "O que é a teoria da evolução?",
+                "answer": "A teoria da evolução é a explicação científica para como as espécies mudam e se desenvolvem ao longo do tempo, impulsionada por processos como a seleção natural e a mutação genética."
+            },
+            
+            {
+                "flashcardId": 13,
+                "question": "O que é a cadeia alimentar?",
+                "answer": "A cadeia alimentar é a sequência de organismos vivos interconectados, nos quais cada um é um alimento para o próximo. Essa sequência começa com produtores, como plantas, e termina com predadores de topo, como leões."
             }
         ]
     },
     {
         "deckId": 3,
-        "deckName": "Biologia",
+        "deckName": "Geografia",
         "complete": false,
-        "numberPerTest": 4,
+        "numberPerTest": 3,
         "flashcards": [
             {
-            "flashcardId": 20,
-            "question": "Qual o maior mamífero existente?",
-            "answer": "Baleia"
+                "flashcardId": 14,
+                "question": "O que é um bioma?",
+                "answer": "Um bioma é uma grande área geográfica com um clima, fauna e flora características, como a floresta tropical, o deserto ou a tundra."
+            },
+            
+            {
+                "flashcardId": 15,
+                "question": "O que é um ecossistema?",
+                "answer": "Um ecossistema é uma comunidade de seres vivos interagindo com o ambiente ao seu redor, incluindo fatores bióticos e abióticos."
+            },
+            
+            {
+                "flashcardId": 16,
+                "question": "O que é o aquecimento global?",
+                "answer": "O aquecimento global é o aumento gradual da temperatura média da Terra, causado principalmente pelo aumento da concentração de gases do efeito estufa na atmosfera.
             }
         ]
     }
