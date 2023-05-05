@@ -21,10 +21,10 @@ class UserDefaultsService {
     }
     
     // MARK: - Create Deck By Name
-    static func createDeckByName( name: String) {
+    static func createDeckByName(name: String) {
         var currentDecks = self.getDecks()
         
-        let lastId  = currentDecks.last?.deckId ?? 0
+        let lastId = currentDecks.last?.deckId ?? 0
         
         let deck = Deck(deckId: lastId + 1, deckName: name, complete: false, numberPerTest: 5, flashcards: [])
         
@@ -52,8 +52,8 @@ class UserDefaultsService {
 
     // MARK: - List Decks
     static func getDecks() -> [Deck] {
-        guard let data = UserDefaults.standard.data(forKey: "Decks"),
-              let decks = try? JSONDecoder().decode([Deck].self, from: data) else {
+        guard let data = UserDefaults.standard.data(forKey: "Decks"), let decks = try? JSONDecoder().decode([Deck].self, from: data) else {
+            
             return []
         }
         
@@ -69,7 +69,6 @@ class UserDefaultsService {
         }
         
         return deckWithId
-        
     }
 
     // MARK: - Create Flashcard
@@ -92,7 +91,6 @@ class UserDefaultsService {
         if let data = try? JSONEncoder().encode(currentDecks) {
             UserDefaults.standard.set(data, forKey: "Decks")
         }
-        
     }
     
     // MARK: - Delete Flashcard
@@ -116,11 +114,10 @@ class UserDefaultsService {
         if let data = try? JSONEncoder().encode(currentDecks) {
             UserDefaults.standard.set(data, forKey: "Decks")
         }
-        
     }
     
     // MARK: - Get Flashcard by Id
-    static func getFlashcardById( flashcardId: Int, deckId: Int) -> Flashcard? {
+    static func getFlashcardById(flashcardId: Int, deckId: Int) -> Flashcard? {
         let currentDecks = self.getDecks()
         
         guard let deckWithId = currentDecks.first(where: { $0.deckId == deckId }) else {
@@ -132,7 +129,6 @@ class UserDefaultsService {
         }
         
         return deckWithId.flashcards[indexFlashcard]
-        
     }
     
     // MARK: - List Flashcards
@@ -144,7 +140,6 @@ class UserDefaultsService {
         }
         
         return deckWithId.flashcards
-        
     }
 
     // MARK: - Modify Deck Name
@@ -167,7 +162,6 @@ class UserDefaultsService {
         if let data = try? JSONEncoder().encode(currentDecks) {
             UserDefaults.standard.set(data, forKey: "Decks")
         }
-        
     }
     
     // MARK: - Modify Deck Complete
@@ -190,7 +184,6 @@ class UserDefaultsService {
         if let data = try? JSONEncoder().encode(currentDecks) {
             UserDefaults.standard.set(data, forKey: "Decks")
         }
-        
     }
     
     // MARK: - Modify Deck NumberPerTest
