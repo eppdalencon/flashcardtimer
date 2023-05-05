@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3045AE9E2A05762200FC440C /* UserDefaultsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3045AE9D2A05762200FC440C /* UserDefaultsService.swift */; };
 		30EBDACD2A01A4AB003F9236 /* FlashcardTimerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30EBDACC2A01A4AB003F9236 /* FlashcardTimerApp.swift */; };
 		30EBDACF2A01A4AB003F9236 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30EBDACE2A01A4AB003F9236 /* ContentView.swift */; };
 		30EBDAD12A01A4AC003F9236 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 30EBDAD02A01A4AC003F9236 /* Assets.xcassets */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3045AE9D2A05762200FC440C /* UserDefaultsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsService.swift; sourceTree = "<group>"; };
 		30EBDAC92A01A4AB003F9236 /* FlashcardTimer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlashcardTimer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		30EBDACC2A01A4AB003F9236 /* FlashcardTimerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashcardTimerApp.swift; sourceTree = "<group>"; };
 		30EBDACE2A01A4AB003F9236 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -63,6 +65,7 @@
 				3119BDCC2A02E0D200FA43CF /* Resources */,
 				30EBDAD02A01A4AC003F9236 /* Assets.xcassets */,
 				30EBDAD22A01A4AC003F9236 /* Preview Content */,
+				3045AE9D2A05762200FC440C /* UserDefaultsService.swift */,
 			);
 			path = FlashcardTimer;
 			sourceTree = "<group>";
@@ -165,6 +168,7 @@
 			files = (
 				3119BDCB2A02DF7500FA43CF /* Deck.swift in Sources */,
 				3119BDD12A02E55700FA43CF /* ModelData.swift in Sources */,
+				3045AE9E2A05762200FC440C /* UserDefaultsService.swift in Sources */,
 				30EBDACF2A01A4AB003F9236 /* ContentView.swift in Sources */,
 				30EBDACD2A01A4AB003F9236 /* FlashcardTimerApp.swift in Sources */,
 			);
