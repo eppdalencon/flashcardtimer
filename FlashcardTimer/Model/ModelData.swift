@@ -9,10 +9,11 @@ import Foundation
 import Combine
 
 final class ModelData: ObservableObject {
-    @Published var decks: [Deck] = load("deckData.json")
+    //@Published var decks: [Deck] = load("deckData.json")
+    
 }
 
-var decks: [Deck] = load("deckData.json")
+//var decks: [Deck] = load("deckData.json")
 
 func load<T: Decodable>(_ filename: String) -> T {
     let data: Data
