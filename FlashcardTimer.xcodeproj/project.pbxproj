@@ -15,6 +15,7 @@
 		3119BDCB2A02DF7500FA43CF /* Deck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3119BDCA2A02DF7500FA43CF /* Deck.swift */; };
 		3119BDCE2A02E12C00FA43CF /* deckData.json in Resources */ = {isa = PBXBuildFile; fileRef = 3119BDCD2A02E12C00FA43CF /* deckData.json */; };
 		3119BDD12A02E55700FA43CF /* ModelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3119BDD02A02E55700FA43CF /* ModelData.swift */; };
+		31F96E3B2A09767C00F1D9B1 /* CreateFlashcardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F96E3A2A09767C00F1D9B1 /* CreateFlashcardView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +28,7 @@
 		3119BDCA2A02DF7500FA43CF /* Deck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deck.swift; sourceTree = "<group>"; };
 		3119BDCD2A02E12C00FA43CF /* deckData.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = deckData.json; sourceTree = "<group>"; };
 		3119BDD02A02E55700FA43CF /* ModelData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelData.swift; sourceTree = "<group>"; };
+		31F96E3A2A09767C00F1D9B1 /* CreateFlashcardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateFlashcardView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +63,7 @@
 			children = (
 				30EBDACC2A01A4AB003F9236 /* FlashcardTimerApp.swift */,
 				30EBDACE2A01A4AB003F9236 /* ContentView.swift */,
+				31F96E3A2A09767C00F1D9B1 /* CreateFlashcardView.swift */,
 				3119BDCF2A02E52000FA43CF /* Model */,
 				3119BDCC2A02E0D200FA43CF /* Resources */,
 				30EBDAD02A01A4AC003F9236 /* Assets.xcassets */,
@@ -167,6 +170,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3119BDCB2A02DF7500FA43CF /* Deck.swift in Sources */,
+				31F96E3B2A09767C00F1D9B1 /* CreateFlashcardView.swift in Sources */,
 				3119BDD12A02E55700FA43CF /* ModelData.swift in Sources */,
 				3045AE9E2A05762200FC440C /* UserDefaultsService.swift in Sources */,
 				30EBDACF2A01A4AB003F9236 /* ContentView.swift in Sources */,
