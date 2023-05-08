@@ -14,7 +14,7 @@ final class ModelData: ObservableObject {
 }
 
 func loadData() -> [Deck] {
-    guard let jsonUrl = Bundle.main.url(forResource: "data", withExtension: "json") else {
+    guard let jsonUrl = Bundle.main.url(forResource: "deckData", withExtension: "json") else {
         fatalError("Cannot find data.json file")
     }
     
