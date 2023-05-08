@@ -7,18 +7,19 @@
 
 import Foundation
 import Combine
+import SwiftUI
 
 final class ModelData: ObservableObject {
     @Published var decks: [Deck] = loadData()
 }
 
 func loadData() -> [Deck] {
-    guard let jsonUrl = Bundle.main.url(forResource: "deckData", withExtension: "json") else {
-        fatalError("Cannot find deckData.json file")
+    guard let jsonUrl = Bundle.main.url(forResource: "data", withExtension: "json") else {
+        fatalError("Cannot find data.json file")
     }
     
     guard let jsonData = try? Data(contentsOf: jsonUrl) else {
-        fatalError("Cannot find deckData.json file")
+        fatalError("Cannot find data.json file")
     }
     
     let decoder = JSONDecoder()
