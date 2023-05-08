@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct Deck: Hashable, Decodable, Encodable {
+struct Deck: Hashable, Codable {
     var deckId: Int
     var deckName: String
     var complete: Bool
@@ -16,7 +16,7 @@ struct Deck: Hashable, Decodable, Encodable {
     var flashcards: [Flashcard]
 }
 
-struct Flashcard: Hashable, Decodable, Encodable {
+struct Flashcard: Hashable, Codable {
     var flashcardId: Int
     var question: String
     var answer: String
