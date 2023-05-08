@@ -1,9 +1,3 @@
-//
-//  deck.json
-//  FlashcardTimer
-//
-//  Created by Leandro Silva on 03/05/23.
-//
 [
     {
         "deckId": 1,
@@ -16,7 +10,7 @@
                 "question": "Qual foi o período da colonização portuguesa no Brasil?",
                 "answer": "A colonização portuguesa no Brasil durou de 1500 a 1822."
             },
-            
+
             {
                 "flashcardId": 2,
                 "question": "Quem foi o primeiro governante do Brasil independente?",
@@ -60,6 +54,7 @@
             }
         ]
     },
+    
     {
         "deckId": 2,
         "deckName": "Biologia",
@@ -67,58 +62,59 @@
         "numberPerTest": 5,
         "flashcards": [
             {
-                "flashcardId": 9,
+                "flashcardId": 1,
                 "question": "O que é fotossíntese?",
                 "answer": "Fotossíntese é o processo pelo qual as plantas convertem a energia solar em energia química, usando dióxido de carbono e água para produzir açúcares e oxigênio."
             },
             
             {
-                "flashcardId": 10,
+                "flashcardId": 2,
                 "question": "O que é o DNA?",
                 "answer": "DNA é uma molécula que contém as informações genéticas necessárias para o desenvolvimento e funcionamento de todos os organismos vivos."
             },
             
             {
-                "flashcardId": 11,
+                "flashcardId": 3,
                 "question": "O que é mitose?",
                 "answer": "Mitose é o processo de divisão celular que resulta em duas células filhas geneticamente idênticas à célula mãe."
             },
             
             {
-                "flashcardId:": 12,
+                "flashcardId": 4,
                 "question": "O que é a teoria da evolução?",
                 "answer": "A teoria da evolução é a explicação científica para como as espécies mudam e se desenvolvem ao longo do tempo, impulsionada por processos como a seleção natural e a mutação genética."
             },
             
             {
-                "flashcardId": 13,
+                "flashcardId": 5,
                 "question": "O que é a cadeia alimentar?",
                 "answer": "A cadeia alimentar é a sequência de organismos vivos interconectados, nos quais cada um é um alimento para o próximo. Essa sequência começa com produtores, como plantas, e termina com predadores de topo, como leões."
             }
         ]
     },
+    
     {
-        "deckId": 3,
+        "deckId": 2,
         "deckName": "Geografia",
         "complete": false,
         "numberPerTest": 3,
         "flashcards": [
             {
-                "flashcardId": 14,
+                "flashcardId": 1,
                 "question": "O que é um bioma?",
                 "answer": "Um bioma é uma grande área geográfica com um clima, fauna e flora características, como a floresta tropical, o deserto ou a tundra."
             },
             
             {
-                "flashcardId": 15,
+                "flashcardId": 2,
                 "question": "O que é um ecossistema?",
                 "answer": "Um ecossistema é uma comunidade de seres vivos interagindo com o ambiente ao seu redor, incluindo fatores bióticos e abióticos."
             },
             
             {
-                "flashcardId": 16,
+                "flashcardId": 3,
                 "question": "O que é o aquecimento global?",
-                "answer": "O aquecimento global é o aumento gradual da temperatura média da Terra, causado principalmente pelo aumento da concentração de gases do efeito estufa na atmosfera.
+                "answer": "O aquecimento global é o aumento gradual da temperatura média da Terra, causado principalmente pelo aumento da concentração de gases do efeito estufa na atmosfera."
             }
         ]
     }
