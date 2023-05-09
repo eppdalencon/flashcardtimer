@@ -17,6 +17,8 @@ struct CreateFlashcardView: View {
     @State private var changeColor = true
     @State private var reveal = false
     @State private var showFlashmark = false
+    @State private var showingAlert = false
+    @State var isAlerted = false
 
     var body: some View {
         VStack {
@@ -89,6 +91,25 @@ struct CreateFlashcardView: View {
         .fullScreenCover(isPresented: $isPresenting) {
             DeckView(deck: deck, number: 1)
         }
+        
+        
+        .navigationTitle("Create a flashcard")
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden(true)
+                        .navigationBarItems(leading:
+                            Button(action: {
+                                self.showingAlert = true
+                            }) {
+                                Image(systemName: "arrow.left")
+                                Text("Back")
+                            }
+                            .alert(isPresented: $showingAlert) {
+                                Alert(title: Text("Are you sure you want to go back?"), message: nil, primaryButton: .destructive(Text("Yes"), action: {
+                                    isPresenting.toggle()
+                                }), secondaryButton: .cancel(Text("No")))
+                            }
+                        )
+        
     }
 }
 

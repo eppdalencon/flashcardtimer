@@ -10,7 +10,9 @@ import SwiftUI
 struct CreateDeckView: View {
     @State private var name: String = ""
     @State private var newDeck: Deck? = nil
+    @State private var showingAlert = false
     @State var isSent = false
+    @State var isAlerted = false
     var body: some View {
         NavigationStack {
             VStack{
@@ -47,8 +49,25 @@ struct CreateDeckView: View {
                     .fullScreenCover(isPresented: $isSent) {
                         DeckView(deck: UserDefaultsService.getDeckByName(deckName: name)!, number: 1)
                     }
+                    .fullScreenCover(isPresented: $isAlerted) {
+                        ContentView()
+                    }
                     .navigationTitle("Create a deck")
                     .navigationBarTitleDisplayMode(.inline)
+                    .navigationBarBackButtonHidden(true)
+                                    .navigationBarItems(leading:
+                                        Button(action: {
+                                            self.showingAlert = true
+                                        }) {
+                                            Image(systemName: "arrow.left")
+                                            Text("Back")
+                                        }
+                                        .alert(isPresented: $showingAlert) {
+                                            Alert(title: Text("Are you sure you want to go back?"), message: nil, primaryButton: .destructive(Text("Yes"), action: {
+                                                isAlerted.toggle()
+                                            }), secondaryButton: .cancel(Text("No")))
+                                        }
+                                    )
             }
         }
         
