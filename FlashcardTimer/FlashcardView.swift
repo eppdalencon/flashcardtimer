@@ -84,7 +84,7 @@ struct FlashcardView: View {
                                 }
                                 
                                 Button {
-                                    currentIndex = (currentIndex + 1) % flashcards.count
+                                    currentIndex = updatedIndex(currentIndex)
                                     flipped.toggle()
                                     reveal.toggle()
                                     changeColor.toggle()
@@ -101,7 +101,7 @@ struct FlashcardView: View {
                     }
                 }
             }
-            .tabViewStyle(PageTabViewStyle())
+            .tabViewStyle(.page(indexDisplayMode: .never))
             .fullScreenCover(isPresented: $isPresenting) {
                 DeckView(deck: deck, number: 1)
             }
@@ -122,6 +122,6 @@ struct FlashcardView: View {
 
 struct FlashcardView_Previews: PreviewProvider {
     static var previews: some View {
-        FlashcardView(flashcards: ModelData().decks[0].flashcards, deck: ModelData().decks[0])
+        FlashcardView(flashcards: LoadDecksFromJson().decks[0].flashcards, deck: LoadDecksFromJson().decks[0])
     }
 }

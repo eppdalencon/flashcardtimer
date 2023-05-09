@@ -97,7 +97,7 @@ struct DeckView: View {
 
 struct DeckView_Previews: PreviewProvider {
     static var previews: some View {
-        DeckView(deck: ModelData().decks[0])
+        DeckView(deck: LoadDecksFromJson().decks[0])
     }
 }
 

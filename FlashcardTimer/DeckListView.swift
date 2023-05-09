@@ -30,6 +30,6 @@ struct DeckListView: View {
 
 struct DeckListView_Previews: PreviewProvider {
     static var previews: some View {
-        DeckListView(deck: ModelData().decks[0])
+        DeckListView(deck: LoadDecksFromJson().decks[0])
     }
 }
