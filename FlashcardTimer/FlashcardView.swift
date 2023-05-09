@@ -13,12 +13,12 @@ struct FlashcardView: View {
     
     @State var currentIndex = 0
     
-    @State var isPresenting = false
-    
     @State private var flipped = false
     @State private var changeColor = true
     @State private var reveal = false
     @State private var showFlashmark = false
+    
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         NavigationStack {
@@ -96,15 +96,10 @@ struct FlashcardView: View {
                                 }
                             }
                         }
-                        
-                        
                     }
                 }
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
-            .fullScreenCover(isPresented: $isPresenting) {
-                DeckView(deck: deck, number: 1)
-            }
             
             .navigationTitle("Flashcard \(flashcards[currentIndex].flashcardId)")
             .navigationBarTitleDisplayMode(.inline)
@@ -113,7 +108,7 @@ struct FlashcardView: View {
     
     func updatedIndex(_ index: Int) -> Int {
         if index == flashcards.count - 1 {
-            isPresenting.toggle()
+            dismiss()
             return index % flashcards.count
         }
         return index + 1

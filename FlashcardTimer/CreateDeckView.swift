@@ -11,8 +11,9 @@ struct CreateDeckView: View {
     @State private var name: String = ""
     @State private var newDeck: Deck? = nil
     @State private var showingAlert = false
-    @State var isSent = false
-    @State var isAlerted = false
+    
+    @Environment(\.dismiss) var dismiss
+    
     var body: some View {
         NavigationStack {
             VStack{
@@ -31,7 +32,8 @@ struct CreateDeckView: View {
                     
                     UserDefaultsService.createDeckByName(name: name)
                     newDeck = UserDefaultsService.getDeckByName(deckName: name)
-                    isSent.toggle()
+                    
+                    dismiss()
                     
                 }
                 .padding()
@@ -46,32 +48,27 @@ struct CreateDeckView: View {
                 )
                 
                 Spacer()
-                    .fullScreenCover(isPresented: $isSent) {
-                        DeckView(deck: UserDefaultsService.getDeckByName(deckName: name)!, number: 1)
+
+                .navigationTitle("Create a deck")
+                .navigationBarTitleDisplayMode(.inline)
+                .navigationBarBackButtonHidden(true)
+                .navigationBarItems(leading:
+                    Button {
+                        showingAlert.toggle()
+                    } label: {
+                        Image(systemName: "arrow.left")
+                        Text("Back")
                     }
-                    .fullScreenCover(isPresented: $isAlerted) {
-                        ContentView()
+                    .alert(isPresented: $showingAlert) {
+                        Alert(title: Text("Are you sure you want to go back?"), message: nil, primaryButton: .destructive( Text("Yes"), action: {
+                                dismiss()
+                            }),
+                            secondaryButton: .cancel(Text("No"))
+                        )
                     }
-                    .navigationTitle("Create a deck")
-                    .navigationBarTitleDisplayMode(.inline)
-                    .navigationBarBackButtonHidden(true)
-                                    .navigationBarItems(leading:
-                                        Button(action: {
-                                            self.showingAlert = true
-                                        }) {
-                                            Image(systemName: "arrow.left")
-                                            Text("Back")
-                                        }
-                                        .alert(isPresented: $showingAlert) {
-                                            Alert(title: Text("Are you sure you want to go back?"), message: nil, primaryButton: .destructive(Text("Yes"), action: {
-                                                isAlerted.toggle()
-                                            }), secondaryButton: .cancel(Text("No")))
-                                        }
-                                    )
+                )
             }
         }
-        
-            
     }
 }
 
