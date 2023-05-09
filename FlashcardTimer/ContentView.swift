@@ -13,7 +13,7 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                ForEach(ModelData().decks, id: \.self) { deck in
+                ForEach(LoadDecksFromJson().decks, id: \.self) { deck in
                     NavigationLink(destination: DeckView(deck: deck)) {
                         DeckListView(deck: deck)
                     }
