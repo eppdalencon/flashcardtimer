@@ -17,56 +17,55 @@ struct CreateFlashcardView: View {
     @State private var showFlashmark = false
 
     var body: some View {
-        Form {
-            Section {
-                ZStack {
-                    Rectangle()
-                        .frame(width: 342, height: 430)
-                        .cornerRadius(8)
-                        .foregroundColor(changeColor ? Color("FlashcardQuestionColor") : Color("FlashcardAnswerColor"))
-                    if !flipped {
-                        TextField("Question", text: $question)
-                            .onChange(of: question) { newvalue in
-                                if question.count > 100 {
-                                    question = String(question.prefix(100))
-                                }
-                                    
+        VStack {
+            ZStack {
+                Rectangle()
+                    .frame(width: 342, height: 430)
+                    .cornerRadius(8)
+                    .foregroundColor(changeColor ? Color("FlashcardQuestionColor") : Color("FlashcardAnswerColor"))
+                if !flipped {
+                    TextField("Question", text: $question, axis: .vertical)
+                        .onChange(of: question) { newvalue in
+                            if question.count > 100 {
+                                question = String(question.prefix(100))
                             }
-                            
-                            .padding(.leading)
-                            .frame(width: 340)
-                            .font(.title3)
-                            .rotation3DEffect(.degrees(flipped ? 180 : 0), axis: (x: 0, y: 1, z: 0))
-                    } else {
-                        TextField("Answer", text: $answer)
-                            .padding(.leading)
-                            .frame(width: 340)
-                            .font(.title3)
-                            .rotation3DEffect(.degrees(flipped ? 180 : 0), axis: (x: 0, y: 1, z: 0))
-                    }
-                    
-                }
-                .rotation3DEffect(.degrees(flipped ? -180 : 0), axis: (x: 0, y: 1, z: 0))
-                Button {
-                    withAnimation(.easeInOut(duration: 0.5)) {
-                        flipped.toggle()
-                    }
-                    changeColor.toggle()
-                    reveal.toggle()
-                } label: {
-                    Text(reveal ? "Go to answer" : "Go to question")
-                        .padding()
-                        .font(.title2)
-                        .foregroundColor(.black)
-                        .frame(maxWidth: 340)
-                        .background(
-                            RoundedRectangle(
-                                cornerRadius: 15
-                            )
-                            .fill(Color("FlashcardQuestionColor"))
-                        )
+                        }
+                        .frame(width: 300)
+                        .font(.title3)
+                        .rotation3DEffect(.degrees(flipped ? 180 : 0), axis: (x: 0, y: 1, z: 0))
+                } else {
+                    TextField("Answer", text: $answer, axis: .vertical)
+                        .onChange(of: answer) { newvalue in
+                            if answer.count > 100 {
+                                answer = String(answer.prefix(100))
+                            }
+                        }
+                        .frame(width: 300)
+                        .font(.title3)
+                        .rotation3DEffect(.degrees(flipped ? 180 : 0), axis: (x: 0, y: 1, z: 0))
                 }
                 
+            }
+            .rotation3DEffect(.degrees(flipped ? -180 : 0), axis: (x: 0, y: 1, z: 0))
+            
+            Button {
+                withAnimation(.easeInOut(duration: 0.5)) {
+                    flipped.toggle()
+                }
+                changeColor.toggle()
+                reveal.toggle()
+            } label: {
+                Text(reveal ? "Go to answer" : "Go to question")
+                    .padding()
+                    .font(.title2)
+                    .foregroundColor(.black)
+                    .frame(maxWidth: 340)
+                    .background(
+                        RoundedRectangle(
+                            cornerRadius: 15
+                        )
+                        .fill(Color("FlashcardQuestionColor"))
+                    )
             }
         }
     }
