@@ -94,6 +94,6 @@ struct CreateFlashcardView: View {
 
 struct CreateFlashcardView_Previews: PreviewProvider {
     static var previews: some View {
-        CreateFlashcardView(deck: ModelData().decks[0])
+        CreateFlashcardView(deck: LoadDecksFromJson().decks[0])
     }
 }
