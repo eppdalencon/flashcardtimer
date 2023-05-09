@@ -8,20 +8,10 @@ import SwiftUI
 
 struct DeckView: View {
     var deck: Deck
-    var number: Int
+    
     @State private var decksFromUserDefaults: [Deck] = UserDefaultsService.getDecks()
     
-    @State private var isPresenting = false
-    
-    init(deck: Deck) {
-        self.deck = deck
-        number = 0
-    }
-    
-    init(deck: Deck, number: Int) {
-        self.deck = deck
-        self.number = number
-    }
+    @Environment(\.dismiss) var dismiss
     
     var gridItemLayout = [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())]
     
@@ -71,26 +61,7 @@ struct DeckView: View {
             }
             .navigationTitle(deck.deckName)
             .navigationBarTitleDisplayMode(.inline)
-            .navigationBarItems(leading:
-                                    HStack {
-                if number == 1 {
-                    Button {
-                        isPresenting.toggle()
-                    } label: {
-                        HStack(spacing: 5) {
-                            Image(systemName: "chevron.backward")
-                            Text("My decks")
-                        }
-                        .foregroundColor(.blue)
-                    }
-                }
-            }
-            )
             .buttonStyle(PlainButtonStyle())
-            
-            .fullScreenCover(isPresented: $isPresenting) {
-                ContentView()
-            }
         }
     }
 }

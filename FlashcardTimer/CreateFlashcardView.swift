@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CreateFlashcardView: View {
     var deck: Deck
-    @State var isPresenting = false
+
     @State private var decksFromUserDefaults: [Deck] = UserDefaultsService.getDecks()
     @State private var question: String = ""
     @State private var answer: String = ""
@@ -18,7 +18,8 @@ struct CreateFlashcardView: View {
     @State private var reveal = false
     @State private var showFlashmark = false
     @State private var showingAlert = false
-    @State var isAlerted = false
+    
+    @Environment(\.dismiss) var dismiss
 
     var body: some View {
         VStack {
@@ -51,6 +52,7 @@ struct CreateFlashcardView: View {
                 
             }
             .rotation3DEffect(.degrees(flipped ? -180 : 0), axis: (x: 0, y: 1, z: 0))
+            
             Button {
                 withAnimation(.easeInOut(duration: 0.5)) {
                     flipped.toggle()
@@ -75,7 +77,7 @@ struct CreateFlashcardView: View {
             Button("Save") {
                 UserDefaultsService.addFlashcard(question: question, answer: answer, deckId: deck.deckId)
                 decksFromUserDefaults = UserDefaultsService.getDecks()
-                isPresenting.toggle()
+                dismiss()
             }
             .padding()
             .font(.title2)
@@ -88,28 +90,24 @@ struct CreateFlashcardView: View {
                 .fill(Color("FlashcardQuestionColor"))
             )
         }
-        .fullScreenCover(isPresented: $isPresenting) {
-            DeckView(deck: deck, number: 1)
-        }
-        
-        
         .navigationTitle("Create a flashcard")
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)
-                        .navigationBarItems(leading:
-                            Button(action: {
-                                self.showingAlert = true
-                            }) {
-                                Image(systemName: "arrow.left")
-                                Text("Back")
-                            }
-                            .alert(isPresented: $showingAlert) {
-                                Alert(title: Text("Are you sure you want to go back?"), message: nil, primaryButton: .destructive(Text("Yes"), action: {
-                                    isPresenting.toggle()
-                                }), secondaryButton: .cancel(Text("No")))
-                            }
-                        )
-        
+        .navigationBarItems(leading:
+            Button {
+                showingAlert.toggle()
+            } label: {
+                Image(systemName: "arrow.left")
+                Text("Back")
+            }
+            .alert(isPresented: $showingAlert) {
+                Alert(title: Text("Are you sure you want to go back?"), message: nil, primaryButton: .destructive( Text("Yes"), action: {
+                        dismiss()
+                    }),
+                    secondaryButton: .cancel(Text("No"))
+                )
+            }
+        )
     }
 }
 
