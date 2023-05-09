@@ -44,11 +44,17 @@ struct DeckView: View {
                         UserDefaultsService.addFlashcard(question: "qual o nome do eduardo", answer: "eduardo", deckId: 1)
                         decksFromUserDefaults = UserDefaultsService.getDecks()
                     } label: {
-                        Image(systemName: "plus.circle.fill")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 50)
+                        ZStack {
+                            Rectangle()
+                                .frame(width: 98, height: 141)
+                                .foregroundColor(.white)
+                            
+                            Image(systemName: "plus.circle.fill")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 60)
                             .foregroundColor(Color("DeckColor"))
+                        }
                     }
                 }
             }
