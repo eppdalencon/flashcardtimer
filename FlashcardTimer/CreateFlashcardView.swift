@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct CreateFlashcardView: View {
-    var deckId: Int
+    var deck: Deck
+    @State var isPresenting = false
+    @State private var decksFromUserDefaults: [Deck] = UserDefaultsService.getDecks()
     @State private var question: String = ""
     @State private var answer: String = ""
     @State private var flipped = false
@@ -47,7 +49,6 @@ struct CreateFlashcardView: View {
                 
             }
             .rotation3DEffect(.degrees(flipped ? -180 : 0), axis: (x: 0, y: 1, z: 0))
-            
             Button {
                 withAnimation(.easeInOut(duration: 0.5)) {
                     flipped.toggle()
@@ -55,7 +56,7 @@ struct CreateFlashcardView: View {
                 changeColor.toggle()
                 reveal.toggle()
             } label: {
-                Text(reveal ? "Go to answer" : "Go to question")
+                Text(reveal ? "Go to question" : "Go to answer")
                     .padding()
                     .font(.title2)
                     .foregroundColor(.black)
@@ -67,12 +68,32 @@ struct CreateFlashcardView: View {
                         .fill(Color("FlashcardQuestionColor"))
                     )
             }
+            .padding(.top)
+            
+            Button("Save") {
+                UserDefaultsService.addFlashcard(question: question, answer: answer, deckId: deck.deckId)
+                decksFromUserDefaults = UserDefaultsService.getDecks()
+                isPresenting.toggle()
+            }
+            .padding()
+            .font(.title2)
+            .foregroundColor(.black)
+            .frame(maxWidth: 340)
+            .background(
+                RoundedRectangle(
+                    cornerRadius: 15
+                )
+                .fill(Color("FlashcardQuestionColor"))
+            )
+        }
+        .fullScreenCover(isPresented: $isPresenting) {
+            DeckView(deck: deck, number: 1)
         }
     }
 }
 
 struct CreateFlashcardView_Previews: PreviewProvider {
     static var previews: some View {
-        CreateFlashcardView(deckId: 1)
+        CreateFlashcardView(deck: ModelData().decks[0])
     }
 }

@@ -40,22 +40,19 @@ struct DeckView: View {
                                 .offset(x: -5, y: -5)
                         }
                     }
-                    Button {
-                        UserDefaultsService.addFlashcard(question: "qual o nome do eduardo", answer: "eduardo", deckId: 1)
-                        decksFromUserDefaults = UserDefaultsService.getDecks()
-                    } label: {
-                        ZStack {
-                            Rectangle()
-                                .frame(width: 98, height: 141)
-                                .foregroundColor(.white)
-                            
+                    ZStack {
+                        Rectangle()
+                            .frame(width: 98, height: 141)
+                            .foregroundColor(.white)
+                        
+                        NavigationLink(destination: CreateFlashcardView(deck: deck)) {
                             Image(systemName: "plus.circle.fill")
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 60)
-                            .foregroundColor(Color("DeckColor"))
                         }
                     }
+                    
                 }
             }
             
@@ -75,19 +72,19 @@ struct DeckView: View {
             .navigationTitle(deck.deckName)
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarItems(leading:
-                HStack {
-                    if number == 1 {
-                        Button {
-                            isPresenting.toggle()
-                        } label: {
-                            HStack(spacing: 5) {
-                                Image(systemName: "chevron.backward")
-                                Text("My decks")
-                            }
-                            .foregroundColor(.blue)
+                                    HStack {
+                if number == 1 {
+                    Button {
+                        isPresenting.toggle()
+                    } label: {
+                        HStack(spacing: 5) {
+                            Image(systemName: "chevron.backward")
+                            Text("My decks")
                         }
+                        .foregroundColor(.blue)
                     }
                 }
+            }
             )
             .buttonStyle(PlainButtonStyle())
             
