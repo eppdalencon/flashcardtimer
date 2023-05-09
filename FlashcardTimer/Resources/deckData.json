@@ -3,7 +3,7 @@
         "deckId": 1,
         "deckName": "História do Brasil",
         "complete": false,
-        "numberPerTest": 8,
+        "numberPerTest": 2,
         "flashcards": [
             {
                 "flashcardId": 1,
@@ -59,7 +59,7 @@
         "deckId": 2,
         "deckName": "Biologia",
         "complete": false,
-        "numberPerTest": 5,
+        "numberPerTest": 3,
         "flashcards": [
             {
                 "flashcardId": 1,
@@ -97,7 +97,7 @@
         "deckId": 2,
         "deckName": "Geografia",
         "complete": false,
-        "numberPerTest": 3,
+        "numberPerTest": 2,
         "flashcards": [
             {
                 "flashcardId": 1,

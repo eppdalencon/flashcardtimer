@@ -8,8 +8,20 @@ import SwiftUI
 
 struct DeckView: View {
     var deck: Deck
+    var number: Int
+    @State private var decksFromUserDefaults: [Deck] = UserDefaultsService.getDecks()
     
+    @State private var isPresenting = false
     
+    init(deck: Deck) {
+        self.deck = deck
+        number = 0
+    }
+    
+    init(deck: Deck, number: Int) {
+        self.deck = deck
+        self.number = number
+    }
     
     var gridItemLayout = [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())]
     
@@ -28,11 +40,21 @@ struct DeckView: View {
                                 .offset(x: -5, y: -5)
                         }
                     }
+                    Button {
+                        UserDefaultsService.addFlashcard(question: "qual o nome do eduardo", answer: "eduardo", deckId: 1)
+                        decksFromUserDefaults = UserDefaultsService.getDecks()
+                    } label: {
+                        Image(systemName: "plus.circle.fill")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 50)
+                            .foregroundColor(Color("DeckColor"))
+                    }
                 }
             }
             
             VStack {
-                NavigationLink(destination: FlashcardView(deck: deck)) {
+                NavigationLink(destination: FlashcardView(flashcards: Array(deck.flashcards.shuffled().prefix(deck.numberPerTest)), deck: deck)) {
                     Rectangle()
                         .frame(width: 300, height: 70)
                         .cornerRadius(15)
@@ -46,7 +68,26 @@ struct DeckView: View {
             }
             .navigationTitle(deck.deckName)
             .navigationBarTitleDisplayMode(.inline)
+            .navigationBarItems(leading:
+                HStack {
+                    if number == 1 {
+                        Button {
+                            isPresenting.toggle()
+                        } label: {
+                            HStack(spacing: 5) {
+                                Image(systemName: "chevron.backward")
+                                Text("My decks")
+                            }
+                            .foregroundColor(.blue)
+                        }
+                    }
+                }
+            )
             .buttonStyle(PlainButtonStyle())
+            
+            .fullScreenCover(isPresented: $isPresenting) {
+                ContentView()
+            }
         }
     }
 }
