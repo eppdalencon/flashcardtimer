@@ -131,6 +131,17 @@ class UserDefaultsService {
         return deckWithId.flashcards[indexFlashcard]
     }
     
+    // MARK: - Get Deck by Name
+       static func getDeckByName(deckName: String) -> Deck? {
+           let currentDecks = self.getDecks()
+           
+           guard let deckWithName = currentDecks.first(where: { $0.deckName == deckName }) else {
+               return nil
+           }
+           
+           return deckWithName
+       }
+    
     // MARK: - List Flashcards
     static func getFlashcards(deckId: Int) -> [Flashcard] {
         let currentDecks = self.getDecks()

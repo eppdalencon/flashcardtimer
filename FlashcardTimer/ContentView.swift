@@ -22,6 +22,11 @@ struct ContentView: View {
                 Spacer()
             }
             .navigationTitle("My decks")
+            .navigationBarItems(trailing:
+                                            NavigationLink(destination: CreateDeckView()) {
+                                                Image(systemName: "plus")
+                                            }
+                                        )
             .navigationBarTitleDisplayMode(.inline)
             .buttonStyle(PlainButtonStyle())
         }
