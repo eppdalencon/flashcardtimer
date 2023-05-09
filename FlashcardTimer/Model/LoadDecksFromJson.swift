@@ -9,11 +9,11 @@ import Foundation
 import Combine
 import SwiftUI
 
-final class ModelData: ObservableObject {
-    @Published var decks: [Deck] = loadData()
+final class LoadDecksFromJson: ObservableObject {
+    @Published var decks: [Deck] = loadArrayOfDecksFromJson()
 }
 
-func loadData() -> [Deck] {
+func loadArrayOfDecksFromJson() -> [Deck] {
     guard let jsonUrl = Bundle.main.url(forResource: "deckData", withExtension: "json") else {
         fatalError("Cannot find data.json file")
     }
