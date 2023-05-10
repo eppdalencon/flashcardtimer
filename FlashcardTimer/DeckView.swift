@@ -62,6 +62,13 @@ struct DeckView: View {
             .navigationTitle(deck.deckName)
             .navigationBarTitleDisplayMode(.inline)
             .buttonStyle(PlainButtonStyle())
+            .navigationBarItems(trailing:
+                NavigationLink {
+                    DeckConfigView(deck: LoadDecksFromJson().decks[0])
+                } label: {
+                    Text("Edit deck")
+                }
+            )
         }
     }
 }
