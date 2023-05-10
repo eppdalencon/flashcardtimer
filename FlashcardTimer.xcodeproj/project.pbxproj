@@ -7,18 +7,42 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3045AE9E2A05762200FC440C /* UserDefaultsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3045AE9D2A05762200FC440C /* UserDefaultsService.swift */; };
+		3045AEA22A0AD3BA00FC440C /* CreateDeckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3045AEA12A0AD3BA00FC440C /* CreateDeckView.swift */; };
 		30EBDACD2A01A4AB003F9236 /* FlashcardTimerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30EBDACC2A01A4AB003F9236 /* FlashcardTimerApp.swift */; };
 		30EBDACF2A01A4AB003F9236 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30EBDACE2A01A4AB003F9236 /* ContentView.swift */; };
 		30EBDAD12A01A4AC003F9236 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 30EBDAD02A01A4AC003F9236 /* Assets.xcassets */; };
 		30EBDAD42A01A4AC003F9236 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 30EBDAD32A01A4AC003F9236 /* Preview Assets.xcassets */; };
+		3119BDCB2A02DF7500FA43CF /* Deck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3119BDCA2A02DF7500FA43CF /* Deck.swift */; };
+		3119BDCE2A02E12C00FA43CF /* deckData.json in Resources */ = {isa = PBXBuildFile; fileRef = 3119BDCD2A02E12C00FA43CF /* deckData.json */; };
+		3119BDD12A02E55700FA43CF /* LoadDecksFromJson.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3119BDD02A02E55700FA43CF /* LoadDecksFromJson.swift */; };
+		317FB4722A0C1E89003282CF /* DeckConfigView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317FB4712A0C1E89003282CF /* DeckConfigView.swift */; };
+		31F96E3B2A09767C00F1D9B1 /* CreateFlashcardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F96E3A2A09767C00F1D9B1 /* CreateFlashcardView.swift */; };
+		681183A72A0B15F800A2BEC9 /* HandlingErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681183A62A0B15F800A2BEC9 /* HandlingErrors.swift */; };
+		689DA7CF2A0977B9008D720F /* FlashcardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689DA7CE2A0977B9008D720F /* FlashcardView.swift */; };
+		689DA7D12A097800008D720F /* ExemplosUserDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689DA7D02A097800008D720F /* ExemplosUserDefault.swift */; };
+		689DA7D32A097869008D720F /* DeckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689DA7D22A097869008D720F /* DeckView.swift */; };
+		689DA7D52A097881008D720F /* DeckListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689DA7D42A097881008D720F /* DeckListView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3045AE9D2A05762200FC440C /* UserDefaultsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsService.swift; sourceTree = "<group>"; };
+		3045AEA12A0AD3BA00FC440C /* CreateDeckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateDeckView.swift; sourceTree = "<group>"; };
 		30EBDAC92A01A4AB003F9236 /* FlashcardTimer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlashcardTimer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		30EBDACC2A01A4AB003F9236 /* FlashcardTimerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashcardTimerApp.swift; sourceTree = "<group>"; };
 		30EBDACE2A01A4AB003F9236 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		30EBDAD02A01A4AC003F9236 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		30EBDAD32A01A4AC003F9236 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		3119BDCA2A02DF7500FA43CF /* Deck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deck.swift; sourceTree = "<group>"; };
+		3119BDCD2A02E12C00FA43CF /* deckData.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = deckData.json; sourceTree = "<group>"; };
+		3119BDD02A02E55700FA43CF /* LoadDecksFromJson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadDecksFromJson.swift; sourceTree = "<group>"; };
+		317FB4712A0C1E89003282CF /* DeckConfigView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckConfigView.swift; sourceTree = "<group>"; };
+		31F96E3A2A09767C00F1D9B1 /* CreateFlashcardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateFlashcardView.swift; sourceTree = "<group>"; };
+		681183A62A0B15F800A2BEC9 /* HandlingErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandlingErrors.swift; sourceTree = "<group>"; };
+		689DA7CE2A0977B9008D720F /* FlashcardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashcardView.swift; sourceTree = "<group>"; };
+		689DA7D02A097800008D720F /* ExemplosUserDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExemplosUserDefault.swift; sourceTree = "<group>"; };
+		689DA7D22A097869008D720F /* DeckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckView.swift; sourceTree = "<group>"; };
+		689DA7D42A097881008D720F /* DeckListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckListView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,6 +59,7 @@
 		30EBDAC02A01A4AB003F9236 = {
 			isa = PBXGroup;
 			children = (
+				681183A62A0B15F800A2BEC9 /* HandlingErrors.swift */,
 				30EBDACB2A01A4AB003F9236 /* FlashcardTimer */,
 				30EBDACA2A01A4AB003F9236 /* Products */,
 			);
@@ -53,8 +78,18 @@
 			children = (
 				30EBDACC2A01A4AB003F9236 /* FlashcardTimerApp.swift */,
 				30EBDACE2A01A4AB003F9236 /* ContentView.swift */,
+				31F96E3A2A09767C00F1D9B1 /* CreateFlashcardView.swift */,
+				689DA7D02A097800008D720F /* ExemplosUserDefault.swift */,
+				689DA7D42A097881008D720F /* DeckListView.swift */,
+				689DA7D22A097869008D720F /* DeckView.swift */,
+				689DA7CE2A0977B9008D720F /* FlashcardView.swift */,
+				3119BDCF2A02E52000FA43CF /* Model */,
+				3119BDCC2A02E0D200FA43CF /* Resources */,
 				30EBDAD02A01A4AC003F9236 /* Assets.xcassets */,
 				30EBDAD22A01A4AC003F9236 /* Preview Content */,
+				3045AE9D2A05762200FC440C /* UserDefaultsService.swift */,
+				3045AEA12A0AD3BA00FC440C /* CreateDeckView.swift */,
+				317FB4712A0C1E89003282CF /* DeckConfigView.swift */,
 			);
 			path = FlashcardTimer;
 			sourceTree = "<group>";
@@ -65,6 +100,23 @@
 				30EBDAD32A01A4AC003F9236 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		3119BDCC2A02E0D200FA43CF /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				3119BDCD2A02E12C00FA43CF /* deckData.json */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		3119BDCF2A02E52000FA43CF /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				3119BDD02A02E55700FA43CF /* LoadDecksFromJson.swift */,
+				3119BDCA2A02DF7500FA43CF /* Deck.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -126,6 +178,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				30EBDAD42A01A4AC003F9236 /* Preview Assets.xcassets in Resources */,
+				3119BDCE2A02E12C00FA43CF /* deckData.json in Resources */,
 				30EBDAD12A01A4AC003F9236 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -137,8 +190,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3119BDCB2A02DF7500FA43CF /* Deck.swift in Sources */,
+				31F96E3B2A09767C00F1D9B1 /* CreateFlashcardView.swift in Sources */,
+				689DA7CF2A0977B9008D720F /* FlashcardView.swift in Sources */,
+				317FB4722A0C1E89003282CF /* DeckConfigView.swift in Sources */,
+				3045AEA22A0AD3BA00FC440C /* CreateDeckView.swift in Sources */,
+				3119BDD12A02E55700FA43CF /* LoadDecksFromJson.swift in Sources */,
+				681183A72A0B15F800A2BEC9 /* HandlingErrors.swift in Sources */,
+				689DA7D52A097881008D720F /* DeckListView.swift in Sources */,
+				689DA7D32A097869008D720F /* DeckView.swift in Sources */,
+				3045AE9E2A05762200FC440C /* UserDefaultsService.swift in Sources */,
 				30EBDACF2A01A4AB003F9236 /* ContentView.swift in Sources */,
 				30EBDACD2A01A4AB003F9236 /* FlashcardTimerApp.swift in Sources */,
+				689DA7D12A097800008D720F /* ExemplosUserDefault.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

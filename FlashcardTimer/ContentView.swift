@@ -4,18 +4,32 @@
 //
 //  Created by Eduardo Dalencon on 02/05/23.
 //
-
 import SwiftUI
 
 struct ContentView: View {
+    @State private var showingPopup = false
+    @State private var decksFromUserDefaults: [Deck] = UserDefaultsService.getDecks()
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+        NavigationStack {
+            VStack {
+                ForEach(LoadDecksFromJson().decks, id: \.self) { deck in
+                    NavigationLink(destination: DeckView(deck: deck)) {
+                        DeckListView(deck: deck)
+                    }
+                }
+                
+                Spacer()
+            }
+            .navigationTitle("My decks")
+            .navigationBarItems(trailing:
+                NavigationLink(destination: CreateDeckView()) {
+                    Image(systemName: "plus")
+                }
+            )
+            .navigationBarTitleDisplayMode(.inline)
+            .buttonStyle(PlainButtonStyle())
         }
-        .padding()
     }
 }
 
@@ -24,3 +38,4 @@ struct ContentView_Previews: PreviewProvider {
         ContentView()
     }
 }
+
