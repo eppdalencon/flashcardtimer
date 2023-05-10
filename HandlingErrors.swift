@@ -11,15 +11,15 @@ enum PossibleErrors: Error {
     case emptyText
 }
 
-func checkForEmptyText(_ text: String) throws {
+func checkForEmptyTextError(_ text: String) throws {
     if text == "" {
         throw PossibleErrors.emptyText
     }
 }
 
-func check(_ text: String) -> Bool {
+func checkForEmptyText(_ text: String) -> Bool {
     do {
-        try checkForEmptyText(text)
+        try checkForEmptyTextError(text)
         return false
     } catch {
         return true

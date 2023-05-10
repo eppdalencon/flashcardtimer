@@ -36,7 +36,7 @@ struct CreateDeckView: View {
                     UserDefaultsService.createDeckByName(name: name)
                     newDeck = UserDefaultsService.getDeckByName(deckName: name)
                     
-                    if !check(name) {
+                    if !checkForEmptyText(name) {
                         dismiss()
                     } else {
                         showingfTextAlert.toggle()

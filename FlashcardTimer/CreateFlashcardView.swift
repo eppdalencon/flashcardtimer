@@ -90,8 +90,8 @@ struct CreateFlashcardView: View {
                 UserDefaultsService.addFlashcard(question: question, answer: answer, deckId: deck.deckId)
                 decksFromUserDefaults = UserDefaultsService.getDecks()
                 
-                let q = check(question)
-                let a = check(answer)
+                let q = checkForEmptyText(question)
+                let a = checkForEmptyText(answer)
                 
                 if !q && !a {
                     dismiss()
