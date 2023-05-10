@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct CreateDeckView: View {
+    @FocusState private var textIsFocused: Bool
     @State private var name: String = ""
     @State private var newDeck: Deck? = nil
     @State private var showingAlert = false
@@ -26,6 +27,7 @@ struct CreateDeckView: View {
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding()
                     .disableAutocorrection(true)
+                    .focused($textIsFocused)
                 
                 
                 Button("Send") {
@@ -67,6 +69,15 @@ struct CreateDeckView: View {
                         )
                     }
                 )
+            }
+            .toolbar {
+                ToolbarItemGroup(placement: .keyboard) {
+                    Spacer()
+                    
+                    Button("Done") {
+                        textIsFocused = false
+                    }
+                }
             }
         }
     }

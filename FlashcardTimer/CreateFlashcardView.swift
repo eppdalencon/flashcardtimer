@@ -7,10 +7,16 @@
 
 import SwiftUI
 
+enum ActiveAlert {
+    case questionAlert, answerAlert, bothAlert
+}
+
 struct CreateFlashcardView: View {
     var deck: Deck
 
     @State private var decksFromUserDefaults: [Deck] = UserDefaultsService.getDecks()
+    
+    @FocusState private var textIsFocused: Bool
     @State private var question: String = ""
     @State private var answer: String = ""
     @State private var flipped = false
@@ -18,6 +24,8 @@ struct CreateFlashcardView: View {
     @State private var reveal = false
     @State private var showFlashmark = false
     @State private var showingAlert = false
+    @State private var showingTextAlert = false
+    @State private var activeAlert: ActiveAlert = .questionAlert
     
     @Environment(\.dismiss) var dismiss
 
@@ -37,6 +45,8 @@ struct CreateFlashcardView: View {
                         }
                         .frame(width: 300)
                         .font(.title3)
+                        .disableAutocorrection(true)
+                        .focused($textIsFocused)
                         .rotation3DEffect(.degrees(flipped ? 180 : 0), axis: (x: 0, y: 1, z: 0))
                 } else {
                     TextField("Answer", text: $answer, axis: .vertical)
@@ -47,6 +57,8 @@ struct CreateFlashcardView: View {
                         }
                         .frame(width: 300)
                         .font(.title3)
+                        .disableAutocorrection(true)
+                        .focused($textIsFocused)
                         .rotation3DEffect(.degrees(flipped ? 180 : 0), axis: (x: 0, y: 1, z: 0))
                 }
                 
@@ -77,8 +89,35 @@ struct CreateFlashcardView: View {
             Button("Save") {
                 UserDefaultsService.addFlashcard(question: question, answer: answer, deckId: deck.deckId)
                 decksFromUserDefaults = UserDefaultsService.getDecks()
-                dismiss()
+                
+                let q = check(question)
+                let a = check(answer)
+                
+                if q && a {
+                    dismiss()
+                    showingTextAlert.toggle()
+                } else if !q && a {
+                    activeAlert = .questionAlert
+                } else if q && !a {
+                    activeAlert = .answerAlert
+                } else {
+                    activeAlert = .bothAlert
+                }
+                
+                showingTextAlert.toggle()
             }
+            .alert(isPresented: $showingTextAlert) {
+                switch activeAlert {
+                case .questionAlert:
+                    return Alert(title: Text("You haven't typed in your question!"), dismissButton: .default(Text("Try again")))
+                case .answerAlert:
+                    return Alert(title: Text("You haven't typed in your answer!"), dismissButton: .default(Text("Try again")))
+                case .bothAlert:
+                    return Alert(title: Text("You haven't typed anything in!"), dismissButton: .default(Text("Try again")))
+                }
+            }
+            
+            
             .padding()
             .font(.title2)
             .foregroundColor(.black)
@@ -108,6 +147,15 @@ struct CreateFlashcardView: View {
                 )
             }
         )
+        .toolbar {
+            ToolbarItemGroup(placement: .keyboard) {
+                Spacer()
+                
+                Button("Done") {
+                    textIsFocused = false
+                }
+            }
+        }
     }
 }
 
