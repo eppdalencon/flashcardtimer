@@ -12,6 +12,7 @@ struct CreateDeckView: View {
     @State private var name: String = ""
     @State private var newDeck: Deck? = nil
     @State private var showingAlert = false
+    @State private var showingfTextAlert = false
     
     @Environment(\.dismiss) var dismiss
     
@@ -35,8 +36,15 @@ struct CreateDeckView: View {
                     UserDefaultsService.createDeckByName(name: name)
                     newDeck = UserDefaultsService.getDeckByName(deckName: name)
                     
-                    dismiss()
+                    if !check(name) {
+                        dismiss()
+                    } else {
+                        showingfTextAlert.toggle()
+                    }
                     
+                }
+                .alert(isPresented: $showingfTextAlert) {
+                    Alert(title: Text("You haven't typed anything in!"), dismissButton: .default(Text("Try again")))
                 }
                 .padding()
                 .font(.title2)

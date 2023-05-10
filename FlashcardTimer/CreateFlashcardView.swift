@@ -93,12 +93,12 @@ struct CreateFlashcardView: View {
                 let q = check(question)
                 let a = check(answer)
                 
-                if q && a {
+                if !q && !a {
                     dismiss()
                     showingTextAlert.toggle()
-                } else if !q && a {
-                    activeAlert = .questionAlert
                 } else if q && !a {
+                    activeAlert = .questionAlert
+                } else if !q && a {
                     activeAlert = .answerAlert
                 } else {
                     activeAlert = .bothAlert

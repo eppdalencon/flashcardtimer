@@ -20,8 +20,8 @@ func checkForEmptyText(_ text: String) throws {
 func check(_ text: String) -> Bool {
     do {
         try checkForEmptyText(text)
-        return true
-    } catch {
         return false
+    } catch {
+        return true
     }
 }
