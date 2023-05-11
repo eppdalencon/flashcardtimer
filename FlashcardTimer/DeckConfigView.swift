@@ -10,17 +10,36 @@ import SwiftUI
 struct DeckConfigView: View {
     var deck: Deck
     @State private var showNotification = false
+    @State private var optionsNotification: [Bool] = [false, false]
+    let options = ["Vibrar", "Tocar"]
     
     var body: some View {
-        List{
-            Toggle(isOn: $showNotification) {
-                Text("Notification")
-                    .bold()
+        NavigationStack {
+            List {
+                Toggle(isOn: $showNotification) {
+                    Text("Notifications")
+                        .bold()
+                        .font(.title3)
+                }
+                
+                if !showNotification {
+                    Text("Activate your notifications by clicking the button above")
+                        .font(.callout)
+                    .foregroundColor(.gray)
+                }
+                
+                if showNotification == true {
+                    ForEach(0 ..< options.count) { index in
+                        Toggle(isOn: $optionsNotification[index]) {
+                            Text(options[index])
+                        }
+                    }
+                }
             }
+            .navigationTitle("Notifications Center")
+            .navigationBarTitleDisplayMode(.inline)
         }
-        .navigationTitle("Deck config")
     }
-    
 }
 
 struct DeckConfigView_Previews: PreviewProvider {
