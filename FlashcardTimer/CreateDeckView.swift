@@ -32,12 +32,10 @@ struct CreateDeckView: View {
                 
                 
                 Button("Send") {
-                    
-                    UserDefaultsService.createDeckByName(name: name)
-                    newDeck = UserDefaultsService.getDeckByName(deckName: name)
-                    
                     if !checkForEmptyText(name) {
                         presentDeckView.toggle()
+                        UserDefaultsService.createDeckByName(name: name)
+                        newDeck = UserDefaultsService.getDeckByName(deckName: name)
                     } else {
                         showingfTextAlert.toggle()
                     }

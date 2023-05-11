@@ -87,13 +87,13 @@ struct CreateFlashcardView: View {
             .padding(.top)
             
             Button("Save") {
-                UserDefaultsService.addFlashcard(question: question, answer: answer, deckId: deck.deckId)
-                decksFromUserDefaults = UserDefaultsService.getDecks()
-                
                 let q = checkForEmptyText(question)
                 let a = checkForEmptyText(answer)
                 
                 if !q && !a {
+                    UserDefaultsService.addFlashcard(question: question, answer: answer, deckId: deck.deckId)
+                    decksFromUserDefaults = UserDefaultsService.getDecks()
+                    
                     dismiss()
                     showingTextAlert.toggle()
                 } else if q && !a {
