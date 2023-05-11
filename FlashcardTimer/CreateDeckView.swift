@@ -4,7 +4,6 @@
 //
 //  Created by Eduardo Dalencon on 09/05/23.
 //
-
 import SwiftUI
 
 struct CreateDeckView: View {
@@ -13,6 +12,7 @@ struct CreateDeckView: View {
     @State private var newDeck: Deck? = nil
     @State private var showingAlert = false
     @State private var showingfTextAlert = false
+    @State private var presentDeckView = false
     
     @Environment(\.dismiss) var dismiss
     
@@ -37,7 +37,7 @@ struct CreateDeckView: View {
                     newDeck = UserDefaultsService.getDeckByName(deckName: name)
                     
                     if !checkForEmptyText(name) {
-                        dismiss()
+                        presentDeckView.toggle()
                     } else {
                         showingfTextAlert.toggle()
                     }
@@ -87,6 +87,9 @@ struct CreateDeckView: View {
                     }
                 }
             }
+            .navigationDestination(isPresented: $presentDeckView) {
+                DeckView(name: name)
+            }
         }
     }
 }
@@ -96,3 +99,4 @@ struct CreateDeckView_Previews: PreviewProvider {
         CreateDeckView()
     }
 }
+
