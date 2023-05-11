@@ -8,27 +8,37 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var showingPopup = false
-    @State private var decksFromUserDefaults: [Deck] = UserDefaultsService.getDecks()
-    
+    @State private var decksFromUserDefaults: [Deck] = []
+    @State private var presentCreateDeckView = false
+
     var body: some View {
         NavigationStack {
-            VStack {
-                ForEach(LoadDecksFromJson().decks, id: \.self) { deck in
-                    NavigationLink(destination: DeckView(deck: deck)) {
-                        DeckListView(deck: deck)
+            ScrollView(showsIndicators: false) {
+                if decksFromUserDefaults != [] {
+                    ForEach(decksFromUserDefaults, id: \.self) { deck in
+                        NavigationLink(destination: DeckView(name: deck.deckName)) {
+                            DeckListView(deck: deck)
+                        }
                     }
                 }
-                
-                Spacer()
             }
             .navigationTitle("My decks")
             .navigationBarItems(trailing:
-                NavigationLink(destination: CreateDeckView()) {
+                Button {
+                    presentCreateDeckView.toggle()
+                } label: {
                     Image(systemName: "plus")
                 }
             )
             .navigationBarTitleDisplayMode(.inline)
             .buttonStyle(PlainButtonStyle())
+            .onAppear {
+                decksFromUserDefaults = UserDefaultsService.getDecks()
+                presentCreateDeckView = false
+            }
+            .navigationDestination(isPresented: $presentCreateDeckView) {
+                CreateDeckView()
+            }
         }
     }
 }

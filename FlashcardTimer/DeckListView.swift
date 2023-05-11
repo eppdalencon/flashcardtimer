@@ -9,22 +9,23 @@ import SwiftUI
 struct DeckListView: View {
     var deck: Deck
     var body: some View {
-        ZStack(alignment: .leading) {
-            Rectangle()
-                .frame(width: 342, height: 68)
-                .cornerRadius(8)
-                .foregroundColor(Color("DeckColor"))
-            
-            VStack(alignment: .leading) {
-                Text(deck.deckName)
-                    .font(.title2)
+        Rectangle()
+            .frame(width: 342, height: 60)
+            .cornerRadius(8)
+            .foregroundColor(Color("DeckColor"))
+            .overlay(
+                VStack(alignment: .leading) {
+                    Text(deck.deckName)
+                        .font(.title2)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .lineLimit(1)
                     
-                Text("\(deck.numberPerTest) cards")
-                    .font(.title3)
-                    .foregroundColor(Color.gray)
-            }
-            .padding(.leading)
-        }
+                    Text("\(deck.numberPerTest) cards")
+                        .font(.title3)
+                        .foregroundColor(.gray)
+                }
+                    .padding(.leading)
+            )
     }
 }
 

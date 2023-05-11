@@ -7,16 +7,18 @@
 import SwiftUI
 
 struct DeckView: View {
-    var deck: Deck
-    
-    @State private var decksFromUserDefaults: [Deck] = UserDefaultsService.getDecks()
-    
+    var name: String
+
+    @State private var decksFromUserDefaults: [Deck] = []
+
     @Environment(\.dismiss) var dismiss
-    
+
     var gridItemLayout = [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())]
-    
+
     var body: some View {
         NavigationStack {
+            var deck = UserDefaultsService.getDeckByName(deckName: name)!
+
             ScrollView {
                 LazyVGrid(columns: gridItemLayout, spacing: 24) {
                     ForEach(deck.flashcards.indices, id: \.self) { index in
@@ -25,7 +27,7 @@ struct DeckView: View {
                                 .frame(width: 98, height: 141)
                                 .cornerRadius(4)
                                 .foregroundColor(Color("DeckColor"))
-                            
+
                             Text("\(deck.flashcards[index].flashcardId)")
                                 .offset(x: -5, y: -5)
                         }
@@ -34,7 +36,7 @@ struct DeckView: View {
                         Rectangle()
                             .frame(width: 98, height: 141)
                             .foregroundColor(.white)
-                        
+
                         NavigationLink(destination: CreateFlashcardView(deck: deck)) {
                             Image(systemName: "plus.circle.fill")
                                 .resizable()
@@ -42,10 +44,10 @@ struct DeckView: View {
                                 .frame(width: 60)
                         }
                     }
-                    
+
                 }
             }
-            
+
             VStack {
                 NavigationLink(destination: FlashcardView(flashcards: Array(deck.flashcards.shuffled().prefix(deck.numberPerTest)), deck: deck)) {
                     Rectangle()
@@ -62,20 +64,15 @@ struct DeckView: View {
             .navigationTitle(deck.deckName)
             .navigationBarTitleDisplayMode(.inline)
             .buttonStyle(PlainButtonStyle())
-            .navigationBarItems(trailing:
-                NavigationLink {
-                    DeckConfigView(deck: LoadDecksFromJson().decks[0])
-                } label: {
-                    Text("Edit deck")
-                }
-            )
+            .onAppear {
+                decksFromUserDefaults = UserDefaultsService.getDecks()
+            }
         }
     }
 }
 
-struct DeckView_Previews: PreviewProvider {
-    static var previews: some View {
-        DeckView(deck: LoadDecksFromJson().decks[0])
-    }
-}
+//struct DeckView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        DeckView(name: LoadDecksFromJson().decks[0].deckName)
+//    }
 
