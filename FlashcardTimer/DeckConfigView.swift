@@ -26,9 +26,7 @@ struct DeckConfigView: View {
                     Text("Activate your notifications by clicking the button above")
                         .font(.callout)
                     .foregroundColor(.gray)
-                }
-                
-                if showNotification == true {
+                }else {
                     ForEach(0 ..< options.count) { index in
                         Toggle(isOn: $optionsNotification[index]) {
                             Text(options[index])
