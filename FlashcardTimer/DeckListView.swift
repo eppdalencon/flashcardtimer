@@ -10,7 +10,7 @@ struct DeckListView: View {
     var deck: Deck
     var body: some View {
         Rectangle()
-            .frame(width: 342, height: 60)
+            .frame(width: 310, height: 60)
             .cornerRadius(8)
             .foregroundColor(Color("DeckColor"))
             .overlay(
@@ -20,11 +20,17 @@ struct DeckListView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .lineLimit(1)
                     
-                    Text("\(deck.numberPerTest) cards")
-                        .font(.title3)
-                        .foregroundColor(.gray)
+                    if deck.flashcards.count == 1 {
+                        Text("\(deck.flashcards.count) card")
+                            .font(.title3)
+                            .foregroundColor(.gray)
+                    } else {
+                        Text("\(deck.flashcards.count) cards")
+                            .font(.title3)
+                            .foregroundColor(.gray)
+                    }
                 }
-                    .padding(.leading)
+                .padding(.leading)
             )
     }
 }

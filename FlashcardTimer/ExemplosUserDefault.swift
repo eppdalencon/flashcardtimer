@@ -25,7 +25,7 @@ struct ExemplosUserDefault: View {
         Button("Add Deck") {
             showingPopup = true
                 
-            UserDefaultsService.createDeckByName(name: "Novo deck")
+            UserDefaultsService.createDeckByName(name: "Novo deck", number: 5)
             decksFromUserDefaults = UserDefaultsService.getDecks()
         }
             

@@ -21,12 +21,12 @@ class UserDefaultsService {
     }
     
     // MARK: - Create Deck By Name
-    static func createDeckByName(name: String) {
+    static func createDeckByName(name: String, number: Int) {
         var currentDecks = self.getDecks()
         
         let lastId = currentDecks.last?.deckId ?? 0
         
-        let deck = Deck(deckId: lastId + 1, deckName: name, complete: false, numberPerTest: 5, flashcards: [])
+        let deck = Deck(deckId: lastId + 1, deckName: name, complete: false, numberPerTest: number, flashcards: [])
         
         currentDecks.append(deck)
         

@@ -75,4 +75,4 @@ struct DeckView: View {
 //    static var previews: some View {
 //        DeckView(name: LoadDecksFromJson().decks[0].deckName)
 //    }
-
+//}

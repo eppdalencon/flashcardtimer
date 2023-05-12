@@ -9,6 +9,8 @@ import SwiftUI
 struct CreateDeckView: View {
     @FocusState private var textIsFocused: Bool
     @State private var name: String = ""
+    @State private var numberPerTest: Int = 0
+    
     @State private var newDeck: Deck? = nil
     @State private var showingAlert = false
     @State private var showingfTextAlert = false
@@ -16,66 +18,84 @@ struct CreateDeckView: View {
     
     @Environment(\.dismiss) var dismiss
     
+    var isEditing: Bool
+    var deck: Deck
+    
+    init(isEditing: Bool, deck: Deck) {
+        self.isEditing = isEditing
+        self.deck = deck
+    }
+    
+    init() {
+        isEditing = false
+        deck = LoadDecksFromJson().decks[0]
+    }
+    
     var body: some View {
         NavigationStack {
-            VStack{
-                TextField("Name of the deck", text: $name)
-                    .onChange(of: name) { newvalue in
-                        if name.count > 100 {
-                            name = String(name.prefix(100))
+            Form {
+                Section {
+                    TextField("Name of the deck", text: $name)
+                        .onChange(of: name) { newvalue in
+                            if name.count > 100 {
+                                name = String(name.prefix(100))
+                            }
+                        }
+                        .disableAutocorrection(true)
+                        .focused($textIsFocused)
+                    
+                    Picker("Number per test", selection: $numberPerTest) {
+                        ForEach(1 ..< 11) {
+                            if $0 == 1 {
+                                Text("\($0) flashcard")
+                            } else {
+                                Text("\($0) flashcards")
+                            }
                         }
                     }
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
-                    .disableAutocorrection(true)
-                    .focused($textIsFocused)
-                
-                
+                }
+            }
+            .navigationTitle("Create a deck")
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarBackButtonHidden(true)
+            .navigationBarItems(trailing:
                 Button("Send") {
                     if !checkForEmptyText(name) {
-                        presentDeckView.toggle()
-                        UserDefaultsService.createDeckByName(name: name)
-                        newDeck = UserDefaultsService.getDeckByName(deckName: name)
+                        if !isEditing {
+                            presentDeckView.toggle()
+                            UserDefaultsService.createDeckByName(name: name, number: numberPerTest)
+                            newDeck = UserDefaultsService.getDeckByName(deckName: name)
+                        } else {
+                            UserDefaultsService.modifyDeckName(deckId: deck.deckId, value: name)
+                            UserDefaultsService.modifyDeckNumberPerTest(deckId: deck.deckId, value: numberPerTest + 1)
+                            dismiss()
+                        }
+
                     } else {
                         showingfTextAlert.toggle()
                     }
                     
                 }
+                .padding(.trailing)
                 .alert(isPresented: $showingfTextAlert) {
                     Alert(title: Text("You haven't typed anything in!"), dismissButton: .default(Text("Try again")))
                 }
-                .padding()
-                .font(.title2)
-                .foregroundColor(.black)
-                .frame(maxWidth: 340)
-                .background(
-                    RoundedRectangle(
-                        cornerRadius: 15
+            )
+            .navigationBarItems(leading:
+                Button {
+                    showingAlert.toggle()
+                } label: {
+                    Image(systemName: "chevron.left")
+                    Text("My decks")
+                }
+                .alert(isPresented: $showingAlert) {
+                    Alert(title: Text("Are you sure you want to go back?"), message: nil, primaryButton: .destructive( Text("Yes"), action: {
+                            dismiss()
+                        }),
+                        secondaryButton: .cancel(Text("No"))
                     )
-                    .fill(Color("FlashcardQuestionColor"))
-                )
-                
-                Spacer()
-
-                .navigationTitle("Create a deck")
-                .navigationBarTitleDisplayMode(.inline)
-                .navigationBarBackButtonHidden(true)
-                .navigationBarItems(leading:
-                    Button {
-                        showingAlert.toggle()
-                    } label: {
-                        Image(systemName: "chevron.left")
-                        Text("My decks")
-                    }
-                    .alert(isPresented: $showingAlert) {
-                        Alert(title: Text("Are you sure you want to go back?"), message: nil, primaryButton: .destructive( Text("Yes"), action: {
-                                dismiss()
-                            }),
-                            secondaryButton: .cancel(Text("No"))
-                        )
-                    }
-                )
-            }
+                }
+            )
             .toolbar {
                 ToolbarItemGroup(placement: .keyboard) {
                     Spacer()
