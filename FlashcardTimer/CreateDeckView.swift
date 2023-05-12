@@ -64,8 +64,8 @@ struct CreateDeckView: View {
                     Button {
                         showingAlert.toggle()
                     } label: {
-                        Image(systemName: "arrow.left")
-                        Text("Back")
+                        Image(systemName: "chevron.left")
+                        Text("My decks")
                     }
                     .alert(isPresented: $showingAlert) {
                         Alert(title: Text("Are you sure you want to go back?"), message: nil, primaryButton: .destructive( Text("Yes"), action: {

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct DeckConfigView: View {
     var deck: Deck
-    @State private var showNotification = true
+    @State private var showNotification = false
     @State private var alarme = Date()
 
     @State var alarmsArray: [[Int]] = []
