@@ -4,22 +4,21 @@
 //
 //  Created by Arthur Sobrosa on 08/05/23.
 //
-
 import SwiftUI
 
 struct FlashcardView: View {
     var flashcards: [Flashcard]
     var deck: Deck
-    
+
     @State var currentIndex = 0
-    
+
     @State private var flipped = false
     @State private var changeColor = true
     @State private var reveal = false
     @State private var showFlashmark = false
-    
+
     @Environment(\.dismiss) var dismiss
-    
+
     var body: some View {
         NavigationStack {
             TabView(selection: $currentIndex) {
@@ -30,7 +29,7 @@ struct FlashcardView: View {
                                 .frame(width: 342, height: 430)
                                 .cornerRadius(8)
                                 .foregroundColor(changeColor ? Color("FlashcardQuestionColor") : Color("FlashcardAnswerColor"))
-                            
+
                             if !flipped {
                                 Text(flashcards[index].question)
                                     .frame(width: 340)
@@ -44,8 +43,8 @@ struct FlashcardView: View {
                             }
                         }
                         .rotation3DEffect(.degrees(flipped ? -180 : 0), axis: (x: 0, y: 1, z: 0))
-                        
-                        
+
+
                         Button {
                             withAnimation(.easeInOut(duration: 0.5)) {
                                 flipped.toggle()
@@ -65,9 +64,9 @@ struct FlashcardView: View {
                                     .fill(Color("FlashcardQuestionColor"))
                                 )
                         }
-                        
+
                         Spacer()
-                        
+
                         if reveal {
                             HStack(spacing: 52) {
                                 Button {
@@ -75,14 +74,14 @@ struct FlashcardView: View {
                                     flipped.toggle()
                                     reveal.toggle()
                                     changeColor.toggle()
-                                    
+
                                 } label: {
                                     Image(systemName: "checkmark.circle.fill")
                                         .resizable()
                                         .frame(width: 150, height: 115)
                                         .foregroundColor(.green)
                                 }
-                                
+
                                 Button {
                                     currentIndex = updatedIndex(currentIndex)
                                     flipped.toggle()
@@ -100,16 +99,16 @@ struct FlashcardView: View {
                 }
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
-            
+
             .navigationTitle("Flashcard \(flashcards[currentIndex].flashcardId)")
             .navigationBarTitleDisplayMode(.inline)
         }
     }
-    
+
     func updatedIndex(_ index: Int) -> Int {
-        if index == flashcards.count - 1 {
+        if index == deck.numberPerTest - 1 {
             dismiss()
-            return index % flashcards.count
+            return index % deck.numberPerTest
         }
         return index + 1
     }

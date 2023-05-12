@@ -10,7 +10,7 @@ struct ContentView: View {
     @State private var showingPopup = false
     @State private var decksFromUserDefaults: [Deck] = []
     @State private var presentCreateDeckView = false
-    @State private var showingDeleteButton = false
+    @State private var showingEditButtons = false
     @State private var clickedDeleteButton = false
 
     var body: some View {
@@ -19,7 +19,7 @@ struct ContentView: View {
                 if decksFromUserDefaults != [] {
                     ForEach(decksFromUserDefaults, id: \.self) { deck in
                         HStack {
-                            if showingDeleteButton {
+                            if showingEditButtons {
                                 Button {
                                     UserDefaultsService.deleteDeck(deck.deckId)
                                     clickedDeleteButton.toggle()
@@ -31,18 +31,19 @@ struct ContentView: View {
                                     .foregroundColor(.red)
                                 }
                             }
-                            
+
                             NavigationLink(destination: DeckView(name: deck.deckName)) {
                                 DeckListView(deck: deck)
                             }
-                            
-                            NavigationLink(destination: CreateDeckView(isEditing: true, deck: deck)) {
-                                Image(systemName: "pencil")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 20)
+
+                            if showingEditButtons {
+                                NavigationLink(destination: CreateDeckView(isEditing: true, deck: deck)) {
+                                    Image(systemName: "pencil")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 20)
+                                }
                             }
-                            
                         }
                     }
                 }
@@ -60,7 +61,7 @@ struct ContentView: View {
             .onAppear {
                 decksFromUserDefaults = UserDefaultsService.getDecks()
                 presentCreateDeckView = false
-                showingDeleteButton = false
+                showingEditButtons = false
             }
             .onChange(of: clickedDeleteButton) { _ in
                 decksFromUserDefaults = UserDefaultsService.getDecks()
@@ -70,9 +71,9 @@ struct ContentView: View {
             }
             .navigationBarItems(leading:
                 Button {
-                showingDeleteButton.toggle()
+                showingEditButtons.toggle()
                 } label: {
-                    Text(showingDeleteButton ? "Done" : "Edit")
+                    Text(showingEditButtons ? "Done" : "Edit")
                         .foregroundColor(.black)
                 }
             )

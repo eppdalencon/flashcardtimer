@@ -10,6 +10,8 @@ struct DeckView: View {
     var name: String
 
     @State private var decksFromUserDefaults: [Deck] = []
+    @State private var presentFlashcardView: Bool = false
+    @State private var showingAlert: Bool = false
 
     @Environment(\.dismiss) var dismiss
 
@@ -49,7 +51,13 @@ struct DeckView: View {
             }
 
             VStack {
-                NavigationLink(destination: FlashcardView(flashcards: Array(deck.flashcards.shuffled().prefix(deck.numberPerTest)), deck: deck)) {
+                Button {
+                    if deck.flashcards.count < deck.numberPerTest {
+                        showingAlert.toggle()
+                    } else {
+                        presentFlashcardView.toggle()
+                    }
+                } label: {
                     Rectangle()
                         .frame(width: 300, height: 70)
                         .cornerRadius(15)
@@ -60,12 +68,18 @@ struct DeckView: View {
                         }
                         .foregroundColor(.gray)
                 }
+                .alert(isPresented: $showingAlert) {
+                    Alert(title: Text("You don't have enough cards to play"), dismissButton: .default(Text("Try again")))
+                }
             }
             .navigationTitle(deck.deckName)
             .navigationBarTitleDisplayMode(.inline)
             .buttonStyle(PlainButtonStyle())
             .onAppear {
                 decksFromUserDefaults = UserDefaultsService.getDecks()
+            }
+            .navigationDestination(isPresented: $presentFlashcardView) {
+                FlashcardView(flashcards: Array(deck.flashcards.shuffled().prefix(deck.numberPerTest)), deck: deck)
             }
         }
     }

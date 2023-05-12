@@ -10,27 +10,27 @@ struct CreateDeckView: View {
     @FocusState private var textIsFocused: Bool
     @State private var name: String = ""
     @State private var numberPerTest: Int = 0
-    
+
     @State private var newDeck: Deck? = nil
     @State private var showingAlert = false
     @State private var showingfTextAlert = false
     @State private var presentDeckView = false
-    
+
     @Environment(\.dismiss) var dismiss
-    
+
     var isEditing: Bool
     var deck: Deck
-    
+
     init(isEditing: Bool, deck: Deck) {
         self.isEditing = isEditing
         self.deck = deck
     }
-    
+
     init() {
         isEditing = false
         deck = LoadDecksFromJson().decks[0]
     }
-    
+
     var body: some View {
         NavigationStack {
             Form {
@@ -43,13 +43,37 @@ struct CreateDeckView: View {
                         }
                         .disableAutocorrection(true)
                         .focused($textIsFocused)
-                    
-                    Picker("Number per test", selection: $numberPerTest) {
-                        ForEach(1 ..< 11) {
-                            if $0 == 1 {
-                                Text("\($0) flashcard")
-                            } else {
-                                Text("\($0) flashcards")
+
+                    if !isEditing {
+                        Picker("Number per test", selection: $numberPerTest) {
+                            ForEach(1 ..< 11) {
+                                if $0 == 1 {
+                                    Text("\($0) flashcard")
+                                } else {
+                                    Text("\($0) flashcards")
+                                }
+                            }
+                        }
+                    } else {
+                        if deck.flashcards.count == 0 {
+                            Picker("Number per test", selection: $numberPerTest) {
+                                ForEach(1 ..< 11) {
+                                    if $0 == 1 {
+                                        Text("\($0) flashcard")
+                                    } else {
+                                        Text("\($0) flashcards")
+                                    }
+                                }
+                            }
+                        } else {
+                            Picker("Number per test", selection: $numberPerTest) {
+                                ForEach(1 ..< deck.flashcards.count + 1) {
+                                    if $0 == 1 {
+                                        Text("\($0) flashcard")
+                                    } else {
+                                        Text("\($0) flashcards")
+                                    }
+                                }
                             }
                         }
                     }
@@ -59,11 +83,11 @@ struct CreateDeckView: View {
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarBackButtonHidden(true)
             .navigationBarItems(trailing:
-                Button("Send") {
+                                    Button(isEditing ? "Done" : "Add cards") {
                     if !checkForEmptyText(name) {
                         if !isEditing {
                             presentDeckView.toggle()
-                            UserDefaultsService.createDeckByName(name: name, number: numberPerTest)
+                            UserDefaultsService.createDeckByName(name: name, number: numberPerTest + 1)
                             newDeck = UserDefaultsService.getDeckByName(deckName: name)
                         } else {
                             UserDefaultsService.modifyDeckName(deckId: deck.deckId, value: name)
@@ -74,7 +98,7 @@ struct CreateDeckView: View {
                     } else {
                         showingfTextAlert.toggle()
                     }
-                    
+
                 }
                 .padding(.trailing)
                 .alert(isPresented: $showingfTextAlert) {
@@ -99,7 +123,7 @@ struct CreateDeckView: View {
             .toolbar {
                 ToolbarItemGroup(placement: .keyboard) {
                     Spacer()
-                    
+
                     Button("Done") {
                         textIsFocused = false
                     }
