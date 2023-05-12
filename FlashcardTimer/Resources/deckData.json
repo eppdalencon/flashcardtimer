@@ -52,7 +52,11 @@
                 "question": "Qual foi a primeira capital do Brasil?",
                 "answer": "Salvador foi a primeira capital do Brasil, durante o período colonial."
             }
-        ]
+        ],
+            "times": [[14,34], [15,53]],
+            "notificationActive": true,
+            "vibrate": true,
+            "alarm": true
     },
     
     {
@@ -90,7 +94,11 @@
                 "question": "O que é a cadeia alimentar?",
                 "answer": "A cadeia alimentar é a sequência de organismos vivos interconectados, nos quais cada um é um alimento para o próximo. Essa sequência começa com produtores, como plantas, e termina com predadores de topo, como leões."
             }
-        ]
+        ],
+        "times": [[16,34], [12,53]],
+        "notificationActive": true,
+        "vibrate": true,
+        "alarm": true
     },
     
     {
@@ -116,6 +124,10 @@
                 "question": "O que é o aquecimento global?",
                 "answer": "O aquecimento global é o aumento gradual da temperatura média da Terra, causado principalmente pelo aumento da concentração de gases do efeito estufa na atmosfera."
             }
-        ]
+        ],
+        "times": [[10,34], [19,53]],
+        "notificationActive": true,
+        "vibrate": true,
+        "alarm": true
     }
 ]

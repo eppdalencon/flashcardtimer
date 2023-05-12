@@ -14,6 +14,10 @@ struct Deck: Hashable, Codable {
     var complete: Bool
     var numberPerTest: Int
     var flashcards: [Flashcard]
+    var times: [[Int]]
+    var notificationActive: Bool
+    var alarm: Bool
+    var vibrate: Bool
 }
 
 struct Flashcard: Hashable, Codable {
