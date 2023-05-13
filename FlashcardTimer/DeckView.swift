@@ -8,9 +8,12 @@ import SwiftUI
 
 struct DeckView: View {
     var name: String
+    @State private var flashcard: Flashcard? = nil
 
-    @State private var decksFromUserDefaults: [Deck] = []
+    @State private var flashcardsFromUserDefaults: [Flashcard] = []
     @State private var presentFlashcardView: Bool = false
+    @State private var presentCreateFlashcardView: Bool = false
+    @State private var editFlashcard: Bool = false
     @State private var showingAlert: Bool = false
 
     @Environment(\.dismiss) var dismiss
@@ -19,40 +22,60 @@ struct DeckView: View {
 
     var body: some View {
         NavigationStack {
-            var deck = UserDefaultsService.getDeckByName(deckName: name)!
-
+            let deck = UserDefaultsService.getDeckByName(deckName: name)
+            
             ScrollView {
                 LazyVGrid(columns: gridItemLayout, spacing: 24) {
-                    ForEach(deck.flashcards.indices, id: \.self) { index in
-                        ZStack(alignment: .bottomTrailing) {
+                    Button {
+                        presentCreateFlashcardView.toggle()
+                        editFlashcard = false
+                    } label: {
+                        ZStack {
                             Rectangle()
                                 .frame(width: 98, height: 141)
                                 .cornerRadius(4)
                                 .foregroundColor(Color("DeckColor"))
-
-                            Text("\(deck.flashcards[index].flashcardId)")
-                                .offset(x: -5, y: -5)
+                                .shadow(color: .gray, radius: 4, x: 7, y: 5)
+                            
+                            VStack(spacing: 16) {
+                                Image(systemName: "plus")
+                                
+                                Text("Add card")
+                            }
                         }
                     }
-                    ZStack {
-                        Rectangle()
-                            .frame(width: 98, height: 141)
-                            .foregroundColor(.white)
-
-                        NavigationLink(destination: CreateFlashcardView(deck: deck)) {
-                            Image(systemName: "plus.circle.fill")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 60)
+                    
+                    ForEach(flashcardsFromUserDefaults, id: \.self) { flashcard in
+                        Button {
+                            presentCreateFlashcardView.toggle()
+                            editFlashcard = true
+                            self.flashcard = flashcard
+                        } label: {
+                            ZStack(alignment: .bottomTrailing) {
+                                Rectangle()
+                                    .frame(width: 98, height: 141)
+                                    .cornerRadius(4)
+                                    .foregroundColor(Color("DeckColor"))
+                                    .shadow(color: .gray, radius: 4, x: 7, y: 5)
+                                    .overlay(
+                                        Text(flashcard.question)
+                                            .frame(width: 90)
+                                            .font(.caption)
+                                            .lineLimit(2)
+                                    )
+                                
+                                Text("\(flashcard.flashcardId)")
+                                    .offset(x: -5, y: -5)
+                            }
                         }
                     }
-
                 }
             }
+            .padding(.top)
 
             VStack {
                 Button {
-                    if deck.flashcards.count < deck.numberPerTest {
+                    if flashcardsFromUserDefaults.count < deck!.numberPerTest {
                         showingAlert.toggle()
                     } else {
                         presentFlashcardView.toggle()
@@ -72,15 +95,28 @@ struct DeckView: View {
                     Alert(title: Text("You don't have enough cards to play"), dismissButton: .default(Text("Try again")))
                 }
             }
-            .navigationTitle(deck.deckName)
+            .navigationTitle(name)
             .navigationBarTitleDisplayMode(.inline)
             .buttonStyle(PlainButtonStyle())
             .onAppear {
-                decksFromUserDefaults = UserDefaultsService.getDecks()
+                flashcardsFromUserDefaults = UserDefaultsService.getFlashcards(deckId: deck!.deckId)
+                editFlashcard = false
+            }
+            .onChange(of: presentCreateFlashcardView) { newValue in
+                flashcardsFromUserDefaults = UserDefaultsService.getFlashcards(deckId: deck!.deckId)
             }
             .navigationDestination(isPresented: $presentFlashcardView) {
-                FlashcardView(flashcards: Array(deck.flashcards.shuffled().prefix(deck.numberPerTest)), deck: deck)
+                FlashcardView(flashcards: Array(deck!.flashcards.shuffled().prefix(deck!.numberPerTest)), deck: deck!)
             }
+            .fullScreenCover(isPresented: $presentCreateFlashcardView) {
+                if editFlashcard {
+                    CreateFlashcardView(deck: deck!, isEditing: true, flashcard: flashcard)
+                } else {
+                    CreateFlashcardView(deck: deck!)
+                }
+            }
+            .toolbarBackground(.visible, for: .navigationBar)
+            .toolbarBackground(Color("DeckColor"), for: .navigationBar)
         }
     }
 }

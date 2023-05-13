@@ -9,7 +9,7 @@ import SwiftUI
 struct FlashcardView: View {
     var flashcards: [Flashcard]
     var deck: Deck
-
+    
     @State var currentIndex = 0
 
     @State private var flipped = false
@@ -29,6 +29,7 @@ struct FlashcardView: View {
                                 .frame(width: 342, height: 430)
                                 .cornerRadius(8)
                                 .foregroundColor(changeColor ? Color("FlashcardQuestionColor") : Color("FlashcardAnswerColor"))
+                                .shadow(color: .gray, radius: 4, x: 10, y: 13)
 
                             if !flipped {
                                 Text(flashcards[index].question)
@@ -42,33 +43,34 @@ struct FlashcardView: View {
                                     .rotation3DEffect(.degrees(flipped ? 180 : 0), axis: (x: 0, y: 1, z: 0))
                             }
                         }
-                        .rotation3DEffect(.degrees(flipped ? -180 : 0), axis: (x: 0, y: 1, z: 0))
-
-
-                        Button {
+                        .onTapGesture {
                             withAnimation(.easeInOut(duration: 0.5)) {
                                 flipped.toggle()
                             }
                             changeColor.toggle()
                             reveal.toggle()
-                        } label: {
-                            Text(reveal ? "Hide" : "Reveal")
-                                .padding()
-                                .font(.title2)
-                                .foregroundColor(.black)
-                                .frame(maxWidth: 340)
-                                .background(
-                                    RoundedRectangle(
-                                        cornerRadius: 15
-                                    )
-                                    .fill(Color("FlashcardQuestionColor"))
-                                )
                         }
+                        .rotation3DEffect(.degrees(flipped ? -180 : 0), axis: (x: 0, y: 1, z: 0))
 
-                        Spacer()
+                        Text("Tap card to flip")
+                            .padding(.top)
+                            .foregroundColor(.gray)
 
                         if reveal {
                             HStack(spacing: 52) {
+                                Button {
+                                    currentIndex = updatedIndex(currentIndex)
+                                    flipped.toggle()
+                                    reveal.toggle()
+                                    changeColor.toggle()
+                                } label: {
+                                    Image(systemName: "xmark.circle.fill")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 150, height: 115)
+                                        .foregroundColor(.red)
+                                }
+                                
                                 Button {
                                     currentIndex = updatedIndex(currentIndex)
                                     flipped.toggle()
@@ -78,30 +80,25 @@ struct FlashcardView: View {
                                 } label: {
                                     Image(systemName: "checkmark.circle.fill")
                                         .resizable()
+                                        .scaledToFit()
                                         .frame(width: 150, height: 115)
                                         .foregroundColor(.green)
                                 }
-
-                                Button {
-                                    currentIndex = updatedIndex(currentIndex)
-                                    flipped.toggle()
-                                    reveal.toggle()
-                                    changeColor.toggle()
-                                } label: {
-                                    Image(systemName: "xmark.circle.fill")
-                                        .resizable()
-                                        .frame(width: 150, height: 115)
-                                        .foregroundColor(.red)
-                                }
                             }
+                            .padding(.top)
                         }
+                        
+                        Spacer()
                     }
                 }
             }
+            .padding(.top)
             .tabViewStyle(.page(indexDisplayMode: .never))
 
             .navigationTitle("Flashcard \(flashcards[currentIndex].flashcardId)")
             .navigationBarTitleDisplayMode(.inline)
+            .toolbarBackground(.visible, for: .navigationBar)
+            .toolbarBackground(Color("DeckColor"), for: .navigationBar)
         }
     }
 

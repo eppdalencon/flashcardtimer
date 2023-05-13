@@ -132,7 +132,7 @@ class UserDefaultsService {
     }
     
     // MARK: - Delete Flashcard
-    static func deleteFlashcard( flashcardId: Int, deckId: Int) {
+    static func deleteFlashcard(flashcardId: Int, deckId: Int) {
         var currentDecks = self.getDecks()
         
         guard var deckWithId = currentDecks.first(where: { $0.deckId == deckId }) else {
@@ -205,6 +205,43 @@ class UserDefaultsService {
         }
         
         deckWithId.deckName = value
+        
+        currentDecks[deckIndex] = deckWithId
+        
+        if let data = try? JSONEncoder().encode(currentDecks) {
+            UserDefaults.standard.set(data, forKey: "Decks")
+        }
+    }
+    
+    // MARK: - Modify Flashcard Question and Answer
+    static func modifyFlashcardQA(deckId: Int, flashcardId: Int, question: String, answer: String) {
+
+        var currentFlashcards = getFlashcards(deckId: deckId)
+        
+        guard let flashcardIndex = currentFlashcards.firstIndex(where: { $0.flashcardId == flashcardId }) else {
+            return
+        }
+        
+        guard var flashcard = getFlashcardById(flashcardId: flashcardId, deckId: deckId) else {
+            return
+        }
+        
+        flashcard.question = question
+        flashcard.answer = answer
+        
+        currentFlashcards[flashcardIndex] = flashcard
+        
+        var currentDecks = getDecks()
+        
+        guard let deckIndex = currentDecks.firstIndex(where: { $0.deckId == deckId }) else {
+            return
+        }
+        
+        guard var deckWithId  = currentDecks.first(where: { $0.deckId == deckId }) else {
+            return
+        }
+        
+        deckWithId.flashcards = currentFlashcards
         
         currentDecks[deckIndex] = deckWithId
         

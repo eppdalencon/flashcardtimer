@@ -13,6 +13,20 @@ enum ActiveAlert {
 
 struct CreateFlashcardView: View {
     var deck: Deck
+    var isEditing: Bool
+    var flashcard: Flashcard?
+    
+    init(deck: Deck) {
+        self.deck = deck
+        isEditing = false
+        flashcard = nil
+    }
+    
+    init(deck: Deck, isEditing: Bool, flashcard: Flashcard?) {
+        self.deck = deck
+        self.isEditing = isEditing
+        self.flashcard = flashcard
+    }
 
     @State private var decksFromUserDefaults: [Deck] = UserDefaultsService.getDecks()
     
@@ -33,9 +47,102 @@ struct CreateFlashcardView: View {
         VStack {
             ZStack {
                 Rectangle()
+                    .ignoresSafeArea()
+                    .foregroundColor(Color("DeckColor"))
+                    .frame(height: 40)
+                
+                HStack(spacing: 60) {
+                    Button {
+                        showingAlert.toggle()
+                    } label: {
+                        Text("Cancel")
+                            .foregroundColor(.red)
+                    }
+                    .alert(isPresented: $showingAlert) {
+                        Alert(title: Text("Are you sure you want to go back?"), message: nil, primaryButton: .destructive( Text("Yes"), action: {
+                                dismiss()
+                            }),
+                            secondaryButton: .cancel(Text("No"))
+                        )
+                    }
+                    
+                    Text(isEditing ? "Flashcard \(flashcard!.flashcardId)" : "Create a flashcard")
+                        .padding(.trailing)
+                        .bold()
+                    
+                    Button {
+                        let q = checkForEmptyText(question)
+                        let a = checkForEmptyText(answer)
+                        
+                        if !q && !a {
+                            if isEditing {
+                                UserDefaultsService.modifyFlashcardQA(deckId: deck.deckId, flashcardId: flashcard!.flashcardId, question: question, answer: answer)
+                                
+                                decksFromUserDefaults = UserDefaultsService.getDecks()
+                                
+                                dismiss()
+                                showingTextAlert.toggle()
+                            
+                            } else {
+                                UserDefaultsService.addFlashcard(question: question, answer: answer, deckId: deck.deckId)
+                                
+                                decksFromUserDefaults = UserDefaultsService.getDecks()
+                                
+                                dismiss()
+                                showingTextAlert.toggle()
+                            }
+                        } else if q && !a {
+                            activeAlert = .questionAlert
+                        } else if !q && a {
+                            activeAlert = .answerAlert
+                        } else {
+                            activeAlert = .bothAlert
+                        }
+                        
+                        showingTextAlert.toggle()
+                    } label: {
+                        Text("Save")
+                            .foregroundColor(.blue)
+                    }
+                    .alert(isPresented: $showingTextAlert) {
+                        switch activeAlert {
+                        case .questionAlert:
+                            return Alert(title: Text("You haven't typed in your question!"), dismissButton: .default(Text("Try again")))
+                        case .answerAlert:
+                            return Alert(title: Text("You haven't typed in your answer!"), dismissButton: .default(Text("Try again")))
+                        case .bothAlert:
+                            return Alert(title: Text("You haven't typed anything in!"), dismissButton: .default(Text("Try again")))
+                        }
+                    }
+                }
+                .padding(.bottom)
+            }
+            
+            ZStack {
+                Rectangle()
                     .frame(width: 342, height: 430)
                     .cornerRadius(8)
                     .foregroundColor(changeColor ? Color("FlashcardQuestionColor") : Color("FlashcardAnswerColor"))
+                    .shadow(color: .gray, radius: 4, x: 10, y: 13)
+                    .onTapGesture {
+                        withAnimation(.easeInOut(duration: 0.5)) {
+                            flipped.toggle()
+                        }
+                        changeColor.toggle()
+                        reveal.toggle()
+                    }
+                    .overlay(
+                        Text(reveal ? "Answer" : "Question")
+                            .offset(y: -190)
+                            .rotation3DEffect(.degrees(reveal ? 180 : 0), axis: (x: 0, y: 1, z: 0))
+                    )
+                    
+                    
+                        
+                    
+                
+                
+                
                 if !flipped {
                     TextField("Question", text: $question, axis: .vertical)
                         .onChange(of: question) { newvalue in
@@ -61,92 +168,15 @@ struct CreateFlashcardView: View {
                         .focused($textIsFocused)
                         .rotation3DEffect(.degrees(flipped ? 180 : 0), axis: (x: 0, y: 1, z: 0))
                 }
-                
             }
             .rotation3DEffect(.degrees(flipped ? -180 : 0), axis: (x: 0, y: 1, z: 0))
             
-            Button {
-                withAnimation(.easeInOut(duration: 0.5)) {
-                    flipped.toggle()
-                }
-                changeColor.toggle()
-                reveal.toggle()
-            } label: {
-                Text(reveal ? "Go to question" : "Go to answer")
-                    .padding()
-                    .font(.title2)
-                    .foregroundColor(.black)
-                    .frame(maxWidth: 340)
-                    .background(
-                        RoundedRectangle(
-                            cornerRadius: 15
-                        )
-                        .fill(Color("FlashcardQuestionColor"))
-                    )
-            }
-            .padding(.top)
+            Text("Tap card to flip")
+                .padding(.top)
+                .foregroundColor(.gray)
             
-            Button("Save") {
-                let q = checkForEmptyText(question)
-                let a = checkForEmptyText(answer)
-                
-                if !q && !a {
-                    UserDefaultsService.addFlashcard(question: question, answer: answer, deckId: deck.deckId)
-                    decksFromUserDefaults = UserDefaultsService.getDecks()
-                    
-                    dismiss()
-                    showingTextAlert.toggle()
-                } else if q && !a {
-                    activeAlert = .questionAlert
-                } else if !q && a {
-                    activeAlert = .answerAlert
-                } else {
-                    activeAlert = .bothAlert
-                }
-                
-                showingTextAlert.toggle()
-            }
-            .alert(isPresented: $showingTextAlert) {
-                switch activeAlert {
-                case .questionAlert:
-                    return Alert(title: Text("You haven't typed in your question!"), dismissButton: .default(Text("Try again")))
-                case .answerAlert:
-                    return Alert(title: Text("You haven't typed in your answer!"), dismissButton: .default(Text("Try again")))
-                case .bothAlert:
-                    return Alert(title: Text("You haven't typed anything in!"), dismissButton: .default(Text("Try again")))
-                }
-            }
-            
-            
-            .padding()
-            .font(.title2)
-            .foregroundColor(.black)
-            .frame(maxWidth: 340)
-            .background(
-                RoundedRectangle(
-                    cornerRadius: 15
-                )
-                .fill(Color("FlashcardQuestionColor"))
-            )
+            Spacer()
         }
-        .navigationTitle("Create a flashcard")
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationBarBackButtonHidden(true)
-        .navigationBarItems(leading:
-            Button {
-                showingAlert.toggle()
-            } label: {
-                Image(systemName: "chevron.left")
-                Text(deck.deckName)
-            }
-            .alert(isPresented: $showingAlert) {
-                Alert(title: Text("Are you sure you want to go back?"), message: nil, primaryButton: .destructive( Text("Yes"), action: {
-                        dismiss()
-                    }),
-                    secondaryButton: .cancel(Text("No"))
-                )
-            }
-        )
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {
                 Spacer()

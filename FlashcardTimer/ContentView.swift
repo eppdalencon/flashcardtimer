@@ -21,7 +21,9 @@ struct ContentView: View {
                         HStack {
                             if showingEditButtons {
                                 Button {
-                                    UserDefaultsService.deleteDeck(deck.deckId)
+                                    if decksFromUserDefaults.count > 3 {
+                                        UserDefaultsService.deleteDeck(deck.deckId)
+                                    }
                                     clickedDeleteButton.toggle()
                                 } label: {
                                     Image(systemName: "minus.circle.fill")
@@ -35,6 +37,8 @@ struct ContentView: View {
                             NavigationLink(destination: DeckView(name: deck.deckName)) {
                                 DeckListView(deck: deck)
                             }
+                            .padding(.top)
+                            
 
                             if showingEditButtons {
                                 NavigationLink(destination: CreateDeckView(isEditing: true, deck: deck)) {
@@ -45,6 +49,7 @@ struct ContentView: View {
                                 }
                             }
                         }
+                        .padding(.trailing)
                     }
                 }
             }
@@ -59,6 +64,9 @@ struct ContentView: View {
             .navigationBarTitleDisplayMode(.inline)
             .buttonStyle(PlainButtonStyle())
             .onAppear {
+//                for deck in UserDefaultsService.getDecks() {
+//                    UserDefaultsService.deleteDeck(deck.deckId)
+//                }
                 decksFromUserDefaults = UserDefaultsService.getDecks()
                 presentCreateDeckView = false
                 showingEditButtons = false
@@ -77,6 +85,8 @@ struct ContentView: View {
                         .foregroundColor(.black)
                 }
             )
+            .toolbarBackground(.visible, for: .navigationBar)
+            .toolbarBackground(Color("DeckColor"), for: .navigationBar)
         }
     }
 }

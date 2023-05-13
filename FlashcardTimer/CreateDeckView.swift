@@ -6,14 +6,20 @@
 //
 import SwiftUI
 
+enum ActiveAlertDeck {
+    case emptyText, sameNameText
+}
+
 struct CreateDeckView: View {
     @FocusState private var textIsFocused: Bool
     @State private var name: String = ""
     @State private var numberPerTest: Int = 0
+    @State private var deckId: Int = 0
 
     @State private var newDeck: Deck? = nil
     @State private var showingAlert = false
-    @State private var showingfTextAlert = false
+    @State private var showingTextAlert = false
+    @State private var activeAlert: ActiveAlertDeck = .emptyText
     @State private var presentDeckView = false
 
     @Environment(\.dismiss) var dismiss
@@ -83,27 +89,50 @@ struct CreateDeckView: View {
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarBackButtonHidden(true)
             .navigationBarItems(trailing:
-                                    Button(isEditing ? "Done" : "Add cards") {
-                    if !checkForEmptyText(name) {
+                Button(isEditing ? "Done" : "Add cards") {
+                    let empty = checkForEmptyText(name)
+                    let sameName = checkForSameName(name)
+                        
+                    if !empty && !sameName {
+                            if !isEditing {
+                                presentDeckView.toggle()
+                                UserDefaultsService.createDeckByName(name: name, number: numberPerTest + 1)
+                                newDeck = UserDefaultsService.getDeckByName(deckName: name)
+                            } else {
+                                UserDefaultsService.modifyDeckName(deckId: deck.deckId, value: name)
+                                UserDefaultsService.modifyDeckNumberPerTest(deckId: deck.deckId, value: numberPerTest + 1)
+                                dismiss()
+                            }
+                        showingTextAlert.toggle()
+                        
+                    } else if empty && !sameName {
+                        activeAlert = .emptyText
+                    } else if !empty && sameName {
                         if !isEditing {
-                            presentDeckView.toggle()
-                            UserDefaultsService.createDeckByName(name: name, number: numberPerTest + 1)
-                            newDeck = UserDefaultsService.getDeckByName(deckName: name)
+                            activeAlert = .sameNameText
                         } else {
-                            UserDefaultsService.modifyDeckName(deckId: deck.deckId, value: name)
-                            UserDefaultsService.modifyDeckNumberPerTest(deckId: deck.deckId, value: numberPerTest + 1)
-                            dismiss()
+                            if checkForSameId(deck.deckId, name) {
+                                UserDefaultsService.modifyDeckName(deckId: deck.deckId, value: name)
+                                UserDefaultsService.modifyDeckNumberPerTest(deckId: deck.deckId, value: numberPerTest + 1)
+                                dismiss()
+                            } else {
+                                activeAlert = .sameNameText
+                            }
                         }
-
-                    } else {
-                        showingfTextAlert.toggle()
                     }
-
+                    
+                    showingTextAlert.toggle()
                 }
                 .padding(.trailing)
-                .alert(isPresented: $showingfTextAlert) {
-                    Alert(title: Text("You haven't typed anything in!"), dismissButton: .default(Text("Try again")))
+                .alert(isPresented: $showingTextAlert) {
+                    switch activeAlert {
+                    case .emptyText:
+                        return Alert(title: Text("You haven't typed anything in!"), dismissButton: .default(Text("Try again")))
+                    case .sameNameText:
+                        return Alert(title: Text("This deck name already exists"), dismissButton: .default(Text("Try again")))
+                    }
                 }
+                
             )
             .navigationBarItems(leading:
                 Button {
