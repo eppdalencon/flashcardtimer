@@ -49,7 +49,7 @@ struct CreateDeckView: View {
                         }
                         .disableAutocorrection(true)
                         .focused($textIsFocused)
-
+                    
                     if !isEditing {
                         Picker("Number per test", selection: $numberPerTest) {
                             ForEach(1 ..< 11) {
@@ -60,6 +60,7 @@ struct CreateDeckView: View {
                                 }
                             }
                         }
+                        
                     } else {
                         if deck.flashcards.count == 0 {
                             Picker("Number per test", selection: $numberPerTest) {

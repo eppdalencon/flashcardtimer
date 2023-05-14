@@ -105,7 +105,7 @@ struct DeckView: View {
             .onChange(of: presentCreateFlashcardView) { newValue in
                 flashcardsFromUserDefaults = UserDefaultsService.getFlashcards(deckId: deck!.deckId)
             }
-            .navigationDestination(isPresented: $presentFlashcardView) {
+            .fullScreenCover(isPresented: $presentFlashcardView) {
                 FlashcardView(flashcards: Array(deck!.flashcards.shuffled().prefix(deck!.numberPerTest)), deck: deck!)
             }
             .fullScreenCover(isPresented: $presentCreateFlashcardView) {

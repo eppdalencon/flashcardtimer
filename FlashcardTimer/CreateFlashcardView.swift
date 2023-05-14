@@ -40,82 +40,85 @@ struct CreateFlashcardView: View {
     @State private var showingAlert = false
     @State private var showingTextAlert = false
     @State private var activeAlert: ActiveAlert = .questionAlert
+    @State private var hideTop = false
     
     @Environment(\.dismiss) var dismiss
 
     var body: some View {
         VStack {
-            ZStack {
-                Rectangle()
-                    .ignoresSafeArea()
-                    .foregroundColor(Color("DeckColor"))
-                    .frame(height: 40)
-                
-                HStack(spacing: 60) {
-                    Button {
-                        showingAlert.toggle()
-                    } label: {
-                        Text("Cancel")
-                            .foregroundColor(.red)
-                    }
-                    .alert(isPresented: $showingAlert) {
-                        Alert(title: Text("Are you sure you want to go back?"), message: nil, primaryButton: .destructive( Text("Yes"), action: {
-                                dismiss()
-                            }),
-                            secondaryButton: .cancel(Text("No"))
-                        )
-                    }
+            if !hideTop {
+                ZStack {
+                    Rectangle()
+                        .ignoresSafeArea()
+                        .foregroundColor(Color("DeckColor"))
+                        .frame(height: 40)
                     
-                    Text(isEditing ? "Flashcard \(flashcard!.flashcardId)" : "Create a flashcard")
-                        .padding(.trailing)
-                        .bold()
-                    
-                    Button {
-                        let q = checkForEmptyText(question)
-                        let a = checkForEmptyText(answer)
+                    HStack(spacing: 60) {
+                        Button {
+                            showingAlert.toggle()
+                        } label: {
+                            Text("Cancel")
+                                .foregroundColor(.red)
+                        }
+                        .alert(isPresented: $showingAlert) {
+                            Alert(title: Text("Are you sure you want to go back?"), message: nil, primaryButton: .destructive( Text("Yes"), action: {
+                                    dismiss()
+                                }),
+                                secondaryButton: .cancel(Text("No"))
+                            )
+                        }
                         
-                        if !q && !a {
-                            if isEditing {
-                                UserDefaultsService.modifyFlashcardQA(deckId: deck.deckId, flashcardId: flashcard!.flashcardId, question: question, answer: answer)
-                                
-                                decksFromUserDefaults = UserDefaultsService.getDecks()
-                                
-                                dismiss()
-                                showingTextAlert.toggle()
+                        Text(isEditing ? "Flashcard \(flashcard!.flashcardId)" : "Create a flashcard")
+                            .padding(.trailing)
+                            .bold()
+                        
+                        Button {
+                            let q = checkForEmptyText(question)
+                            let a = checkForEmptyText(answer)
                             
+                            if !q && !a {
+                                if isEditing {
+                                    UserDefaultsService.modifyFlashcardQA(deckId: deck.deckId, flashcardId: flashcard!.flashcardId, question: question, answer: answer)
+                                    
+                                    decksFromUserDefaults = UserDefaultsService.getDecks()
+                                    
+                                    dismiss()
+                                    showingTextAlert.toggle()
+                                
+                                } else {
+                                    UserDefaultsService.addFlashcard(question: question, answer: answer, deckId: deck.deckId)
+                                    
+                                    decksFromUserDefaults = UserDefaultsService.getDecks()
+                                    
+                                    dismiss()
+                                    showingTextAlert.toggle()
+                                }
+                            } else if q && !a {
+                                activeAlert = .questionAlert
+                            } else if !q && a {
+                                activeAlert = .answerAlert
                             } else {
-                                UserDefaultsService.addFlashcard(question: question, answer: answer, deckId: deck.deckId)
-                                
-                                decksFromUserDefaults = UserDefaultsService.getDecks()
-                                
-                                dismiss()
-                                showingTextAlert.toggle()
+                                activeAlert = .bothAlert
                             }
-                        } else if q && !a {
-                            activeAlert = .questionAlert
-                        } else if !q && a {
-                            activeAlert = .answerAlert
-                        } else {
-                            activeAlert = .bothAlert
+                            
+                            showingTextAlert.toggle()
+                        } label: {
+                            Text("Save")
+                                .foregroundColor(.blue)
                         }
-                        
-                        showingTextAlert.toggle()
-                    } label: {
-                        Text("Save")
-                            .foregroundColor(.blue)
-                    }
-                    .alert(isPresented: $showingTextAlert) {
-                        switch activeAlert {
-                        case .questionAlert:
-                            return Alert(title: Text("You haven't typed in your question!"), dismissButton: .default(Text("Try again")))
-                        case .answerAlert:
-                            return Alert(title: Text("You haven't typed in your answer!"), dismissButton: .default(Text("Try again")))
-                        case .bothAlert:
-                            return Alert(title: Text("You haven't typed anything in!"), dismissButton: .default(Text("Try again")))
+                        .alert(isPresented: $showingTextAlert) {
+                            switch activeAlert {
+                            case .questionAlert:
+                                return Alert(title: Text("You haven't typed in your question!"), dismissButton: .default(Text("Try again")))
+                            case .answerAlert:
+                                return Alert(title: Text("You haven't typed in your answer!"), dismissButton: .default(Text("Try again")))
+                            case .bothAlert:
+                                return Alert(title: Text("You haven't typed anything in!"), dismissButton: .default(Text("Try again")))
+                            }
                         }
                     }
+                    .padding(.bottom)
                 }
-                .padding(.bottom)
             }
             
             ZStack {
@@ -125,11 +128,16 @@ struct CreateFlashcardView: View {
                     .foregroundColor(changeColor ? Color("FlashcardQuestionColor") : Color("FlashcardAnswerColor"))
                     .shadow(color: .gray, radius: 4, x: 10, y: 13)
                     .onTapGesture {
-                        withAnimation(.easeInOut(duration: 0.5)) {
-                            flipped.toggle()
+                        if !hideTop {
+                            withAnimation(.easeInOut(duration: 0.5)) {
+                                flipped.toggle()
+                            }
+                            changeColor.toggle()
+                            reveal.toggle()
+                        } else {
+                            textIsFocused = false
+                            hideTop = false
                         }
-                        changeColor.toggle()
-                        reveal.toggle()
                     }
                     .overlay(
                         Text(reveal ? "Answer" : "Question")
@@ -137,14 +145,11 @@ struct CreateFlashcardView: View {
                             .rotation3DEffect(.degrees(reveal ? 180 : 0), axis: (x: 0, y: 1, z: 0))
                     )
                     
-                    
-                        
-                    
-                
-                
-                
                 if !flipped {
                     TextField("Question", text: $question, axis: .vertical)
+                        .onTapGesture {
+                            hideTop = true
+                        }
                         .onChange(of: question) { newvalue in
                             if question.count > 100 {
                                 question = String(question.prefix(100))
@@ -157,6 +162,9 @@ struct CreateFlashcardView: View {
                         .rotation3DEffect(.degrees(flipped ? 180 : 0), axis: (x: 0, y: 1, z: 0))
                 } else {
                     TextField("Answer", text: $answer, axis: .vertical)
+                        .onTapGesture {
+                            hideTop = true
+                        }
                         .onChange(of: answer) { newvalue in
                             if answer.count > 100 {
                                 answer = String(answer.prefix(100))
@@ -177,14 +185,9 @@ struct CreateFlashcardView: View {
             
             Spacer()
         }
-        .toolbar {
-            ToolbarItemGroup(placement: .keyboard) {
-                Spacer()
-                
-                Button("Done") {
-                    textIsFocused = false
-                }
-            }
+        .onTapGesture {
+            textIsFocused = false
+            hideTop = false
         }
     }
 }

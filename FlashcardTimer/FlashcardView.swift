@@ -16,6 +16,7 @@ struct FlashcardView: View {
     @State private var changeColor = true
     @State private var reveal = false
     @State private var showFlashmark = false
+    @State private var showingAlert = false
 
     @Environment(\.dismiss) var dismiss
 
@@ -97,6 +98,21 @@ struct FlashcardView: View {
 
             .navigationTitle("Flashcard \(flashcards[currentIndex].flashcardId)")
             .navigationBarTitleDisplayMode(.inline)
+            .navigationBarItems(leading:
+                Button {
+                    showingAlert.toggle()
+                } label: {
+                    Image(systemName: "chevron.left")
+                    Text("Back")
+                }
+                .alert(isPresented: $showingAlert) {
+                    Alert(title: Text("Are you sure you want to go back?"), message: nil, primaryButton: .destructive( Text("Yes"), action: {
+                            dismiss()
+                        }),
+                        secondaryButton: .cancel(Text("No"))
+                    )
+                }
+            )
             .toolbarBackground(.visible, for: .navigationBar)
             .toolbarBackground(Color("DeckColor"), for: .navigationBar)
         }
