@@ -13,6 +13,7 @@ struct DeckView: View {
     @State private var flashcardsFromUserDefaults: [Flashcard] = []
     @State private var presentFlashcardView: Bool = false
     @State private var presentCreateFlashcardView: Bool = false
+    @State private var presentDeckConfigView: Bool = false
     @State private var editFlashcard: Bool = false
     @State private var showingAlert: Bool = false
 
@@ -97,6 +98,13 @@ struct DeckView: View {
             }
             .navigationTitle(name)
             .navigationBarTitleDisplayMode(.inline)
+            .navigationBarItems(trailing:
+                Button {
+                    presentDeckConfigView.toggle()
+                } label: {
+                    Image(systemName: "bell.fill")
+                }
+            )
             .buttonStyle(PlainButtonStyle())
             .onAppear {
                 flashcardsFromUserDefaults = UserDefaultsService.getFlashcards(deckId: deck!.deckId)
@@ -114,6 +122,9 @@ struct DeckView: View {
                 } else {
                     CreateFlashcardView(deck: deck!)
                 }
+            }
+            .fullScreenCover(isPresented: $presentDeckConfigView) {
+                DeckConfigView(deck: deck!)
             }
             .toolbarBackground(.visible, for: .navigationBar)
             .toolbarBackground(Color("DeckColor"), for: .navigationBar)

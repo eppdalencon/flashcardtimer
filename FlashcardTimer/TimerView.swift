@@ -10,10 +10,14 @@ import SwiftUI
 struct TimerView: View {
     @State private var alarme = Date()
     @State private var show = false
+    @State private var showingAlert = false
     var hourRecieved: Int
     var minuteRecieved: Int
     var index: Int
     var isEditing: Bool
+    
+    @Environment(\.dismiss) var dismiss
+    @Binding var alarmsArray: [[Int]]
     
     init(alarmsArray: Binding<[[Int]]>) {
         self._alarmsArray = alarmsArray
@@ -31,20 +35,35 @@ struct TimerView: View {
         isEditing = true
     }
     
-    @Binding var alarmsArray: [[Int]]
-    
-    @Environment(\.dismiss) var dismiss
-    
     var numero = 15
     
     var body: some View {
-        
         VStack {
-            DatePicker("", selection: $alarme, displayedComponents: .hourAndMinute)
-                .datePickerStyle(.wheel)
-                .labelsHidden()
+            VStack(alignment: .leading) {
+                Button {
+                    showingAlert = true
+                } label: {
+                    Text("Cancel")
+                        .foregroundColor(.red)
+                }
+                .alert(isPresented: $showingAlert) {
+                    Alert(title: Text("Are you sure you want to go back?"), message: nil, primaryButton: .destructive( Text("Yes"), action: {
+                            dismiss()
+                        }),
+                        secondaryButton: .cancel(Text("No"))
+                    )
+                }
+                
+                Spacer()
+               
+                DatePicker("", selection: $alarme, displayedComponents: .hourAndMinute)
+                    .datePickerStyle(.wheel)
+                    .labelsHidden()
+                
+                Spacer()
+            }
             
-            Button("Definir") {
+            Button {
                 let calendar = Calendar.current
                 let hour = calendar.component(.hour, from: alarme)
                 let minute = calendar.component(.minute, from: alarme)
@@ -58,11 +77,19 @@ struct TimerView: View {
                 }
                 
                 dismiss()
+            } label: {
+                ZStack {
+                    Rectangle()
+                        .frame(width: 80, height: 40)
+                        .foregroundColor(.blue)
+                        .cornerRadius(10)
+                    
+                    Text("Set")
+                        .foregroundColor(.white)
+                }
             }
-            .padding()
-            .background(Color.blue)
-            .foregroundColor(.white)
-            .cornerRadius(10)
+            .offset(y: -230)
+
         }
         .onAppear {
             var components = DateComponents()
@@ -70,6 +97,10 @@ struct TimerView: View {
             components.minute = minuteRecieved
             
             alarme = Calendar.current.date(from: components)!
+        }
+        
+        VStack {
+            
         }
     }
 }

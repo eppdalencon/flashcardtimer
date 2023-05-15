@@ -11,11 +11,15 @@ struct DeckConfigView: View {
     var deck: Deck
     @State private var showNotification = false
     @State private var alarme = Date()
+    @State private var presentTimerView = false
+    @State private var showingAlert = false
 
     @State var alarmsArray: [[Int]] = []
     
     @State var vibrar: Notification = Notification(tipo: "Vibrar", isOn: true)
     @State var tocar: Notification = Notification(tipo: "Tocar", isOn: true)
+    
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         NavigationStack {
@@ -59,7 +63,9 @@ struct DeckConfigView: View {
                             
                             Spacer()
                             
-                            NavigationLink(destination: TimerView(alarmsArray: $alarmsArray)) {
+                            Button {
+                                presentTimerView.toggle()
+                            } label: {
                                 Image(systemName: "plus")
                                     .resizable()
                                     .scaledToFit()
@@ -101,9 +107,33 @@ struct DeckConfigView: View {
                 }
                 .padding(.trailing)
             }
-            .padding(.leading)
-            .navigationTitle("Notifications Center")
-            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarItems(leading:
+                Button {
+                showingAlert.toggle()
+                } label: {
+                    Text("Cancel")
+                        .foregroundColor(.red)
+                }
+                .alert(isPresented: $showingAlert) {
+                    Alert(title: Text("Are you sure you want to go back?"), message: nil, primaryButton: .destructive( Text("Yes"), action: {
+                            dismiss()
+                        }),
+                        secondaryButton: .cancel(Text("No"))
+                    )
+                }
+            )
+            .navigationBarItems(trailing:
+                Button {
+                    dismiss()
+                } label : {
+                    Text("Save")
+                        .foregroundColor(.blue)
+                }
+            )
+            .padding([.top, .leading])
+            .fullScreenCover(isPresented: $presentTimerView) {
+                TimerView(alarmsArray: $alarmsArray)
+            }
             .onChange(of: vibrar.isOn) { newValue in
                 showNotification = newValue || tocar.isOn
             }

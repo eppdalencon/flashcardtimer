@@ -86,6 +86,7 @@ struct CreateDeckView: View {
                     }
                 }
             }
+            
             .navigationTitle("Create a deck")
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarBackButtonHidden(true)
