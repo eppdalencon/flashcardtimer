@@ -4,11 +4,11 @@
 //
 //  Created by Arthur Sobrosa on 09/05/23.
 //
-
 import SwiftUI
 
 enum PossibleErrors: Error {
     case emptyText
+    case sameName
 }
 
 func checkForEmptyTextError(_ text: String) throws {
@@ -18,10 +18,47 @@ func checkForEmptyTextError(_ text: String) throws {
 }
 
 func checkForEmptyText(_ text: String) -> Bool {
+    let text1 = text.trimmingCharacters(in: .whitespacesAndNewlines)
+
     do {
-        try checkForEmptyTextError(text)
+        try checkForEmptyTextError(text1)
         return false
     } catch {
         return true
     }
 }
+
+func checkForSameNameError(_ text: String) throws {
+    var decks = UserDefaultsService.getDecks()
+    
+    for deck in decks {
+        if text == deck.deckName {
+            throw PossibleErrors.sameName
+        }
+    }
+}
+
+func checkForSameName(_ text: String) -> Bool {
+    do {
+        try checkForSameNameError(text)
+        return false
+    } catch {
+        return true
+    }
+}
+
+func checkForSameId(_ id: Int, _ name: String) -> Bool {
+    var decks = UserDefaultsService.getDecks()
+    
+    for deck in decks {
+        if name == deck.deckName {
+            if id == deck.deckId {
+                return true
+            } else {
+                return false
+            }
+        }
+    }
+    return true
+}
+

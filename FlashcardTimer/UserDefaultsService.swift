@@ -21,12 +21,12 @@ class UserDefaultsService {
     }
     
     // MARK: - Create Deck By Name
-    static func createDeckByName(name: String) {
+    static func createDeckByName(name: String, number: Int) {
         var currentDecks = self.getDecks()
         
         let lastId = currentDecks.last?.deckId ?? 0
         
-        let deck = Deck(deckId: lastId + 1, deckName: name, complete: false, numberPerTest: 5, flashcards: [])
+        let deck = Deck(deckId: lastId + 1, deckName: name, complete: false, numberPerTest: number, flashcards: [],times: [[]], notificationActive: true, alarm: true,vibrate: true  )
         
         currentDecks.append(deck)
         
@@ -93,8 +93,46 @@ class UserDefaultsService {
         }
     }
     
+    // MARK: - Update Notifications
+    static func updateNotifications(deckId: Int, times: [[Int]]) {
+        var currentDecks = self.getDecks()
+        
+        guard var deckWithId = currentDecks.first(where: { $0.deckId == deckId }) else {
+            return
+        }
+        
+        let index = currentDecks.firstIndex(where: { $0.deckId == deckId }) ?? 0
+        
+        deckWithId.times = times
+        
+        currentDecks[index] = deckWithId
+                
+        if let data = try? JSONEncoder().encode(currentDecks) {
+            UserDefaults.standard.set(data, forKey: "Decks")
+        }
+    }
+    
+    // MARK: - Delete Notifications
+    static func deleteNotifications(deckId: Int) {
+        var currentDecks = self.getDecks()
+        
+        guard var deckWithId = currentDecks.first(where: { $0.deckId == deckId }) else {
+            return
+        }
+        
+        let index = currentDecks.firstIndex(where: { $0.deckId == deckId }) ?? 0
+        
+        deckWithId.times = [[]]
+        
+        currentDecks[index] = deckWithId
+                
+        if let data = try? JSONEncoder().encode(currentDecks) {
+            UserDefaults.standard.set(data, forKey: "Decks")
+        }
+    }
+    
     // MARK: - Delete Flashcard
-    static func deleteFlashcard( flashcardId: Int, deckId: Int) {
+    static func deleteFlashcard(flashcardId: Int, deckId: Int) {
         var currentDecks = self.getDecks()
         
         guard var deckWithId = currentDecks.first(where: { $0.deckId == deckId }) else {
@@ -175,6 +213,43 @@ class UserDefaultsService {
         }
     }
     
+    // MARK: - Modify Flashcard Question and Answer
+    static func modifyFlashcardQA(deckId: Int, flashcardId: Int, question: String, answer: String) {
+
+        var currentFlashcards = getFlashcards(deckId: deckId)
+        
+        guard let flashcardIndex = currentFlashcards.firstIndex(where: { $0.flashcardId == flashcardId }) else {
+            return
+        }
+        
+        guard var flashcard = getFlashcardById(flashcardId: flashcardId, deckId: deckId) else {
+            return
+        }
+        
+        flashcard.question = question
+        flashcard.answer = answer
+        
+        currentFlashcards[flashcardIndex] = flashcard
+        
+        var currentDecks = getDecks()
+        
+        guard let deckIndex = currentDecks.firstIndex(where: { $0.deckId == deckId }) else {
+            return
+        }
+        
+        guard var deckWithId  = currentDecks.first(where: { $0.deckId == deckId }) else {
+            return
+        }
+        
+        deckWithId.flashcards = currentFlashcards
+        
+        currentDecks[deckIndex] = deckWithId
+        
+        if let data = try? JSONEncoder().encode(currentDecks) {
+            UserDefaults.standard.set(data, forKey: "Decks")
+        }
+    }
+    
     // MARK: - Modify Deck Complete
     static func modifyDeckComplete(deckId: Int, value: Bool) {
         
@@ -219,5 +294,76 @@ class UserDefaultsService {
         }
         
     }
+    
+    // MARK: - Modify Deck NotificationActive
+    static func modifyDeckNotificationActive(deckId: Int, value: Bool) {
+        
+        var currentDecks = self.getDecks()
+        
+        guard let deckIndex = currentDecks.firstIndex(where: { $0.deckId == deckId }) else {
+            return
+        }
+        
+        guard var deckWithId = currentDecks.first(where: { $0.deckId == deckId }) else {
+            return
+        }
+        
+        deckWithId.notificationActive = value
+        
+        currentDecks[deckIndex] = deckWithId
+        
+        if let data = try? JSONEncoder().encode(currentDecks) {
+            UserDefaults.standard.set(data, forKey: "Decks")
+        }
+        
+    }
+    
+    // MARK: - Modify Deck Vibrate
+    static func modifyDeckVibrate(deckId: Int, value: Bool) {
+        
+        var currentDecks = self.getDecks()
+        
+        guard let deckIndex = currentDecks.firstIndex(where: { $0.deckId == deckId }) else {
+            return
+        }
+        
+        guard var deckWithId = currentDecks.first(where: { $0.deckId == deckId }) else {
+            return
+        }
+        
+        deckWithId.vibrate = value
+        
+        currentDecks[deckIndex] = deckWithId
+        
+        if let data = try? JSONEncoder().encode(currentDecks) {
+            UserDefaults.standard.set(data, forKey: "Decks")
+        }
+        
+    }
+    
+    // MARK: - Modify Deck Alarm
+    static func modifyDeckAlarm(deckId: Int, value: Bool) {
+        
+        var currentDecks = self.getDecks()
+        
+        guard let deckIndex = currentDecks.firstIndex(where: { $0.deckId == deckId }) else {
+            return
+        }
+        
+        guard var deckWithId = currentDecks.first(where: { $0.deckId == deckId }) else {
+            return
+        }
+        
+        deckWithId.alarm = value
+        
+        currentDecks[deckIndex] = deckWithId
+        
+        if let data = try? JSONEncoder().encode(currentDecks) {
+            UserDefaults.standard.set(data, forKey: "Decks")
+        }
+        
+    }
+    
+    
 }
 

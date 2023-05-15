@@ -9,8 +9,14 @@ import Foundation
 import Combine
 import SwiftUI
 
-final class LoadDecksFromJson: ObservableObject {
-    @Published var decks: [Deck] = loadArrayOfDecksFromJson()
+final class LoadDecksFromJson {
+    var decks: [Deck] {
+        if UserDefaultsService.getDecks().count < 3 {
+            putDecksFromJsonInUserDefaults()
+        }
+        
+        return loadArrayOfDecksFromJson()
+    }
 }
 
 func loadArrayOfDecksFromJson() -> [Deck] {
@@ -31,4 +37,12 @@ func loadArrayOfDecksFromJson() -> [Deck] {
         print("Error decoding JSON: \(error)")
     }
     return []
+}
+
+func putDecksFromJsonInUserDefaults() {
+    let decks = loadArrayOfDecksFromJson()
+    
+    for deck in decks {
+        UserDefaultsService.createDeck(deck)
+    }
 }

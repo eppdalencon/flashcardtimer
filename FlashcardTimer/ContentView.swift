@@ -8,27 +8,85 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var showingPopup = false
-    @State private var decksFromUserDefaults: [Deck] = UserDefaultsService.getDecks()
-    
+    @State private var decksFromUserDefaults: [Deck] = []
+    @State private var presentCreateDeckView = false
+    @State private var showingEditButtons = false
+    @State private var clickedDeleteButton = false
+
     var body: some View {
         NavigationStack {
-            VStack {
-                ForEach(LoadDecksFromJson().decks, id: \.self) { deck in
-                    NavigationLink(destination: DeckView(deck: deck)) {
-                        DeckListView(deck: deck)
+            ScrollView(showsIndicators: false) {
+                if decksFromUserDefaults != [] {
+                    ForEach(decksFromUserDefaults, id: \.self) { deck in
+                        HStack {
+                            if showingEditButtons {
+                                Button {
+                                    if decksFromUserDefaults.count > 3 {
+                                        UserDefaultsService.deleteDeck(deck.deckId)
+                                    }
+                                    clickedDeleteButton.toggle()
+                                } label: {
+                                    Image(systemName: "minus.circle.fill")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 25)
+                                    .foregroundColor(.red)
+                                }
+                            }
+
+                            NavigationLink(destination: DeckView(name: deck.deckName)) {
+                                DeckListView(deck: deck)
+                            }
+                            .padding(.top)
+                            
+
+                            if showingEditButtons {
+                                NavigationLink(destination: CreateDeckView(isEditing: true, deck: deck)) {
+                                    Image(systemName: "pencil")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 20)
+                                }
+                            }
+                        }
+                        .padding(.trailing)
                     }
                 }
-                
-                Spacer()
             }
             .navigationTitle("My decks")
             .navigationBarItems(trailing:
-                NavigationLink(destination: CreateDeckView()) {
+                Button {
+                    presentCreateDeckView.toggle()
+                } label: {
                     Image(systemName: "plus")
                 }
             )
             .navigationBarTitleDisplayMode(.inline)
             .buttonStyle(PlainButtonStyle())
+            .onAppear {
+//                for deck in UserDefaultsService.getDecks() {
+//                    UserDefaultsService.deleteDeck(deck.deckId)
+//                }
+                decksFromUserDefaults = UserDefaultsService.getDecks()
+                presentCreateDeckView = false
+                showingEditButtons = false
+            }
+            .onChange(of: clickedDeleteButton) { _ in
+                decksFromUserDefaults = UserDefaultsService.getDecks()
+            }
+            .navigationDestination(isPresented: $presentCreateDeckView) {
+                CreateDeckView()
+            }
+            .navigationBarItems(leading:
+                Button {
+                showingEditButtons.toggle()
+                } label: {
+                    Text(showingEditButtons ? "Done" : "Edit")
+                        .foregroundColor(.black)
+                }
+            )
+            .toolbarBackground(.visible, for: .navigationBar)
+            .toolbarBackground(Color("DeckColor"), for: .navigationBar)
         }
     }
 }

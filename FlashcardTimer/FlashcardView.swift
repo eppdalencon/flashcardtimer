@@ -4,7 +4,6 @@
 //
 //  Created by Arthur Sobrosa on 08/05/23.
 //
-
 import SwiftUI
 
 struct FlashcardView: View {
@@ -12,14 +11,15 @@ struct FlashcardView: View {
     var deck: Deck
     
     @State var currentIndex = 0
-    
+
     @State private var flipped = false
     @State private var changeColor = true
     @State private var reveal = false
     @State private var showFlashmark = false
-    
+    @State private var showingAlert = false
+
     @Environment(\.dismiss) var dismiss
-    
+
     var body: some View {
         NavigationStack {
             TabView(selection: $currentIndex) {
@@ -30,7 +30,8 @@ struct FlashcardView: View {
                                 .frame(width: 342, height: 430)
                                 .cornerRadius(8)
                                 .foregroundColor(changeColor ? Color("FlashcardQuestionColor") : Color("FlashcardAnswerColor"))
-                            
+                                .shadow(color: .gray, radius: 4, x: 10, y: 13)
+
                             if !flipped {
                                 Text(flashcards[index].question)
                                     .frame(width: 340)
@@ -43,46 +44,21 @@ struct FlashcardView: View {
                                     .rotation3DEffect(.degrees(flipped ? 180 : 0), axis: (x: 0, y: 1, z: 0))
                             }
                         }
-                        .rotation3DEffect(.degrees(flipped ? -180 : 0), axis: (x: 0, y: 1, z: 0))
-                        
-                        
-                        Button {
+                        .onTapGesture {
                             withAnimation(.easeInOut(duration: 0.5)) {
                                 flipped.toggle()
                             }
                             changeColor.toggle()
                             reveal.toggle()
-                        } label: {
-                            Text(reveal ? "Hide" : "Reveal")
-                                .padding()
-                                .font(.title2)
-                                .foregroundColor(.black)
-                                .frame(maxWidth: 340)
-                                .background(
-                                    RoundedRectangle(
-                                        cornerRadius: 15
-                                    )
-                                    .fill(Color("FlashcardQuestionColor"))
-                                )
                         }
-                        
-                        Spacer()
-                        
+                        .rotation3DEffect(.degrees(flipped ? -180 : 0), axis: (x: 0, y: 1, z: 0))
+
+                        Text("Tap card to flip")
+                            .padding(.top)
+                            .foregroundColor(.gray)
+
                         if reveal {
                             HStack(spacing: 52) {
-                                Button {
-                                    currentIndex = updatedIndex(currentIndex)
-                                    flipped.toggle()
-                                    reveal.toggle()
-                                    changeColor.toggle()
-                                    
-                                } label: {
-                                    Image(systemName: "checkmark.circle.fill")
-                                        .resizable()
-                                        .frame(width: 150, height: 115)
-                                        .foregroundColor(.green)
-                                }
-                                
                                 Button {
                                     currentIndex = updatedIndex(currentIndex)
                                     flipped.toggle()
@@ -91,25 +67,61 @@ struct FlashcardView: View {
                                 } label: {
                                     Image(systemName: "xmark.circle.fill")
                                         .resizable()
+                                        .scaledToFit()
                                         .frame(width: 150, height: 115)
                                         .foregroundColor(.red)
                                 }
+                                
+                                Button {
+                                    currentIndex = updatedIndex(currentIndex)
+                                    flipped.toggle()
+                                    reveal.toggle()
+                                    changeColor.toggle()
+
+                                } label: {
+                                    Image(systemName: "checkmark.circle.fill")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 150, height: 115)
+                                        .foregroundColor(.green)
+                                }
                             }
+                            .padding(.top)
                         }
+                        
+                        Spacer()
                     }
                 }
             }
+            .padding(.top)
             .tabViewStyle(.page(indexDisplayMode: .never))
-            
+
             .navigationTitle("Flashcard \(flashcards[currentIndex].flashcardId)")
             .navigationBarTitleDisplayMode(.inline)
+            .navigationBarItems(leading:
+                Button {
+                    showingAlert.toggle()
+                } label: {
+                    Image(systemName: "chevron.left")
+                    Text("Back")
+                }
+                .alert(isPresented: $showingAlert) {
+                    Alert(title: Text("Are you sure you want to go back?"), message: nil, primaryButton: .destructive( Text("Yes"), action: {
+                            dismiss()
+                        }),
+                        secondaryButton: .cancel(Text("No"))
+                    )
+                }
+            )
+            .toolbarBackground(.visible, for: .navigationBar)
+            .toolbarBackground(Color("DeckColor"), for: .navigationBar)
         }
     }
-    
+
     func updatedIndex(_ index: Int) -> Int {
-        if index == flashcards.count - 1 {
+        if index == deck.numberPerTest - 1 {
             dismiss()
-            return index % flashcards.count
+            return index % deck.numberPerTest
         }
         return index + 1
     }
