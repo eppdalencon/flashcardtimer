@@ -16,6 +16,9 @@ struct DeckView: View {
     @State private var presentDeckConfigView: Bool = false
     @State private var editFlashcard: Bool = false
     @State private var showingAlert: Bool = false
+    @State private var clickedDeleteButton: Bool = false
+    @State private var showingEditButtons: Bool = false
+    @State private var flipped = false
 
     @Environment(\.dismiss) var dismiss
 
@@ -47,28 +50,110 @@ struct DeckView: View {
                     }
                     
                     ForEach(flashcardsFromUserDefaults, id: \.self) { flashcard in
-                        Button {
-                            presentCreateFlashcardView.toggle()
-                            editFlashcard = true
-                            self.flashcard = flashcard
-                        } label: {
-                            ZStack(alignment: .bottomTrailing) {
+                        ZStack(alignment: flipped ? .bottomLeading : .bottomTrailing) {
+                            if !flipped {
                                 Rectangle()
                                     .frame(width: 98, height: 141)
                                     .cornerRadius(4)
                                     .foregroundColor(Color("DeckColor"))
                                     .shadow(color: .gray, radius: 4, x: 7, y: 5)
                                     .overlay(
-                                        Text(flashcard.question)
-                                            .frame(width: 90)
-                                            .font(.caption)
-                                            .lineLimit(2)
+                                        VStack(alignment: .leading) {
+                                            Text(flashcard.question)
+                                                .frame(width: 90)
+                                                .font(.caption)
+                                                .lineLimit(2)
+                                                .rotation3DEffect(.degrees(flipped ? 180 : 0), axis: (x: 0, y: 1, z: 0))
+                                            
+                                            Text("Q")
+                                                .offset(y: 40)
+                                        }
                                     )
-                                
-                                Text("\(flashcard.flashcardId)")
-                                    .offset(x: -5, y: -5)
+                            } else {
+                                Rectangle()
+                                    .frame(width: 98, height: 141)
+                                    .cornerRadius(4)
+                                    .foregroundColor(Color("DeckColor"))
+                                    .shadow(color: .gray, radius: 4, x: 7, y: 5)
+                                    .overlay(
+                                        VStack(alignment: .trailing) {
+                                            Text(flashcard.answer)
+                                                .frame(width: 90)
+                                                .font(.caption)
+                                                .lineLimit(2)
+                                                .rotation3DEffect(.degrees(flipped ? 180 : 0), axis: (x: 0, y: 1, z: 0))
+                                            
+                                            Text("A")
+                                                .offset(y: 40)
+                                        }
+                                    )
+                            }
+                            
+                            if !showingEditButtons {
+                                if !flipped {
+                                    Text("\(flashcard.flashcardId)")
+                                        .offset(x: -5, y: -5)
+                                } else {
+                                    Text("\(flashcard.flashcardId)")
+                                        .offset(x: -5, y: -5)
+                                        .rotation3DEffect(.degrees(flipped ? 180 : 0), axis: (x: 0, y: 1, z: 0))
+                                }
+                            } else {
+                                if !flipped {
+                                    Text("\(flashcard.flashcardId)")
+                                        .offset(x: -5, y: -5)
+                                    
+                                    Button {
+                                        presentCreateFlashcardView.toggle()
+                                    } label: {
+                                        Image(systemName: "pencil")
+                                    }
+                                    .offset(x: -5, y: -120)
+                                    
+                                    Button {
+                                        UserDefaultsService.deleteFlashcard(flashcardId: flashcard.flashcardId, deckId: deck!.deckId)
+                                        clickedDeleteButton.toggle()
+                                    } label: {
+                                        Image(systemName: "xmark")
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: 10)
+                                            .foregroundColor(.red)
+                                    }
+                                    .offset(x: -80, y: -122)
+                                        
+                                } else {
+                                    Text("\(flashcard.flashcardId)")
+                                        .offset(x: -5, y: -5)
+                                        .rotation3DEffect(.degrees(flipped ? 180 : 0), axis: (x: 0, y: 1, z: 0))
+                                    
+                                    Button {
+                                        presentDeckConfigView.toggle()
+                                    } label: {
+                                        Image(systemName: "pencil")
+                                    }
+                                    .offset(x: 3, y: -120)
+                                    
+                                    Button {
+                                        UserDefaultsService.deleteFlashcard(flashcardId: flashcard.flashcardId, deckId: deck!.deckId)
+                                        clickedDeleteButton.toggle()
+                                    } label: {
+                                        Image(systemName: "xmark")
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: 10)
+                                            .foregroundColor(.red)
+                                    }
+                                    .offset(x: 80, y: -122)
+                                }
                             }
                         }
+                        .onTapGesture {
+                            withAnimation(.easeInOut(duration: 0.5)) {
+                                flipped.toggle()
+                            }
+                        }
+                        .rotation3DEffect(.degrees(flipped ? -180 : 0), axis: (x: 0, y: 1, z: 0))
                     }
                 }
             }
@@ -99,18 +184,33 @@ struct DeckView: View {
             .navigationTitle(name)
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarItems(trailing:
-                Button {
-                    presentDeckConfigView.toggle()
-                } label: {
-                    Image(systemName: "bell.fill")
+                HStack {
+                    Button {
+                        presentDeckConfigView.toggle()
+                    } label: {
+                        Image(systemName: "bell.fill")
+                    }
+                
+                    Button {
+                        showingEditButtons.toggle()
+                    } label: {
+                        Text(showingEditButtons ? "Done" : "Edit")
+                    }
                 }
             )
             .buttonStyle(PlainButtonStyle())
             .onAppear {
                 flashcardsFromUserDefaults = UserDefaultsService.getFlashcards(deckId: deck!.deckId)
                 editFlashcard = false
+                showingEditButtons = false
+                flipped = false
             }
             .onChange(of: presentCreateFlashcardView) { newValue in
+                flashcardsFromUserDefaults = UserDefaultsService.getFlashcards(deckId: deck!.deckId)
+                showingEditButtons = false
+                flipped = false
+            }
+            .onChange(of: clickedDeleteButton) { newValue in
                 flashcardsFromUserDefaults = UserDefaultsService.getFlashcards(deckId: deck!.deckId)
             }
             .fullScreenCover(isPresented: $presentFlashcardView) {
