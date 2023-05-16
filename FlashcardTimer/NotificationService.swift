@@ -55,18 +55,19 @@ class ReminderNotification {
     }
 
 
-    static func removeNotifications(deckId baseKey: Int) {
-        let notificationCenter = UNUserNotificationCenter.current()
-        notificationCenter.getPendingNotificationRequests { requests in
-            print(requests)
-            let matchingRequests = requests.filter { $0.identifier.hasPrefix("\(baseKey)_") }
-            let matchingIdentifiers = matchingRequests.map { $0.identifier }
-            notificationCenter.removePendingNotificationRequests(withIdentifiers: matchingIdentifiers)
+    static func removeNotifications(deckId baseKey: Int, completion: @escaping () -> Void) {
+            let notificationCenter = UNUserNotificationCenter.current()
+            notificationCenter.getPendingNotificationRequests { requests in
+                let matchingRequests = requests.filter { $0.identifier.hasPrefix("\(baseKey)_") }
+                let matchingIdentifiers = matchingRequests.map { $0.identifier }
+                notificationCenter.removePendingNotificationRequests(withIdentifiers: matchingIdentifiers)
+                completion()
+            }
         }
-        print(notificationCenter.getPendingNotificationRequests)
-    }
+
+
     
-    static func listNotifications(deckId baseKey: Int) {
+    static func listNotifications(deckId baseKey: Int, completion: @escaping ([[Int]]) -> Void) {
         let notificationCenter = UNUserNotificationCenter.current()
         notificationCenter.getPendingNotificationRequests { requests in
             let matchingRequests = requests.filter { $0.identifier.hasPrefix("\(baseKey)_") }
@@ -78,9 +79,10 @@ class ReminderNotification {
                     processedArray.append([hour, minute])
                 }
             }
-            print(processedArray)
+            completion(processedArray)
         }
     }
+
     
    
 
