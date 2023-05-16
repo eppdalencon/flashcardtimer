@@ -61,14 +61,15 @@ class UserDefaultsService {
     }
     
     // MARK: - Get Deck by Id
-    static func getDeckById(deckId: Int) -> Deck? {
+    static func getDeckById(deckId: Int, completion: @escaping (Deck?) -> Void) {
         let currentDecks = self.getDecks()
         
         guard let deckWithId = currentDecks.first(where: { $0.deckId == deckId }) else {
-            return nil
+            completion(nil)
+            return
         }
         
-        return deckWithId
+        completion(deckWithId)
     }
 
     // MARK: - Create Flashcard
