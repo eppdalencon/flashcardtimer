@@ -121,10 +121,10 @@ struct DeckConfigView: View {
                         .foregroundColor(Color("Background"))
                 }
                 .alert(isPresented: $showingAlert) {
-                    Alert(title: Text("Are you sure you want to go back?"), message: nil, primaryButton: .destructive( Text("Yes"), action: {
+                    Alert(title: Text("Are you sure you want to quit? Your alarms will not be saved. To save the alarms, click 'Save'"), message: nil, primaryButton: .destructive( Text("Yes, quit"), action: {
                             dismiss()
                         }),
-                        secondaryButton: .cancel(Text("No"))
+                        secondaryButton: .cancel(Text("No, continue"))
                     )
                 }
             )

@@ -62,8 +62,7 @@ struct DeckView: View {
                                                 .lineLimit(2)
                                                 .rotation3DEffect(.degrees(flipped ? 180 : 0), axis: (x: 0, y: 1, z: 0))
 
-                                            Text("Q")
-                                                .offset(y: 40)
+                                        
                                         }
                                     )
                             } else {
@@ -80,8 +79,7 @@ struct DeckView: View {
                                                 .lineLimit(2)
                                                 .rotation3DEffect(.degrees(flipped ? 180 : 0), axis: (x: 0, y: 1, z: 0))
 
-                                            Text("A")
-                                                .offset(y: 40)
+                                        
                                         }
                                     )
                             }

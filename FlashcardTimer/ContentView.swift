@@ -49,6 +49,7 @@ struct ContentView: View {
                             }
                         }
                         .padding(.trailing)
+                        .padding(.leading)
                     }
                 }
             }
@@ -88,6 +89,7 @@ struct ContentView: View {
             .toolbarBackground(.visible, for: .navigationBar)
             .toolbarBackground(Color("Header"), for: .navigationBar)
             .toolbarColorScheme(.dark, for: .navigationBar)
+            .preferredColorScheme(.light)
         }
     }
 }

@@ -147,10 +147,10 @@ struct CreateDeckView: View {
                     Text("My decks")
                 }
                 .alert(isPresented: $showingAlert) {
-                    Alert(title: Text("Are you sure you want to go back?"), message: nil, primaryButton: .destructive( Text("Yes"), action: {
+                    Alert(title: Text("Are you sure you want to quit the creation of the deck? Your alterations will be dismiss."), message: nil, primaryButton: .destructive( Text("Yes, quit deck"), action: {
                             dismiss()
                         }),
-                        secondaryButton: .cancel(Text("No"))
+                        secondaryButton: .cancel(Text("No, keep deck"))
                     )
                 }
             )

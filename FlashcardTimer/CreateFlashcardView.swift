@@ -60,10 +60,10 @@ struct CreateFlashcardView: View {
                                 .foregroundColor(Color("Background"))
                         }
                         .alert(isPresented: $showingAlert) {
-                            Alert(title: Text("Are you sure you want to go back?"), message: nil, primaryButton: .destructive( Text("Yes"), action: {
+                            Alert(title: Text("Are you sure you want to quit the creation of the flashcard? Your alterations will be dismiss."), message: nil, primaryButton: .destructive( Text("Yes, quit card"), action: {
                                     dismiss()
                                 }),
-                                secondaryButton: .cancel(Text("No"))
+                                secondaryButton: .cancel(Text("No, keep card"))
                             )
                         }
                         
