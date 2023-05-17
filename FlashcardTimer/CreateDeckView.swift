@@ -87,7 +87,7 @@ struct CreateDeckView: View {
                 }
             }
             
-            .navigationTitle("Create a deck")
+            .navigationTitle(isEditing ? "Edit your deck" : "Create a deck")
             .toolbarBackground(.visible, for: .navigationBar)
             .toolbarBackground(Color("Header"), for: .navigationBar)
             .toolbarColorScheme(.dark, for: .navigationBar)
@@ -147,7 +147,7 @@ struct CreateDeckView: View {
                     Text("My decks")
                 }
                 .alert(isPresented: $showingAlert) {
-                    Alert(title: Text("Are you sure you want to quit the creation of the deck? Your alterations will be dismiss."), message: nil, primaryButton: .destructive( Text("Yes, quit deck"), action: {
+                    Alert(title: Text(isEditing ? "Are you sure you want to quit editing your deck? Your alterations will be dismissed." : "Are you sure you want to quit the creation of the deck? Your alterations will be dismissed."), message: nil, primaryButton: .destructive( Text("Yes, quit deck"), action: {
                             dismiss()
                         }),
                         secondaryButton: .cancel(Text("No, keep deck"))
