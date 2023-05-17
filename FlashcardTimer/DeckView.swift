@@ -44,6 +44,7 @@ struct DeckView: View {
                             VStack(spacing: 16) {
                                 Image(systemName: "plus")
                                 
+                                
                                 Text("Add card")
                             }
                         }
@@ -232,8 +233,8 @@ struct DeckView: View {
     }
 }
 
-//struct DeckView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        DeckView(name: LoadDecksFromJson().decks[0].deckName)
-//    }
-//}
+struct DeckView_Previews: PreviewProvider {
+    static var previews: some View {
+        DeckView(name: LoadDecksFromJson().decks[0].deckName)
+    }
+}

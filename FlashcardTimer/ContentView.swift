@@ -30,7 +30,7 @@ struct ContentView: View {
                                         .resizable()
                                         .scaledToFit()
                                         .frame(width: 25)
-                                    .foregroundColor(.red)
+                                        .foregroundColor(.red)
                                 }
                             }
 
@@ -58,6 +58,7 @@ struct ContentView: View {
                     presentCreateDeckView.toggle()
                 } label: {
                     Image(systemName: "plus")
+                        .foregroundColor((Color("Background")))
                 }
             )
             .navigationBarTitleDisplayMode(.inline)
@@ -81,11 +82,12 @@ struct ContentView: View {
                 showingEditButtons.toggle()
                 } label: {
                     Text(showingEditButtons ? "Done" : "Edit")
-                        .foregroundColor(.black)
+                        .foregroundColor(Color("Background"))
                 }
             )
             .toolbarBackground(.visible, for: .navigationBar)
-            .toolbarBackground(Color("DeckColor"), for: .navigationBar)
+            .toolbarBackground(Color("Header"), for: .navigationBar)
+            .toolbarColorScheme(.dark, for: .navigationBar)
         }
     }
 }
