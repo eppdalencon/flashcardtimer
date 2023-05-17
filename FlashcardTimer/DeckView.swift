@@ -39,6 +39,7 @@ struct DeckView: View {
                             VStack(spacing: 16) {
                                 Image(systemName: "plus")
                                 
+                                
                                 Text("Add card")
                             }
                             .foregroundColor(.black)

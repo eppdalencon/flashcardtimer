@@ -12,7 +12,10 @@ struct DeckConfigView: View {
     @State private var showNotification = false
     @State private var alarme = Date()
     @State private var presentTimerView = false
+    @State private var presentTimerViewEdit = false
+    @State private var shouldUpdateTimerView = false
     @State private var showingAlert = false
+    @State private var indexEdit = 0
     @State private var alarmsArray: [[Int]] = []
     
     
@@ -50,7 +53,16 @@ struct DeckConfigView: View {
                             let textMinute = format(alarmsArray[index][1])
                             VStack{
                                 HStack{
-                                    NavigationLink(destination: TimerView(alarmsArray: $alarmsArray, hourRecieved: alarmsArray[index][0], minuteRecieved: alarmsArray[index][1], index: index)) {
+                                    Button(){
+                                        if(indexEdit != index){
+                                            indexEdit = index
+                                        } else{
+                                            presentTimerViewEdit.toggle()
+                                        }
+                                        
+                                        
+                                        
+                                    } label:{
                                         VStack{
                                             HStack{
                                                 VStack(alignment: .leading) {
@@ -75,9 +87,8 @@ struct DeckConfigView: View {
                                             
                                             
                                         }
-                                        
-                                        
                                     }
+                                   
                                     
                                     Spacer()
                                     
@@ -139,9 +150,17 @@ struct DeckConfigView: View {
             .fullScreenCover(isPresented: $presentTimerView) {
                 TimerView(alarmsArray: $alarmsArray)
             }
+            .onChange(of: indexEdit) { newIndex in
+                presentTimerViewEdit.toggle()
+               
+            }
 //
+            .fullScreenCover(isPresented: $presentTimerViewEdit) {
+                TimerView(alarmsArray: $alarmsArray, hourRecieved: alarmsArray[indexEdit][0], minuteRecieved: alarmsArray[indexEdit][1], index: indexEdit)
+                    .id(shouldUpdateTimerView)
+            }
             .onAppear {
-                
+              
                 ReminderNotification.listNotifications(deckId: deck.deckId) { alarms in
                         self.alarmsArray = alarms
                     }
@@ -162,3 +181,4 @@ struct DeckConfigView_Previews: PreviewProvider {
         DeckConfigView(deck: LoadDecksFromJson().decks[0])
     }
 }
+
