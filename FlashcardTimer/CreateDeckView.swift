@@ -167,6 +167,13 @@ struct CreateDeckView: View {
                 DeckView(name: name)
             }
         }
+        .onAppear(){
+          if(isEditing){
+                       
+            name = self.deck.deckName
+            
+            }
+            }
         .preferredColorScheme(.light)
     }
 }

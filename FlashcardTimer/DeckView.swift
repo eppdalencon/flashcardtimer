@@ -103,6 +103,8 @@ struct DeckView: View {
                                         .offset(x: -5, y: -5)
 
                                     Button {
+                                        self.flashcard = flashcard
+                                        editFlashcard.toggle()
                                         presentCreateFlashcardView.toggle()
                                     } label: {
                                         Image(systemName: "pencil")
@@ -128,7 +130,9 @@ struct DeckView: View {
                                         .rotation3DEffect(.degrees(flipped ? 180 : 0), axis: (x: 0, y: 1, z: 0))
 
                                     Button {
-                                        presentDeckConfigView.toggle()
+                                        self.flashcard = flashcard
+                                        editFlashcard.toggle()
+                                        presentCreateFlashcardView.toggle()
                                     } label: {
                                         Image(systemName: "pencil")
                                             .foregroundColor(.black)
@@ -196,6 +200,9 @@ struct DeckView: View {
 
                     Button {
                         showingEditButtons.toggle()
+                         if(editFlashcard == true){
+                           editFlashcard.toggle()
+                         }
                     } label: {
                         Text(showingEditButtons ? "Done" : "Edit")
                             .foregroundColor(Color("Background"))
