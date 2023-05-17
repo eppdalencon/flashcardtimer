@@ -98,10 +98,6 @@ struct TimerView: View {
             
             alarme = Calendar.current.date(from: components)!
         }
-        
-        VStack {
-            
-        }
     }
 }
 

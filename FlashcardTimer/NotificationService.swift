@@ -82,10 +82,5 @@ class ReminderNotification {
             completion(processedArray)
         }
     }
-
-    
-   
-
-
 }
 

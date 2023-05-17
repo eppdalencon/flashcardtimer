@@ -364,7 +364,5 @@ class UserDefaultsService {
         }
         
     }
-    
-    
 }
 

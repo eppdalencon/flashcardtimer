@@ -39,7 +39,6 @@ struct ContentView: View {
                             }
                             .padding(.top)
                             
-
                             if showingEditButtons {
                                 NavigationLink(destination: CreateDeckView(isEditing: true, deck: deck)) {
                                     Image(systemName: "pencil")
