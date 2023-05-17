@@ -230,6 +230,7 @@ struct DeckView: View {
             .toolbarBackground(.visible, for: .navigationBar)
             .toolbarBackground(Color("Header"), for: .navigationBar)
         }
+        .preferredColorScheme(.light)
     }
 }
 

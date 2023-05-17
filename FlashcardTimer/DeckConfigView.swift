@@ -167,6 +167,7 @@ struct DeckConfigView: View {
                     }
                         }
         }
+        .preferredColorScheme(.light)
     }
     
     func format(_ number: Int) -> String {

@@ -188,6 +188,7 @@ struct CreateFlashcardView: View {
             textIsFocused = false
             hideTop = false
         }
+        .preferredColorScheme(.light)
     }
 }
 

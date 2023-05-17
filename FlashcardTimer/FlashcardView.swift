@@ -115,6 +115,7 @@ struct FlashcardView: View {
             .toolbarBackground(.visible, for: .navigationBar)
             .toolbarBackground(Color("Header"), for: .navigationBar)
         }
+        .preferredColorScheme(.light)
     }
 
     func updatedIndex(_ index: Int) -> Int {

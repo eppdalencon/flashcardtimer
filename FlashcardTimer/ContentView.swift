@@ -89,8 +89,9 @@ struct ContentView: View {
             .toolbarBackground(.visible, for: .navigationBar)
             .toolbarBackground(Color("Header"), for: .navigationBar)
             .toolbarColorScheme(.dark, for: .navigationBar)
-            .preferredColorScheme(.light)
+            
         }
+        .preferredColorScheme(.light)
     }
 }
 

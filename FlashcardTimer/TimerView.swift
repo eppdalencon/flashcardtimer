@@ -100,6 +100,7 @@ struct TimerView: View {
                 alarme = Calendar.current.date(from: components)!
             }
         }
+        .preferredColorScheme(.light)
     }
 }
 

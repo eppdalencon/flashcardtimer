@@ -167,6 +167,7 @@ struct CreateDeckView: View {
                 DeckView(name: name)
             }
         }
+        .preferredColorScheme(.light)
     }
 }
 
