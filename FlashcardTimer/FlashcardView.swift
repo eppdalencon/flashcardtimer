@@ -29,7 +29,7 @@ struct FlashcardView: View {
                                 .frame(width: 342, height: 430)
                                 .cornerRadius(8)
                                 .foregroundColor(Color("FlashcardColor"))
-                                .shadow(color: .gray, radius: 4, x: 10, y: 13)
+                                .shadow(color: .gray, radius: 4, x: 0, y: 4)
 
                             if !flipped {
                                 Text(flashcards[index].question)

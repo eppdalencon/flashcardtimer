@@ -53,7 +53,7 @@ struct DeckView: View {
                                     .frame(width: 98, height: 141)
                                     .cornerRadius(4)
                                     .foregroundColor(Color("FlashcardColor"))
-                                    .shadow(color: .gray, radius: 4, x: 7, y: 5)
+                                    .shadow(color: .gray, radius: 4, x: 0, y: 4)
                                     .overlay(
                                         VStack(alignment: .leading) {
                                             Text(flashcard.question)
@@ -71,7 +71,7 @@ struct DeckView: View {
                                     .frame(width: 98, height: 141)
                                     .cornerRadius(4)
                                     .foregroundColor(Color("FlashcardColor"))
-                                    .shadow(color: .gray, radius: 4, x: 7, y: 5)
+                                    .shadow(color: .gray, radius: 4, x: 0, y: 4)
                                     .overlay(
                                         VStack(alignment: .trailing) {
                                             Text(flashcard.answer)

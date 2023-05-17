@@ -126,7 +126,7 @@ struct CreateFlashcardView: View {
                     .frame(width: 342, height: 430)
                     .cornerRadius(8)
                     .foregroundColor(Color("FlashcardColor"))
-                    .shadow(color: .gray, radius: 4, x: 10, y: 13)
+                    .shadow(color: .gray, radius: 4, x: 0, y: 4)
                     .onTapGesture {
                         if !hideTop {
                             withAnimation(.easeInOut(duration: 0.5)) {
