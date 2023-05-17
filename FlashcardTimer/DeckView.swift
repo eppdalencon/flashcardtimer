@@ -35,14 +35,18 @@ struct DeckView: View {
                         editFlashcard = false
                     } label: {
                         ZStack {
-                            
-                            VStack(spacing: 16) {
-                                Image(systemName: "plus")
+                            Rectangle()
+                                .frame(width: 98, height: 141)
+                                .cornerRadius(4)
+                                .foregroundColor(.white)
                                 
+                            VStack(alignment: .center) {
+                                Image(systemName: "plus")
+                                    .foregroundColor(.black)
                                 
                                 Text("Add card")
+                                    .foregroundColor(.black)
                             }
-                            .foregroundColor(.black)
                         }
                     }
                     
