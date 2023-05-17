@@ -88,6 +88,9 @@ struct CreateDeckView: View {
             }
             
             .navigationTitle("Create a deck")
+            .toolbarBackground(.visible, for: .navigationBar)
+            .toolbarBackground(Color("Header"), for: .navigationBar)
+            .toolbarColorScheme(.dark, for: .navigationBar)
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarBackButtonHidden(true)
             .navigationBarItems(trailing:

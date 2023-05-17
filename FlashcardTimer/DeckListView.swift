@@ -13,7 +13,7 @@ struct DeckListView: View {
             .frame(width: 310, height: 60)
             .cornerRadius(8)
             .foregroundColor(Color("DeckColor"))
-            .shadow(color: .gray, radius: 4, x: 7, y: 5)
+//            .shadow(color: .gray, radius: 4, x: 0, y: 5)
             .overlay(
                 VStack(alignment: .leading) {
                     Text(deck.deckName)
