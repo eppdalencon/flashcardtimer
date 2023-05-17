@@ -34,7 +34,6 @@ struct CreateFlashcardView: View {
     @State private var question: String = ""
     @State private var answer: String = ""
     @State private var flipped = false
-    @State private var changeColor = true
     @State private var reveal = false
     @State private var showFlashmark = false
     @State private var showingAlert = false
@@ -50,7 +49,7 @@ struct CreateFlashcardView: View {
                 ZStack {
                     Rectangle()
                         .ignoresSafeArea()
-                        .foregroundColor(Color("DeckColor"))
+                        .foregroundColor(Color("Header"))
                         .frame(height: 40)
                     
                     HStack(spacing: 60) {
@@ -58,7 +57,7 @@ struct CreateFlashcardView: View {
                             showingAlert.toggle()
                         } label: {
                             Text("Cancel")
-                                .foregroundColor(.red)
+                                .foregroundColor(Color("Background"))
                         }
                         .alert(isPresented: $showingAlert) {
                             Alert(title: Text("Are you sure you want to go back?"), message: nil, primaryButton: .destructive( Text("Yes"), action: {
@@ -69,6 +68,7 @@ struct CreateFlashcardView: View {
                         }
                         
                         Text(isEditing ? "Flashcard \(flashcard!.flashcardId)" : "Create a flashcard")
+                            .foregroundColor(Color("Background"))
                             .padding(.trailing)
                             .bold()
                         
@@ -104,7 +104,7 @@ struct CreateFlashcardView: View {
                             showingTextAlert.toggle()
                         } label: {
                             Text("Save")
-                                .foregroundColor(.blue)
+                                .foregroundColor(Color("Background"))
                         }
                         .alert(isPresented: $showingTextAlert) {
                             switch activeAlert {
@@ -125,14 +125,13 @@ struct CreateFlashcardView: View {
                 Rectangle()
                     .frame(width: 342, height: 430)
                     .cornerRadius(8)
-                    .foregroundColor(changeColor ? Color("FlashcardQuestionColor") : Color("FlashcardAnswerColor"))
+                    .foregroundColor(Color("FlashcardColor"))
                     .shadow(color: .gray, radius: 4, x: 10, y: 13)
                     .onTapGesture {
                         if !hideTop {
                             withAnimation(.easeInOut(duration: 0.5)) {
                                 flipped.toggle()
                             }
-                            changeColor.toggle()
                             reveal.toggle()
                         } else {
                             textIsFocused = false

@@ -35,17 +35,13 @@ struct DeckView: View {
                         editFlashcard = false
                     } label: {
                         ZStack {
-                            Rectangle()
-                                .frame(width: 98, height: 141)
-                                .cornerRadius(4)
-                                .foregroundColor(Color("DeckColor"))
-                                .shadow(color: .gray, radius: 4, x: 7, y: 5)
                             
                             VStack(spacing: 16) {
                                 Image(systemName: "plus")
                                 
                                 Text("Add card")
                             }
+                            .foregroundColor(.black)
                         }
                     }
                     
@@ -55,7 +51,7 @@ struct DeckView: View {
                                 Rectangle()
                                     .frame(width: 98, height: 141)
                                     .cornerRadius(4)
-                                    .foregroundColor(Color("DeckColor"))
+                                    .foregroundColor(Color("FlashcardColor"))
                                     .shadow(color: .gray, radius: 4, x: 7, y: 5)
                                     .overlay(
                                         VStack(alignment: .leading) {
@@ -73,7 +69,7 @@ struct DeckView: View {
                                 Rectangle()
                                     .frame(width: 98, height: 141)
                                     .cornerRadius(4)
-                                    .foregroundColor(Color("DeckColor"))
+                                    .foregroundColor(Color("FlashcardColor"))
                                     .shadow(color: .gray, radius: 4, x: 7, y: 5)
                                     .overlay(
                                         VStack(alignment: .trailing) {
@@ -107,6 +103,7 @@ struct DeckView: View {
                                         presentCreateFlashcardView.toggle()
                                     } label: {
                                         Image(systemName: "pencil")
+                                            .foregroundColor(.black)
                                     }
                                     .offset(x: -5, y: -120)
 
@@ -172,16 +169,17 @@ struct DeckView: View {
                         .cornerRadius(15)
                         .overlay(alignment: .center) {
                             Text("Play")
-                                .foregroundColor(.black)
+                                .foregroundColor(Color("Background"))
                                 .font(.title)
                         }
-                        .foregroundColor(.gray)
+                        .foregroundColor(Color("ButtonAction"))
                 }
                 .alert(isPresented: $showingAlert) {
                     Alert(title: Text("You don't have enough cards to play"), dismissButton: .default(Text("Try again")))
                 }
             }
             .navigationTitle(name)
+            .toolbarColorScheme(.dark, for: .navigationBar)
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarItems(trailing:
                 HStack {
@@ -189,14 +187,17 @@ struct DeckView: View {
                         presentDeckConfigView.toggle()
                     } label: {
                         Image(systemName: "bell.fill")
+                            .foregroundColor(Color("Background"))
                     }
 
                     Button {
                         showingEditButtons.toggle()
                     } label: {
                         Text(showingEditButtons ? "Done" : "Edit")
+                            .foregroundColor(Color("Background"))
                     }
                 }
+                
             )
             .buttonStyle(PlainButtonStyle())
             .onAppear {
@@ -227,13 +228,13 @@ struct DeckView: View {
                 DeckConfigView(deck: deck!)
             }
             .toolbarBackground(.visible, for: .navigationBar)
-            .toolbarBackground(Color("DeckColor"), for: .navigationBar)
+            .toolbarBackground(Color("Header"), for: .navigationBar)
         }
     }
 }
 
-//struct DeckView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        DeckView(name: LoadDecksFromJson().decks[0].deckName)
-//    }
-//}
+struct DeckView_Previews: PreviewProvider {
+    static var previews: some View {
+        DeckView(name: LoadDecksFromJson().decks[0].deckName)
+    }
+}
