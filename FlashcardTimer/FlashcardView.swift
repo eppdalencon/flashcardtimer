@@ -55,34 +55,25 @@ struct FlashcardView: View {
                             .padding(.top)
                             .foregroundColor(.gray)
 
+                        Spacer()
+                        
                         if reveal {
-                            HStack(spacing: 52) {
-                                Button {
-                                    currentIndex = updatedIndex(currentIndex)
-                                    flipped.toggle()
-                                    reveal.toggle()
-                                } label: {
-                                    Image(systemName: "xmark.circle.fill")
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 150, height: 115)
-                                        .foregroundColor(.red)
-                                }
-                                
-                                Button {
-                                    currentIndex = updatedIndex(currentIndex)
-                                    flipped.toggle()
-                                    reveal.toggle()
+                            Button {
+                                currentIndex = updatedIndex(currentIndex)
+                                flipped.toggle()
+                                reveal.toggle()
 
-                                } label: {
-                                    Image(systemName: "checkmark.circle.fill")
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 150, height: 115)
-                                        .foregroundColor(.green)
+                            } label: {
+                                ZStack {
+                                    Rectangle()
+                                        .frame(width: 100, height: 70)
+                                        .cornerRadius(10)
+                                        .foregroundColor(Color("ButtonAction"))
+                                    Text("Next")
+                                        .font(.title)
+                                    .foregroundColor(.white)
                                 }
                             }
-                            .padding(.top)
                         }
                         
                         Spacer()
@@ -91,7 +82,6 @@ struct FlashcardView: View {
             }
             .padding(.top)
             .tabViewStyle(.page(indexDisplayMode: .never))
-
             .navigationTitle("Flashcard \(flashcards[currentIndex].flashcardId)")
             .toolbarColorScheme(.dark, for: .navigationBar)
             .navigationBarTitleDisplayMode(.inline)
