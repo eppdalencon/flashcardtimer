@@ -118,7 +118,7 @@ struct DeckConfigView: View {
                 showingAlert.toggle()
                 } label: {
                     Text("Cancel")
-                        .foregroundColor(.red)
+                        .foregroundColor(Color("Background"))
                 }
                 .alert(isPresented: $showingAlert) {
                     Alert(title: Text("Are you sure you want to go back?"), message: nil, primaryButton: .destructive( Text("Yes"), action: {
@@ -129,9 +129,10 @@ struct DeckConfigView: View {
                 }
             )
             .navigationTitle("Notifications")
+            .toolbarColorScheme(.dark, for: .navigationBar)
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(.visible, for: .navigationBar)
-            .toolbarBackground(Color("DeckColor"), for: .navigationBar)
+            .toolbarBackground(Color("Header"), for: .navigationBar)
             .navigationBarItems(trailing:
                 Button {
                 
@@ -143,7 +144,7 @@ struct DeckConfigView: View {
                
                 } label : {
                     Text("Save")
-                        .foregroundColor(.blue)
+                        .foregroundColor(Color("Background"))
                 }
             )
             .padding([.top, .leading])

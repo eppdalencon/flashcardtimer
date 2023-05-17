@@ -13,7 +13,6 @@ struct FlashcardView: View {
     @State var currentIndex = 0
 
     @State private var flipped = false
-    @State private var changeColor = true
     @State private var reveal = false
     @State private var showFlashmark = false
     @State private var showingAlert = false
@@ -29,8 +28,8 @@ struct FlashcardView: View {
                             Rectangle()
                                 .frame(width: 342, height: 430)
                                 .cornerRadius(8)
-                                .foregroundColor(changeColor ? Color("FlashcardQuestionColor") : Color("FlashcardAnswerColor"))
-                                .shadow(color: .gray, radius: 4, x: 10, y: 13)
+                                .foregroundColor(Color("FlashcardColor"))
+                                .shadow(color: .gray, radius: 4, x: 0, y: 4)
 
                             if !flipped {
                                 Text(flashcards[index].question)
@@ -48,7 +47,6 @@ struct FlashcardView: View {
                             withAnimation(.easeInOut(duration: 0.5)) {
                                 flipped.toggle()
                             }
-                            changeColor.toggle()
                             reveal.toggle()
                         }
                         .rotation3DEffect(.degrees(flipped ? -180 : 0), axis: (x: 0, y: 1, z: 0))
@@ -63,7 +61,6 @@ struct FlashcardView: View {
                                     currentIndex = updatedIndex(currentIndex)
                                     flipped.toggle()
                                     reveal.toggle()
-                                    changeColor.toggle()
                                 } label: {
                                     Image(systemName: "xmark.circle.fill")
                                         .resizable()
@@ -76,7 +73,6 @@ struct FlashcardView: View {
                                     currentIndex = updatedIndex(currentIndex)
                                     flipped.toggle()
                                     reveal.toggle()
-                                    changeColor.toggle()
 
                                 } label: {
                                     Image(systemName: "checkmark.circle.fill")
@@ -97,14 +93,17 @@ struct FlashcardView: View {
             .tabViewStyle(.page(indexDisplayMode: .never))
 
             .navigationTitle("Flashcard \(flashcards[currentIndex].flashcardId)")
+            .toolbarColorScheme(.dark, for: .navigationBar)
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarItems(leading:
                 Button {
                     showingAlert.toggle()
                 } label: {
                     Image(systemName: "chevron.left")
+                        
                     Text("Back")
                 }
+                .foregroundColor(Color("Background"))
                 .alert(isPresented: $showingAlert) {
                     Alert(title: Text("Are you sure you want to go back?"), message: nil, primaryButton: .destructive( Text("Yes"), action: {
                             dismiss()
@@ -114,7 +113,7 @@ struct FlashcardView: View {
                 }
             )
             .toolbarBackground(.visible, for: .navigationBar)
-            .toolbarBackground(Color("DeckColor"), for: .navigationBar)
+            .toolbarBackground(Color("Header"), for: .navigationBar)
         }
     }
 
