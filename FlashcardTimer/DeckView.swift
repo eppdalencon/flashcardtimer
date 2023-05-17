@@ -129,6 +129,7 @@ struct DeckView: View {
                                         presentDeckConfigView.toggle()
                                     } label: {
                                         Image(systemName: "pencil")
+                                            .foregroundColor(.black)
                                     }
                                     .offset(x: 3, y: -120)
 
