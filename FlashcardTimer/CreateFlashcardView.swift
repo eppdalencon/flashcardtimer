@@ -60,14 +60,14 @@ struct CreateFlashcardView: View {
                                 .foregroundColor(Color("Background"))
                         }
                         .alert(isPresented: $showingAlert) {
-                            Alert(title: Text("Are you sure you want to quit the creation of the flashcard? Your alterations will be dismiss."), message: nil, primaryButton: .destructive( Text("Yes, quit card"), action: {
+                            Alert(title: Text(isEditing ? "Are you sure you want to quit editing the flashcard? Your alterations will be dismissed." : "Are you sure you want to quit the creation of the flashcard? Your alterations will be dismissed."), message: nil, primaryButton: .destructive( Text(isEditing ? "Yes, quit editing" : "Yes, quit creating"), action: {
                                     dismiss()
                                 }),
-                                secondaryButton: .cancel(Text("No, keep card"))
+                                  secondaryButton: .cancel(Text(isEditing ? "No, keep editing" : "No, keep creating"))
                             )
                         }
                         
-                        Text(isEditing ? "Flashcard \(flashcard!.flashcardId)" : "Create a flashcard")
+                        Text(isEditing ? "Edit flashcard \(flashcard!.flashcardId)" : "Create a flashcard")
                             .foregroundColor(Color("Background"))
                             .padding(.trailing)
                             .bold()
