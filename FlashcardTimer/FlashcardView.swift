@@ -33,12 +33,12 @@ struct FlashcardView: View {
 
                             if !flipped {
                                 Text(flashcards[index].question)
-                                    .frame(width: 340)
+                                    .frame(width: 300)
                                     .font(.title3)
                                     .rotation3DEffect(.degrees(flipped ? 180 : 0), axis: (x: 0, y: 1, z: 0))
                             } else {
                                 Text(flashcards[index].answer)
-                                    .frame(width: 340)
+                                    .frame(width: 300)
                                     .font(.title3)
                                     .rotation3DEffect(.degrees(flipped ? 180 : 0), axis: (x: 0, y: 1, z: 0))
                             }
@@ -95,7 +95,7 @@ struct FlashcardView: View {
                 }
                 .foregroundColor(Color("Background"))
                 .alert(isPresented: $showingAlert) {
-                    Alert(title: Text("Are you sure you want to go back?"), message: nil, primaryButton: .destructive( Text("Yes"), action: {
+                    Alert(title: Text("Are you sure you want to go back? Your progress will be lost."), message: nil, primaryButton: .destructive( Text("Yes"), action: {
                             dismiss()
                         }),
                         secondaryButton: .cancel(Text("No"))

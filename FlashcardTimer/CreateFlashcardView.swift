@@ -188,13 +188,12 @@ struct CreateFlashcardView: View {
             textIsFocused = false
             hideTop = false
         }
-        .onAppear(){
-          if(flashcard != nil){
-                       
-            question = self.flashcard?.question ?? " "
-            answer = self.flashcard?.answer ?? " "
+        .onAppear {
+            if (flashcard != nil) {
+                question = self.flashcard?.question ?? " "
+                answer = self.flashcard?.answer ?? " "
             }
-            }
+        }
         .preferredColorScheme(.light)
     }
 }

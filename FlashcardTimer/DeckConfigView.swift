@@ -41,10 +41,8 @@ struct DeckConfigView: View {
                                     .scaledToFit()
                                     .frame(width: 20)
                                     .foregroundColor(.red)
-                                                                }
+                            }
                         }
-                        
-                        
                         
                         Divider()
                         
@@ -54,15 +52,12 @@ struct DeckConfigView: View {
                             VStack{
                                 HStack{
                                     Button(){
-                                        if(indexEdit != index){
+                                        if (indexEdit != index) {
                                             indexEdit = index
-                                        } else{
+                                        } else {
                                             presentTimerViewEdit.toggle()
                                         }
-                                        
-                                        
-                                        
-                                    } label:{
+                                    } label: {
                                         VStack{
                                             HStack{
                                                 VStack(alignment: .leading) {
@@ -72,29 +67,19 @@ struct DeckConfigView: View {
                                                     
                                                     Text("Alarm")
                                                         .foregroundColor(.gray)
-                                                    
-                                                   
-                                                    
-                                                    
-                                                    
-                                                    
                                                 }
+                                                
                                                 Spacer()
                                                 
-                                                
-                                
                                             }
-                                            
-                                            
                                         }
                                     }
-                                   
                                     
                                     Spacer()
                                     
-                                    Button{
+                                    Button {
                                         alarmsArray.remove(at: index)
-                                    }label: {
+                                    } label: {
                                         Image(systemName: "minus")
                                             .resizable()
                                             .scaledToFit()
@@ -103,11 +88,10 @@ struct DeckConfigView: View {
                                             
                                     }
                                 }
+                                
                                 Divider()
+                                
                             }
-                            
-                            
-                           
                         }
                     }
                 }
@@ -155,7 +139,6 @@ struct DeckConfigView: View {
                 presentTimerViewEdit.toggle()
                
             }
-//
             .fullScreenCover(isPresented: $presentTimerViewEdit) {
                 TimerView(alarmsArray: $alarmsArray, hourRecieved: alarmsArray[indexEdit][0], minuteRecieved: alarmsArray[indexEdit][1], index: indexEdit)
                     .id(shouldUpdateTimerView)
