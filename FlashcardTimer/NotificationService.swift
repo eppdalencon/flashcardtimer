@@ -15,7 +15,7 @@ class ReminderNotification {
             if granted {
                 let content = UNMutableNotificationContent()
                 content.title = "FlashcardTimer"
-                content.body = notificationText
+                content.body = "Don't forget to do your \(notificationText) flashcards."
                 content.sound = UNNotificationSound.default
 
                 var dateComponentsArray: [DateComponents] = []
