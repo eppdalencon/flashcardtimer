@@ -147,10 +147,10 @@ struct CreateDeckView: View {
                     Text("My decks")
                 }
                 .alert(isPresented: $showingAlert) {
-                    Alert(title: Text(isEditing ? "Are you sure you want to quit editing your deck? Your alterations will be dismissed." : "Are you sure you want to quit the creation of the deck? Your alterations will be dismissed."), message: nil, primaryButton: .destructive( Text(isEditing ? "Yes, quit editing" : "Yes, quit deck's creation"), action: {
+                    Alert(title: Text(isEditing ? "Are you sure you want to quit editing? Your alterations will be dismissed." : "Are you sure you want to quit this creation? Your alterations will be dismissed."), message: nil, primaryButton: .destructive( Text("Quit"), action: {
                             dismiss()
                         }),
-                          secondaryButton: .cancel(Text(isEditing ? "No, keep editing" : "No, stay on deck's creation"))
+                          secondaryButton: .cancel(Text("Stay"))
                     )
                 }
             )
