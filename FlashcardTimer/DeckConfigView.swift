@@ -137,7 +137,7 @@ struct DeckConfigView: View {
                 Button {
                 
                     ReminderNotification.removeNotifications(deckId: deck.deckId){
-                        ReminderNotification.setupNotifications(deckId: deck.deckId, notificationText: "Testando", times: alarmsArray)
+                        ReminderNotification.setupNotifications(deckId: deck.deckId, notificationText: deck.deckName, times: alarmsArray)
                             dismiss()
                     }
                 

@@ -21,9 +21,9 @@ struct ContentView: View {
                         HStack {
                             if showingEditButtons {
                                 Button {
-                                    if decksFromUserDefaults.count > 3 {
+                                    
                                         UserDefaultsService.deleteDeck(deck.deckId)
-                                    }
+                                    
                                     clickedDeleteButton.toggle()
                                 } label: {
                                     Image(systemName: "minus.circle.fill")
@@ -65,9 +65,6 @@ struct ContentView: View {
             .navigationBarTitleDisplayMode(.inline)
             .buttonStyle(PlainButtonStyle())
             .onAppear {
-//                for deck in UserDefaultsService.getDecks() {
-//                    UserDefaultsService.deleteDeck(deck.deckId)
-//                }
                 decksFromUserDefaults = UserDefaultsService.getDecks()
                 presentCreateDeckView = false
                 showingEditButtons = false

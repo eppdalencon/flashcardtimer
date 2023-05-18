@@ -8,6 +8,18 @@
 import Foundation
 
 class UserDefaultsService {
+    
+    // MARK: - Set FirstTime
+    static func setFirstTime() {
+        UserDefaults.standard.set(1, forKey: "FirstTime")
+    }
+    
+    // MARK: - Get FirstTime
+    static func isFirstTime() -> Bool {
+        return UserDefaults.standard.object(forKey: "FirstTime") == nil
+    }
+    
+    
 
     // MARK: - Create Deck
     static func createDeck(_ deck: Deck) {
