@@ -95,10 +95,10 @@ struct FlashcardView: View {
                 }
                 .foregroundColor(Color("Background"))
                 .alert(isPresented: $showingAlert) {
-                    Alert(title: Text("Are you sure you want to go back? Your progress will be lost."), message: nil, primaryButton: .destructive( Text("Yes"), action: {
+                    Alert(title: Text("Are you sure you want to go back? Your progress will be lost."), message: nil, primaryButton: .destructive( Text("Quit"), action: {
                             dismiss()
                         }),
-                        secondaryButton: .cancel(Text("No"))
+                        secondaryButton: .cancel(Text("Stay"))
                     )
                 }
             )
