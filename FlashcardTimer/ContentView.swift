@@ -17,11 +17,13 @@ struct ContentView: View {
         NavigationStack {
             ScrollView(showsIndicators: false) {
                 if decksFromUserDefaults != [] {
-                    ForEach(decksFromUserDefaults, id: \.self) { deck in
-                        NavigationLink(destination: DeckView(deck: deck, name: deck.deckName)) {
-                            DeckListView(deck: deck)
+                    VStack(spacing: 5) {
+                        ForEach(decksFromUserDefaults, id: \.self) { deck in
+                            NavigationLink(destination: DeckView(deck: deck, name: deck.deckName)) {
+                                DeckListView(deck: deck)
+                            }
+                            .padding([.top, .leading, .trailing])
                         }
-                        .padding([.top, .leading, .trailing])
                     }
                 } else {
                     ForEach(index, id:\.self) { _ in
@@ -46,8 +48,17 @@ struct ContentView: View {
                     presentCreateDeckView.toggle()
                 } label: {
                     Image(systemName: "plus")
-                        .foregroundColor((Color("Background")))
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 12)
+                        .foregroundColor(.black)
+                        .background(
+                            RoundedRectangle(cornerRadius: 8)
+                                .foregroundColor(Color("LightGray"))
+                                .frame(width: 30, height: 30)
+                        )
                 }
+                .padding(.trailing, 6.0)
             )
             .navigationBarTitleDisplayMode(.inline)
             .buttonStyle(PlainButtonStyle())
@@ -60,9 +71,9 @@ struct ContentView: View {
             .navigationDestination(isPresented: $presentCreateDeckView) {
                 CreateDeckView(name: $name, clickedDoneButton: .constant(false))
             }
-            .toolbarBackground(.visible, for: .navigationBar)
-            .toolbarBackground(Color("Header"), for: .navigationBar)
-            .toolbarColorScheme(.dark, for: .navigationBar)
+//            .toolbarBackground(.visible, for: .navigationBar)
+//            .toolbarBackground(Color("Header"), for: .navigationBar)
+//            .toolbarColorScheme(.dark, for: .navigationBar)
             
         }
         .preferredColorScheme(.light)

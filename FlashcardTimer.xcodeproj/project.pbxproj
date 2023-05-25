@@ -20,6 +20,7 @@
 		317FB4722A0C1E89003282CF /* DeckConfigView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317FB4712A0C1E89003282CF /* DeckConfigView.swift */; };
 		31F96E3B2A09767C00F1D9B1 /* CreateFlashcardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F96E3A2A09767C00F1D9B1 /* CreateFlashcardView.swift */; };
 		681183A72A0B15F800A2BEC9 /* HandlingErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681183A62A0B15F800A2BEC9 /* HandlingErrors.swift */; };
+		6819CB6C2A1FDF03004243B8 /* OnBoardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6819CB6B2A1FDF03004243B8 /* OnBoardingView.swift */; };
 		689DA7CF2A0977B9008D720F /* FlashcardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689DA7CE2A0977B9008D720F /* FlashcardView.swift */; };
 		689DA7D12A097800008D720F /* ExemplosUserDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689DA7D02A097800008D720F /* ExemplosUserDefault.swift */; };
 		689DA7D32A097869008D720F /* DeckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689DA7D22A097869008D720F /* DeckView.swift */; };
@@ -42,6 +43,7 @@
 		317FB4712A0C1E89003282CF /* DeckConfigView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckConfigView.swift; sourceTree = "<group>"; };
 		31F96E3A2A09767C00F1D9B1 /* CreateFlashcardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateFlashcardView.swift; sourceTree = "<group>"; };
 		681183A62A0B15F800A2BEC9 /* HandlingErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandlingErrors.swift; sourceTree = "<group>"; };
+		6819CB6B2A1FDF03004243B8 /* OnBoardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingView.swift; sourceTree = "<group>"; };
 		689DA7CE2A0977B9008D720F /* FlashcardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashcardView.swift; sourceTree = "<group>"; };
 		689DA7D02A097800008D720F /* ExemplosUserDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExemplosUserDefault.swift; sourceTree = "<group>"; };
 		689DA7D22A097869008D720F /* DeckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckView.swift; sourceTree = "<group>"; };
@@ -63,6 +65,7 @@
 		30EBDAC02A01A4AB003F9236 = {
 			isa = PBXGroup;
 			children = (
+				6819CB6B2A1FDF03004243B8 /* OnBoardingView.swift */,
 				681183A62A0B15F800A2BEC9 /* HandlingErrors.swift */,
 				30EBDACB2A01A4AB003F9236 /* FlashcardTimer */,
 				30EBDACA2A01A4AB003F9236 /* Products */,
@@ -205,6 +208,7 @@
 				3119BDD12A02E55700FA43CF /* LoadDecksFromJson.swift in Sources */,
 				681183A72A0B15F800A2BEC9 /* HandlingErrors.swift in Sources */,
 				689DA7D52A097881008D720F /* DeckListView.swift in Sources */,
+				6819CB6C2A1FDF03004243B8 /* OnBoardingView.swift in Sources */,
 				689DA7D32A097869008D720F /* DeckView.swift in Sources */,
 				3045AE9E2A05762200FC440C /* UserDefaultsService.swift in Sources */,
 				30EBDACF2A01A4AB003F9236 /* ContentView.swift in Sources */,
@@ -342,6 +346,7 @@
 				DEVELOPMENT_TEAM = N7QW85QF8V;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FlashcardTimer/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -371,6 +376,7 @@
 				DEVELOPMENT_TEAM = N7QW85QF8V;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FlashcardTimer/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

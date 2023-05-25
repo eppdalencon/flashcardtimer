@@ -9,29 +9,28 @@ import SwiftUI
 struct DeckListView: View {
     var deck: Deck
     var body: some View {
-        Rectangle()
-            .frame(height: 60)
-            .cornerRadius(8)
-            .foregroundColor(Color("DeckColor"))
-            .shadow(color: .gray, radius: 4, x: 0, y: 4)
+        Rectangle().fill(Color("Header").gradient)
+            .frame(height: 100)
+            .cornerRadius(12)
             .overlay(
-                VStack(alignment: .leading) {
+                VStack(alignment: .leading, spacing: 17) {
                     Text(deck.deckName)
                         .font(.title2)
                         .frame(maxWidth: .infinity, alignment: .leading)
+                        .foregroundColor(Color("ButtonAction"))
                         .lineLimit(1)
                     
                     if deck.flashcards.count == 1 {
                         Text("\(deck.flashcards.count) card")
-                            .font(.title3)
-                            .foregroundColor(.gray)
+                            .font(.headline)
+                            .foregroundColor(.white)
                     } else {
                         Text("\(deck.flashcards.count) cards")
-                            .font(.title3)
-                            .foregroundColor(.gray)
+                            .font(.headline)
+                            .foregroundColor(.white)
                     }
                 }
-                .padding(.leading)
+                    .padding(.leading)
         )
     }
 }

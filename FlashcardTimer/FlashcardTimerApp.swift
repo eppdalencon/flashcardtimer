@@ -11,7 +11,7 @@ import SwiftUI
 struct FlashcardTimerApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            OnBoardingView()
         }
     }
 }
