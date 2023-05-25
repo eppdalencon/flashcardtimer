@@ -47,11 +47,76 @@ struct CreateFlashcardView: View {
     var body: some View {
         VStack {
             if !hideTop {
-                Text(isEditing ? "Flashcard \(flashcard!.flashcardId)" : "Create flashcard")
+                HStack {
+                    Button {
+                        showingAlert.toggle()
+                    } label: {
+                        Text("Cancel")
+                            .foregroundColor(Color("ButtonAction"))
+                    }
+                    .alert(isPresented: $showingAlert) {
+                        Alert(title: Text(isEditing ? "Are you sure you want to quit editing? Your alterations will be dismissed." : "Are you sure you want to quit this creation? Your alterations will be dismissed."), message: nil, primaryButton: .destructive( Text("Quit"), action: {
+                                dismiss()
+                            }),
+                              secondaryButton: .cancel(Text("Stay"))
+                        )
+                    }
+                    
+                    Spacer()
+                    
+                    Text(isEditing ? "Edit flashcard \(flashcard!.flashcardId)" : "Create flashcard")
                         .foregroundColor(.black)
                         .bold()
-                        .padding(.top)
-                        .offset(x: -100)
+                        .padding()
+                    
+                    Spacer()
+                    
+                    Button {
+                        let q = checkForEmptyText(question)
+                        let a = checkForEmptyText(answer)
+                        
+                        if !q && !a {
+                            if isEditing {
+                                UserDefaultsService.modifyFlashcardQA(deckId: deck.deckId, flashcardId: flashcard!.flashcardId, question: question, answer: answer)
+                                
+                                decksFromUserDefaults = UserDefaultsService.getDecks()
+                                
+                                dismiss()
+                                showingTextAlert.toggle()
+                            
+                            } else {
+                                UserDefaultsService.addFlashcard(question: question, answer: answer, deckId: deck.deckId)
+                                
+                                decksFromUserDefaults = UserDefaultsService.getDecks()
+                                
+                                dismiss()
+                                showingTextAlert.toggle()
+                            }
+                        } else if q && !a {
+                            activeAlert = .questionAlert
+                        } else if !q && a {
+                            activeAlert = .answerAlert
+                        } else {
+                            activeAlert = .bothAlert
+                        }
+                        
+                        showingTextAlert.toggle()
+                    } label: {
+                        Text("Save")
+                            .foregroundColor(Color("ButtonAction"))
+                    }
+                    .alert(isPresented: $showingTextAlert) {
+                        switch activeAlert {
+                        case .questionAlert:
+                            return Alert(title: Text("You haven't typed in your question!"), dismissButton: .default(Text("Try again")))
+                        case .answerAlert:
+                            return Alert(title: Text("You haven't typed in your answer!"), dismissButton: .default(Text("Try again")))
+                        case .bothAlert:
+                            return Alert(title: Text("You haven't typed anything in!"), dismissButton: .default(Text("Try again")))
+                        }
+                    }
+                }
+                .padding(.horizontal)
             }
             
             Spacer()
@@ -120,39 +185,20 @@ struct CreateFlashcardView: View {
             Spacer()
             
             HStack(spacing: 100) {
-                if !isEditing {
+                 if isEditing {
                     Button {
-                        showingAlert.toggle()
+                        showingDeleteAlert.toggle()
                     } label: {
-                        Text("Cancel")
-                            .frame(width: 80)
+                        Text("Delete Flashcard")
+                            .frame(width: 200)
                             .foregroundColor(Color("ButtonAction"))
                             .padding()
                             .overlay(
                                 RoundedRectangle(cornerRadius: 20)
-                                    .stroke(Color("ButtonAction"), lineWidth: 1)
-                            )
-                    }
-                    .alert(isPresented: $showingAlert) {
-                        Alert(title: Text(isEditing ? "Are you sure you want to quit editing? Your alterations will be dismissed." : "Are you sure you want to quit this creation? Your alterations will be dismissed."), message: nil, primaryButton: .destructive( Text("Quit"), action: {
-                                dismiss()
-                            }),
-                              secondaryButton: .cancel(Text("Stay"))
+                                    .stroke(lineWidth: 1)
+                                    .frame(width: 200)
+                                    .foregroundColor(Color("ButtonAction"))
                         )
-                    }
-                    
-                } else {
-                    Button {
-                        showingDeleteAlert.toggle()
-                    } label: {
-                        Text("Delete")
-                            .foregroundColor(.black)
-                            .frame(width: 80)
-                            .padding()
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 20)
-                                    .stroke(Color.black, lineWidth: 1)
-                            )
                     }
                     .alert(isPresented: $showingDeleteAlert) {
                         Alert(title: Text("Are you sure you want to delete this flashcard?"), message: nil, primaryButton: .destructive(Text("Delete"), action: {
@@ -161,57 +207,6 @@ struct CreateFlashcardView: View {
                             }),
                               secondaryButton: .cancel(Text("Cancel"))
                         )
-                    }
-                }
-                
-                Button {
-                    let q = checkForEmptyText(question)
-                    let a = checkForEmptyText(answer)
-                    
-                    if !q && !a {
-                        if isEditing {
-                            UserDefaultsService.modifyFlashcardQA(deckId: deck.deckId, flashcardId: flashcard!.flashcardId, question: question, answer: answer)
-                            
-                            decksFromUserDefaults = UserDefaultsService.getDecks()
-                            
-                            dismiss()
-                            showingTextAlert.toggle()
-                        
-                        } else {
-                            UserDefaultsService.addFlashcard(question: question, answer: answer, deckId: deck.deckId)
-                            
-                            decksFromUserDefaults = UserDefaultsService.getDecks()
-                            
-                            dismiss()
-                            showingTextAlert.toggle()
-                        }
-                    } else if q && !a {
-                        activeAlert = .questionAlert
-                    } else if !q && a {
-                        activeAlert = .answerAlert
-                    } else {
-                        activeAlert = .bothAlert
-                    }
-                    
-                    showingTextAlert.toggle()
-                } label: {
-                    Text("Save")
-                        .foregroundColor(.white)
-                        .frame(width: 80)
-                        .padding()
-                        .background(
-                            RoundedRectangle(cornerRadius: 20)
-                                .foregroundColor(Color("ButtonAction"))
-                        )
-                }
-                .alert(isPresented: $showingTextAlert) {
-                    switch activeAlert {
-                    case .questionAlert:
-                        return Alert(title: Text("You haven't typed in your question!"), dismissButton: .default(Text("Try again")))
-                    case .answerAlert:
-                        return Alert(title: Text("You haven't typed in your answer!"), dismissButton: .default(Text("Try again")))
-                    case .bothAlert:
-                        return Alert(title: Text("You haven't typed anything in!"), dismissButton: .default(Text("Try again")))
                     }
                 }
             }

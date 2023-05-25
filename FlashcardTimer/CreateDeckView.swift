@@ -17,6 +17,7 @@ struct CreateDeckView: View {
     @State private var newDeck: Deck? = nil
     @State private var showingAlert = false
     @State private var showingTextAlert = false
+    @State private var showingDeleteAlert = false
     @State private var activeAlert: ActiveAlertDeck = .emptyText
     @State private var presentDeckView = false
     
@@ -84,7 +85,7 @@ struct CreateDeckView: View {
                                     .padding()
                                     .disableAutocorrection(true)
                                     .focused($textIsFocused)
-                                    .foregroundColor(.white)
+                                    .foregroundColor(Color("ButtonAction"))
                             }
                             
                             ZStack {
@@ -148,36 +149,88 @@ struct CreateDeckView: View {
                     }
                     .padding(.top)
 
-                    ForEach(alarmsArray.indices, id: \.self) { index in
-                        let textHour = format(alarmsArray[index][0])
-                        let textMinute = format(alarmsArray[index][1])
+                    if alarmsArray.count != 0 {
+                        ForEach(alarmsArray.indices, id: \.self) { index in
+                            let textHour = format(alarmsArray[index][0])
+                            let textMinute = format(alarmsArray[index][1])
 
-                        Button {
-                            if indexEdit != index {
-                                indexEdit = index
-                            } else {
-                                presentTimerViewEdit.toggle()
+                            Button {
+                                if indexEdit != index {
+                                    indexEdit = index
+                                } else {
+                                    presentTimerViewEdit.toggle()
+                                }
+                            } label: {
+                                Text("\(textHour):\(textMinute)")
+                                    .font(.title)
+                                    .foregroundColor(Color("ButtonAction"))
                             }
-                        } label: {
-                            Text("\(textHour):\(textMinute)")
-                                .font(.title)
-                                .foregroundColor(Color("ButtonAction"))
+                            
+                            if index + 1 != alarmsArray.count {
+                                Divider()
+                            }
                         }
-                        
-                        if index + 1 != alarmsArray.count {
-                            Divider()
+                        .padding(.trailing)
+                    } else {
+                        VStack {
+                            Image("AlarmImage")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 150)
+                            
+                            Text("Add an alarm to be notified when to practice this deck! Try clicking on the plus button above.")
+                                .foregroundColor(.gray)
+                                .frame(width: 300)
                         }
+                        .padding(.leading)
+                        .offset(x: 35)
                     }
-                    .padding(.trailing)
                     
                     Spacer()
+                    
+                    if isEditing {
+                        HStack {
+                            Spacer()
+                            
+                            Button {
+                                showingDeleteAlert.toggle()
+                            } label: {
+                                Text("Delete Deck")
+                                    .frame(width: 100)
+                                    .foregroundColor(Color("ButtonAction"))
+                                    .padding()
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 20)
+                                            .stroke(lineWidth: 1)
+                                            .frame(width: 200)
+                                            .foregroundColor(Color("ButtonAction"))
+                                )
+                            }
+                            .alert(isPresented: $showingDeleteAlert) {
+                                Alert(title: Text("Are you sure you want to delete this deck?"), message: nil, primaryButton: .destructive(Text("Delete"), action: {
+                                    UserDefaultsService.deleteDeck(deck.deckId)
+                                    
+                                    ReminderNotification.removeNotifications(deckId: deck.deckId) {
+                                    }
+                                    
+                                    dismiss()
+                                    
+                                    }),
+                                      secondaryButton: .cancel(Text("Cancel"))
+                                )
+                            }
+                            
+                            Spacer()
+                        }
+                        .padding(.trailing)
+                    }
                     
                 }
                 .padding(.leading)
                 .navigationTitle(isEditing ? "Edit deck" : "Create deck")
-                .toolbarBackground(.visible, for: isEditing ? .tabBar : .navigationBar)
-                .toolbarBackground(isEditing ? Color(.white) : Color("Header"), for: .navigationBar)
-                .toolbarColorScheme(isEditing ? .light : .dark, for: .navigationBar)
+//                .toolbarBackground(.visible, for: isEditing ? .tabBar : .navigationBar)
+//                .toolbarBackground(isEditing ? Color(.white) : Color("Header"), for: .navigationBar)
+//                .toolbarColorScheme(isEditing ? .light : .dark, for: .navigationBar)
                 .navigationBarTitleDisplayMode(.inline)
                 .navigationBarBackButtonHidden(true)
                 .navigationBarItems(trailing:
@@ -235,6 +288,7 @@ struct CreateDeckView: View {
                         }
                     } label: {
                         Text("Save")
+                            .foregroundColor(Color("ButtonAction"))
                     }
                     .alert(isPresented: $showingTextAlert) {
                         switch activeAlert {
@@ -257,9 +311,12 @@ struct CreateDeckView: View {
                     } label: {
                         if !isEditing {
                             Image(systemName: "chevron.left")
-                            Text("My decks")
+                                .foregroundColor(Color("ButtonAction"))
+//                            Text("My decks")
+//                                .foregroundColor(Color("ButtonAction"))
                         } else {
                             Text("Cancel")
+                                .foregroundColor(Color("ButtonAction"))
                         }
                     }
                     .alert(isPresented: $showingAlert) {
