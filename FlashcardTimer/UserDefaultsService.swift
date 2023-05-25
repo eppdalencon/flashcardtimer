@@ -9,15 +9,15 @@ import Foundation
 
 class UserDefaultsService {
     
-    // MARK: - Set FirstTime
-    static func setFirstTime() {
-        UserDefaults.standard.set(1, forKey: "FirstTime")
-    }
-    
-    // MARK: - Get FirstTime
-    static func isFirstTime() -> Bool {
-        return UserDefaults.standard.object(forKey: "FirstTime") == nil
-    }
+//    // MARK: - Set FirstTime
+//    static func setFirstTime() {
+//        UserDefaults.standard.set(1, forKey: "FirstTime")
+//    }
+//    
+//    // MARK: - Get FirstTime
+//    static func isFirstTime() -> Bool {
+//        return UserDefaults.standard.object(forKey: "FirstTime") == nil
+//    }
     
     
 
@@ -38,7 +38,7 @@ class UserDefaultsService {
         
         let lastId = currentDecks.last?.deckId ?? 0
         
-        let deck = Deck(deckId: lastId + 1, deckName: name, complete: false, numberPerTest: number, flashcards: [],times: [[]], notificationActive: true, alarm: true,vibrate: true  )
+        let deck = Deck(deckId: lastId + 1, deckName: name, complete: false, numberPerTest: number, flashcards: [], times: [[]], notificationActive: true, alarm: true, vibrate: true)
         
         currentDecks.append(deck)
         
@@ -73,19 +73,18 @@ class UserDefaultsService {
     }
     
     // MARK: - Get Deck by Id
-    static func getDeckById(deckId: Int, completion: @escaping (Deck?) -> Void) {
+    static func getDeckById(deckId: Int) -> Deck? {
         let currentDecks = self.getDecks()
         
         guard let deckWithId = currentDecks.first(where: { $0.deckId == deckId }) else {
-            completion(nil)
-            return
+            return nil
         }
         
-        completion(deckWithId)
+        return deckWithId
     }
 
     // MARK: - Create Flashcard
-    static func addFlashcard( question: String, answer:String, deckId: Int) {
+    static func addFlashcard( question: String, answer: String, deckId: Int) {
         var currentDecks = self.getDecks()
         
         guard var deckWithId = currentDecks.first(where: { $0.deckId == deckId }) else {

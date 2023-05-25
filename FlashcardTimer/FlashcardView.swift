@@ -30,6 +30,11 @@ struct FlashcardView: View {
                                 .cornerRadius(8)
                                 .foregroundColor(Color("FlashcardColor"))
                                 .shadow(color: .gray, radius: 4, x: 0, y: 4)
+                                .overlay(
+                                    Text(reveal ? "Answer" : "Question")
+                                        .offset(y: -190)
+                                        .rotation3DEffect(.degrees(reveal ? 180 : 0), axis: (x: 0, y: 1, z: 0))
+                                )
 
                             if !flipped {
                                 Text(flashcards[index].question)
@@ -82,18 +87,19 @@ struct FlashcardView: View {
             }
             .padding(.top)
             .tabViewStyle(.page(indexDisplayMode: .never))
-            .navigationTitle("Flashcard \(flashcards[currentIndex].flashcardId)")
             .toolbarColorScheme(.dark, for: .navigationBar)
             .navigationBarTitleDisplayMode(.inline)
-            .navigationBarItems(leading:
+            .navigationBarItems(trailing:
                 Button {
                     showingAlert.toggle()
                 } label: {
-                    Image(systemName: "chevron.left")
-                        
-                    Text("Back")
+                    Image(systemName: "xmark.circle.fill")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 50)
                 }
-                .foregroundColor(Color("Background"))
+                .foregroundColor(.gray)
+                .offset(x: 10)
                 .alert(isPresented: $showingAlert) {
                     Alert(title: Text("Are you sure you want to go back? Your progress will be lost."), message: nil, primaryButton: .destructive( Text("Quit"), action: {
                             dismiss()
@@ -102,8 +108,6 @@ struct FlashcardView: View {
                     )
                 }
             )
-            .toolbarBackground(.visible, for: .navigationBar)
-            .toolbarBackground(Color("Header"), for: .navigationBar)
         }
         .preferredColorScheme(.light)
     }

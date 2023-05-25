@@ -10,46 +10,33 @@ struct ContentView: View {
     @State private var showingPopup = false
     @State private var decksFromUserDefaults: [Deck] = []
     @State private var presentCreateDeckView = false
-    @State private var showingEditButtons = false
-    @State private var clickedDeleteButton = false
-
+    @State private var name = ""
+    let index = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+    
     var body: some View {
         NavigationStack {
             ScrollView(showsIndicators: false) {
                 if decksFromUserDefaults != [] {
                     ForEach(decksFromUserDefaults, id: \.self) { deck in
-                        HStack {
-                            if showingEditButtons {
-                                Button {
-                                    
-                                        UserDefaultsService.deleteDeck(deck.deckId)
-                                    
-                                    clickedDeleteButton.toggle()
-                                } label: {
-                                    Image(systemName: "minus.circle.fill")
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 25)
-                                        .foregroundColor(.red)
-                                }
-                            }
-
-                            NavigationLink(destination: DeckView(name: deck.deckName)) {
-                                DeckListView(deck: deck)
-                            }
-                            .padding(.top)
-                            
-                            if showingEditButtons {
-                                NavigationLink(destination: CreateDeckView(isEditing: true, deck: deck)) {
-                                    Image(systemName: "pencil")
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 20)
-                                }
-                            }
+                        NavigationLink(destination: DeckView(deck: deck, name: deck.deckName)) {
+                            DeckListView(deck: deck)
                         }
-                        .padding(.trailing)
-                        .padding(.leading)
+                        .padding([.top, .leading, .trailing])
+                    }
+                } else {
+                    ForEach(index, id:\.self) { _ in
+                        Spacer()
+                    }
+                    
+                    VStack {
+                        Image("Cards")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 200)
+                        
+                        Text("It looks like you haven't added any deck of flashcards yet! Try clicking on the plus button above.")
+                            .foregroundColor(.gray)
+                            .frame(width: 320)
                     }
                 }
             }
@@ -67,22 +54,12 @@ struct ContentView: View {
             .onAppear {
                 decksFromUserDefaults = UserDefaultsService.getDecks()
                 presentCreateDeckView = false
-                showingEditButtons = false
-            }
-            .onChange(of: clickedDeleteButton) { _ in
-                decksFromUserDefaults = UserDefaultsService.getDecks()
+                name = ""
+                
             }
             .navigationDestination(isPresented: $presentCreateDeckView) {
-                CreateDeckView()
+                CreateDeckView(name: $name, clickedDoneButton: .constant(false))
             }
-            .navigationBarItems(leading:
-                Button {
-                showingEditButtons.toggle()
-                } label: {
-                    Text(showingEditButtons ? "Done" : "Edit")
-                        .foregroundColor(Color("Background"))
-                }
-            )
             .toolbarBackground(.visible, for: .navigationBar)
             .toolbarBackground(Color("Header"), for: .navigationBar)
             .toolbarColorScheme(.dark, for: .navigationBar)

@@ -49,9 +49,9 @@ struct DeckConfigView: View {
                         ForEach(alarmsArray.indices, id: \.self) { index in
                             let textHour = format(alarmsArray[index][0])
                             let textMinute = format(alarmsArray[index][1])
-                            VStack{
-                                HStack{
-                                    Button(){
+                            VStack {
+                                HStack {
+                                    Button {
                                         if (indexEdit != index) {
                                             indexEdit = index
                                         } else {
@@ -120,7 +120,7 @@ struct DeckConfigView: View {
             .navigationBarItems(trailing:
                 Button {
                 
-                    ReminderNotification.removeNotifications(deckId: deck.deckId){
+                    ReminderNotification.removeNotifications(deckId: deck.deckId) {
                         ReminderNotification.setupNotifications(deckId: deck.deckId, notificationText: deck.deckName, times: alarmsArray)
                             dismiss()
                     }
@@ -135,7 +135,7 @@ struct DeckConfigView: View {
             .fullScreenCover(isPresented: $presentTimerView) {
                 TimerView(alarmsArray: $alarmsArray)
             }
-            .onChange(of: indexEdit) { newIndex in
+            .onChange(of: indexEdit) { _ in
                 presentTimerViewEdit.toggle()
                
             }
@@ -144,11 +144,10 @@ struct DeckConfigView: View {
                     .id(shouldUpdateTimerView)
             }
             .onAppear {
-              
                 ReminderNotification.listNotifications(deckId: deck.deckId) { alarms in
                         self.alarmsArray = alarms
-                    }
-                        }
+                }
+            }
         }
         .preferredColorScheme(.light)
     }

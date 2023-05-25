@@ -64,29 +64,48 @@ struct TimerView: View {
                     Spacer()
                 }
                 
-                Button {
-                    let calendar = Calendar.current
-                    let hour = calendar.component(.hour, from: alarme)
-                    let minute = calendar.component(.minute, from: alarme)
-                    
-                    if !isEditing {
-                        let hourAndMinute: [Int] = [hour, minute]
-                        alarmsArray.append(hourAndMinute)
-                    } else {
-                        alarmsArray[index][0] = hour
-                        alarmsArray[index][1] = minute
+                HStack {
+                    if isEditing {
+                        Button {
+                            alarmsArray.remove(at: index)
+                            dismiss()
+                        } label: {
+                            Text("Delete")
+                                .padding()
+                                .foregroundColor(Color("ButtonAction"))
+                                .frame(width: 90, height: 40)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(lineWidth: 1)
+                                        .foregroundColor(Color("ButtonAction"))
+                                )
+                        }
                     }
                     
-                    dismiss()
-                } label: {
-                    ZStack {
-                        Rectangle()
-                            .frame(width: 80, height: 40)
-                            .foregroundColor(Color("ButtonAction"))
-                            .cornerRadius(10)
+                    Button {
+                        let calendar = Calendar.current
+                        let hour = calendar.component(.hour, from: alarme)
+                        let minute = calendar.component(.minute, from: alarme)
                         
-                        Text("Set")
-                            .foregroundColor(.white)
+                        if !isEditing {
+                            let hourAndMinute: [Int] = [hour, minute]
+                            alarmsArray.append(hourAndMinute)
+                        } else {
+                            alarmsArray[index][0] = hour
+                            alarmsArray[index][1] = minute
+                        }
+                        
+                        dismiss()
+                    } label: {
+                        ZStack {
+                            Rectangle()
+                                .frame(width: 90, height: 40)
+                                .foregroundColor(Color("ButtonAction"))
+                                .cornerRadius(10)
+                            
+                            Text("Set")
+                                .foregroundColor(.white)
+                        }
                     }
                 }
                 .offset(y: -230)

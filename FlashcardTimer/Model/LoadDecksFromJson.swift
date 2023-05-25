@@ -11,10 +11,10 @@ import SwiftUI
 
 final class LoadDecksFromJson {
     var decks: [Deck] {
-        if UserDefaultsService.isFirstTime() {
-            putDecksFromJsonInUserDefaults()
-            UserDefaultsService.setFirstTime()
-        }
+//        if UserDefaultsService.isFirstTime() {
+//            putDecksFromJsonInUserDefaults()
+//            UserDefaultsService.setFirstTime()
+//        }
         
         return loadArrayOfDecksFromJson()
     }
