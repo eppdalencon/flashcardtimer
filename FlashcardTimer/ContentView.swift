@@ -69,7 +69,7 @@ struct ContentView: View {
                 
             }
             .navigationDestination(isPresented: $presentCreateDeckView) {
-                CreateDeckView(name: $name, clickedDoneButton: .constant(false))
+                CreateDeckView(name: $name, clickedSaveButton: .constant(false), clickedDeleteButton: .constant(false))
             }
 //            .toolbarBackground(.visible, for: .navigationBar)
 //            .toolbarBackground(Color("Header"), for: .navigationBar)

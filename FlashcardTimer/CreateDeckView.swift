@@ -35,20 +35,23 @@ struct CreateDeckView: View {
     var isEditing: Bool
     var deck: Deck
     @Binding private var name: String
-    @Binding var clickedDoneButton: Bool
+    @Binding var clickedSaveButton: Bool
+    @Binding var clickedDeleteButton: Bool
 
-    init(isEditing: Bool, deck: Deck, name: Binding<String>, clickedDoneButton: Binding<Bool>) {
+    init(isEditing: Bool, deck: Deck, name: Binding<String>, clickedSaveButton: Binding<Bool>, clickedDeleteButton: Binding<Bool>) {
         self.isEditing = isEditing
         self.deck = deck
         self._name = name
-        self._clickedDoneButton = clickedDoneButton
+        self._clickedSaveButton = clickedSaveButton
+        self._clickedDeleteButton = clickedDeleteButton
     }
 
-    init(name: Binding<String>, clickedDoneButton: Binding<Bool>) {
+    init(name: Binding<String>, clickedSaveButton: Binding<Bool>, clickedDeleteButton: Binding<Bool>) {
         isEditing = false
         deck = LoadDecksFromJson().decks[0]
         self._name = name
-        self._clickedDoneButton = clickedDoneButton
+        self._clickedSaveButton = clickedSaveButton
+        self._clickedDeleteButton = clickedDeleteButton
     }
 
     var body: some View {
@@ -60,11 +63,17 @@ struct CreateDeckView: View {
                     HStack(spacing: geometry.size.width * 0.25) {
                         
                         VStack(alignment: .leading, spacing: 30) {
-                            Text("Name of the deck")
-                                .padding(.top, 24.0)
+                            if isEditing && deck.flashcards.count != 0 {
+                                Text("Name of the deck")
+                                    .padding(.top, 24.0)
+                            } else {
+                                Text("Name of the deck")
+                            }
                                 
-                            Text("Number per test")
-                                .padding(.bottom)
+                            if isEditing && deck.flashcards.count != 0 {
+                                Text("Number per test")
+                                    .padding(.bottom)
+                            }
 
                         }
 
@@ -88,41 +97,32 @@ struct CreateDeckView: View {
                                     .foregroundColor(Color("ButtonAction"))
                             }
                             
-                            ZStack {
-                                Rectangle()
-                                    .frame(width: geometry.size.width * 0.35, height: 40)
-                                    .foregroundColor(Color("Header"))
-                                    .cornerRadius(10)
-                                
-                                if !isEditing {
-                                    Picker("Number per test", selection: $numberPerTest) {
-                                        ForEach(1 ..< 11) {
-                                            if $0 == 1 {
-                                                Text("\($0) flashcard")
-                                            } else {
-                                                Text("\($0) flashcards")
-                                            }
-                                        }
-                                    }
+                            if isEditing && deck.flashcards.count != 0 {
+                                ZStack {
+                                    Rectangle()
+                                        .frame(width: geometry.size.width * 0.35, height: 40)
+                                        .foregroundColor(Color("Header"))
+                                        .cornerRadius(10)
                                     
-                                } else {
-                                    if deck.flashcards.count == 0 {
-                                        Picker("Number per test", selection: $numberPerTest) {
-                                            ForEach(1 ..< 11) {
-                                                if $0 == 1 {
-                                                    Text("\($0) flashcard")
-                                                } else {
-                                                    Text("\($0) flashcards")
+                                    if isEditing {
+                                        if deck.flashcards.count == 0 {
+                                            Picker("Number per test", selection: $numberPerTest) {
+                                                ForEach(1 ..< 11) {
+                                                    if $0 == 1 {
+                                                        Text("\($0) flashcard")
+                                                    } else {
+                                                        Text("\($0) flashcards")
+                                                    }
                                                 }
                                             }
-                                        }
-                                    } else {
-                                        Picker("Number per test", selection: $numberPerTest) {
-                                            ForEach(1 ..< deck.flashcards.count + 1) {
-                                                if $0 == 1 {
-                                                    Text("\($0) flashcard")
-                                                } else {
-                                                    Text("\($0) flashcards")
+                                        } else {
+                                            Picker("Number per test", selection: $numberPerTest) {
+                                                ForEach(1 ..< deck.flashcards.count + 1) {
+                                                    if $0 == 1 {
+                                                        Text("\($0) flashcard")
+                                                    } else {
+                                                        Text("\($0) flashcards")
+                                                    }
                                                 }
                                             }
                                         }
@@ -172,18 +172,19 @@ struct CreateDeckView: View {
                         }
                         .padding(.trailing)
                     } else {
-                        VStack {
+                        HStack(spacing: 30) {
                             Image("AlarmImage")
                                 .resizable()
                                 .scaledToFit()
-                                .frame(width: 150)
+                                .frame(width: 120)
                             
                             Text("Add an alarm to be notified when to practice this deck! Try clicking on the plus button above.")
                                 .foregroundColor(.gray)
-                                .frame(width: 300)
+                                .font(.subheadline)
+                                .padding(.bottom)
+                                .frame(width: 200)
                         }
-                        .padding(.leading)
-                        .offset(x: 35)
+                        
                     }
                     
                     Spacer()
@@ -194,6 +195,7 @@ struct CreateDeckView: View {
                             
                             Button {
                                 showingDeleteAlert.toggle()
+                                clickedDeleteButton.toggle()
                             } label: {
                                 Text("Delete Deck")
                                     .frame(width: 100)
@@ -240,7 +242,7 @@ struct CreateDeckView: View {
                             
                         if !empty && !sameName {
                                 if !isEditing {
-                                    UserDefaultsService.createDeckByName(name: name, number: numberPerTest + 1)
+                                    UserDefaultsService.createDeckByName(name: name, number: 1)
                                     newDeck = UserDefaultsService.getDeckByName(deckName: name)
                                     
                                     ReminderNotification.setupNotifications(deckId: newDeck!.deckId, notificationText: newDeck!.deckName, times: alarmsArray)
@@ -255,7 +257,7 @@ struct CreateDeckView: View {
                                         ReminderNotification.setupNotifications(deckId: deck.deckId, notificationText: deck.deckName, times: alarmsArray)
                                     }
                                     
-                                    clickedDoneButton = true
+                                    clickedSaveButton = true
                                     
                                     dismiss()
                                 }
@@ -277,7 +279,7 @@ struct CreateDeckView: View {
                                         ReminderNotification.setupNotifications(deckId: deck.deckId, notificationText: deck.deckName, times: alarmsArray)
                                     }
                                     
-                                    clickedDoneButton = true
+                                    clickedSaveButton = true
                                     
                                     dismiss()
                                 } else {
@@ -347,7 +349,8 @@ struct CreateDeckView: View {
                 }
             }
             
-            clickedDoneButton = false
+            clickedSaveButton = false
+            clickedDeleteButton = false
         }
         .preferredColorScheme(.light)
     }
@@ -362,7 +365,7 @@ struct CreateDeckView: View {
 
 struct CreateDeckView_Previews: PreviewProvider {
     static var previews: some View {
-        CreateDeckView(name: .constant(""), clickedDoneButton: .constant(false))
+        CreateDeckView(name: .constant(""), clickedSaveButton: .constant(false), clickedDeleteButton: .constant(false))
     }
 }
 
