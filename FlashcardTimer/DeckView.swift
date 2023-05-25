@@ -25,59 +25,89 @@ struct DeckView: View {
 
     @Environment(\.dismiss) var dismiss
     
+    let index = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+    
     var gridItemLayout = [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())]
 
     var body: some View {
         NavigationStack {
             
             ScrollView {
-                LazyVGrid(columns: gridItemLayout, spacing: 24) {
+                if flashcardsFromUserDefaults.count == 0 {
+                    ForEach(index, id: \.self) { _ in
+                        Spacer()
+                    }
+                    
                     Button {
                         presentCreateFlashcardView.toggle()
                         editFlashcard = false
                     } label: {
-                        ZStack {
-                            Rectangle()
-                                .frame(width: 98, height: 141)
-                                .cornerRadius(4)
-                                .foregroundColor(.white)
-                                
-                            VStack(alignment: .center) {
+                        Rectangle()
+                            .frame(width: 125, height: 180)
+                            .cornerRadius(8)
+                            .foregroundColor(Color("FlashcardColor"))
+                            .overlay(
                                 Image(systemName: "plus")
-                                    .foregroundColor(.black)
-                                
-                                Text("Add card")
-                                    .foregroundColor(.black)
-                            }
-                        }
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 51)
+                                    .foregroundColor(Color("Color"))
+                            )
                     }
                     
-                    ForEach(flashcardsFromUserDefaults, id: \.self) { flashcard in
+                    Text("You haven't added any flashcards yet! Click on the card above to add one.")
+                        .foregroundColor(.gray)
+                        .padding(.top)
+                        .frame(width: 320)
+                } else {
+                    LazyVGrid(columns: gridItemLayout, spacing: 24) {
                         Button {
-                            self.flashcard = flashcard
-                            editFlashcard = true
                             presentCreateFlashcardView.toggle()
-                            
+                            editFlashcard = false
                         } label: {
-                            ZStack(alignment: .bottomTrailing) {
+                            ZStack {
                                 Rectangle()
                                     .frame(width: 98, height: 141)
                                     .cornerRadius(4)
-                                    .foregroundColor(Color("FlashcardColor"))
-                                    .shadow(color: .gray, radius: 4, x: 0, y: 4)
-                                    .overlay(
-                                        VStack(alignment: .trailing) {
-                                            Text(flashcard.question)
-                                                .foregroundColor(.black)
-                                                .frame(width: 90)
-                                                .font(.caption)
-                                                .lineLimit(2)
-                                        }
-                                    )
+                                    .foregroundColor(.white)
+                                    
+                                VStack(alignment: .center) {
+                                    Image(systemName: "plus")
+                                        .foregroundColor(.black)
+                                    
+                                    Text("Add card")
+                                        .foregroundColor(.black)
+                                }
+                            }
+                        }
+                        
+                        ForEach(flashcardsFromUserDefaults, id: \.self) { flashcard in
+                            Button {
+                                self.flashcard = flashcard
+                                editFlashcard = true
+                                presentCreateFlashcardView.toggle()
                                 
-                                Text("\(flashcard.flashcardId)")
-                                    .offset(x: -5, y: -5)
-                                    .foregroundColor(.black)
+                            } label: {
+                                ZStack(alignment: .bottomTrailing) {
+                                    Rectangle()
+                                        .frame(width: 98, height: 141)
+                                        .cornerRadius(4)
+                                        .foregroundColor(Color("FlashcardColor"))
+                                        .shadow(color: .gray, radius: 4, x: 0, y: 4)
+                                        .overlay(
+                                            VStack(alignment: .trailing) {
+                                                Text(flashcard.question)
+                                                    .foregroundColor(.black)
+                                                    .frame(width: 90)
+                                                    .font(.caption)
+                                                    .lineLimit(2)
+                                            }
+                                        )
+                                    
+                                    Text("\(flashcard.flashcardId)")
+                                        .offset(x: -5, y: -5)
+                                        .foregroundColor(.black)
+                                }
                             }
                         }
                     }
