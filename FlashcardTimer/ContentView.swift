@@ -19,7 +19,7 @@ struct ContentView: View {
                 if decksFromUserDefaults != [] {
                     VStack(spacing: 5) {
                         ForEach(decksFromUserDefaults, id: \.self) { deck in
-                            NavigationLink(destination: DeckView(deck: deck, name: deck.deckName)) {
+                            NavigationLink(destination: DeckView(deck: deck, name: deck.deckName, numberPerTest: deck.numberPerTest - 1)) {
                                 DeckListView(deck: deck)
                             }
                             .padding([.top, .leading, .trailing])
@@ -70,8 +70,9 @@ struct ContentView: View {
                 
             }
             .navigationDestination(isPresented: $presentCreateDeckView) {
-                CreateDeckView(name: $name, clickedSaveButton: .constant(false), clickedDeleteButton: .constant(false))
+                CreateDeckView(name: $name, numberPerTest: .constant(0), clickedSaveButton: .constant(false), clickedDeleteButton: .constant(false))
             }
+            
 //            .toolbarBackground(.visible, for: .navigationBar)
 //            .toolbarBackground(Color("Header"), for: .navigationBar)
 //            .toolbarColorScheme(.dark, for: .navigationBar)

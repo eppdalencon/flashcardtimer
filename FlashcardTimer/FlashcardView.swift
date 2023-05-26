@@ -25,26 +25,25 @@ struct FlashcardView: View {
                 ForEach(flashcards.indices, id: \.self) { index in
                     VStack {
                         ZStack {
-                            Rectangle()
+                            Rectangle().fill(Color("FlashcardColor").gradient)
                                 .frame(width: 342, height: 430)
                                 .cornerRadius(8)
-                                .foregroundColor(Color("FlashcardColor"))
-                                .shadow(color: .gray, radius: 4, x: 0, y: 4)
                                 .overlay(
                                     Text(reveal ? "Answer" : "Question")
                                         .offset(y: -190)
+                                        .font(.custom("Quicksand-Regular", size: 18))
                                         .rotation3DEffect(.degrees(reveal ? 180 : 0), axis: (x: 0, y: 1, z: 0))
                                 )
 
                             if !flipped {
                                 Text(flashcards[index].question)
                                     .frame(width: 300)
-                                    .font(.title3)
+                                    .font(.custom("Quicksand-Regular", size: 20))
                                     .rotation3DEffect(.degrees(flipped ? 180 : 0), axis: (x: 0, y: 1, z: 0))
                             } else {
                                 Text(flashcards[index].answer)
                                     .frame(width: 300)
-                                    .font(.title3)
+                                    .font(.custom("Quicksand-Regular", size: 20))
                                     .rotation3DEffect(.degrees(flipped ? 180 : 0), axis: (x: 0, y: 1, z: 0))
                             }
                         }
@@ -58,6 +57,7 @@ struct FlashcardView: View {
 
                         Text("Tap card to flip")
                             .padding(.top)
+                            .font(.custom("Quicksand-Regular", size: 16))
                             .foregroundColor(.gray)
 
                         Spacer()
@@ -75,7 +75,7 @@ struct FlashcardView: View {
                                         .cornerRadius(10)
                                         .foregroundColor(Color("ButtonAction"))
                                     Text("Next")
-                                        .font(.title)
+                                        .font(.custom("Quicksand-Regular", size: 25))
                                     .foregroundColor(.white)
                                 }
                             }

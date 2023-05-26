@@ -38,6 +38,7 @@ struct OnBoardingView: View {
                 } label: {
                     Text("Get Started")
                         .foregroundColor(Color("ButtonAction"))
+                        .font(.custom("Quicksand-Regular", size: 18))
                         .padding()
                         .background(
                             RoundedRectangle(cornerRadius: 20)

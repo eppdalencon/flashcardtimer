@@ -84,7 +84,7 @@ class UserDefaultsService {
     }
 
     // MARK: - Create Flashcard
-    static func addFlashcard( question: String, answer: String, deckId: Int) {
+    static func addFlashcard(question: String, answer: String, deckId: Int) {
         var currentDecks = self.getDecks()
         
         guard var deckWithId = currentDecks.first(where: { $0.deckId == deckId }) else {
@@ -97,44 +97,6 @@ class UserDefaultsService {
         let flashcard = Flashcard(flashcardId: lastId + 1, question: question, answer: answer)
         
         deckWithId.flashcards.append(flashcard)
-        
-        currentDecks[index] = deckWithId
-                
-        if let data = try? JSONEncoder().encode(currentDecks) {
-            UserDefaults.standard.set(data, forKey: "Decks")
-        }
-    }
-    
-    // MARK: - Update Notifications
-    static func updateNotifications(deckId: Int, times: [[Int]]) {
-        var currentDecks = self.getDecks()
-        
-        guard var deckWithId = currentDecks.first(where: { $0.deckId == deckId }) else {
-            return
-        }
-        
-        let index = currentDecks.firstIndex(where: { $0.deckId == deckId }) ?? 0
-        
-        deckWithId.times = times
-        
-        currentDecks[index] = deckWithId
-                
-        if let data = try? JSONEncoder().encode(currentDecks) {
-            UserDefaults.standard.set(data, forKey: "Decks")
-        }
-    }
-    
-    // MARK: - Delete Notifications
-    static func deleteNotifications(deckId: Int) {
-        var currentDecks = self.getDecks()
-        
-        guard var deckWithId = currentDecks.first(where: { $0.deckId == deckId }) else {
-            return
-        }
-        
-        let index = currentDecks.firstIndex(where: { $0.deckId == deckId }) ?? 0
-        
-        deckWithId.times = [[]]
         
         currentDecks[index] = deckWithId
                 

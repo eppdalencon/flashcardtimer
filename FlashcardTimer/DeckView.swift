@@ -11,6 +11,8 @@ struct DeckView: View {
     
     @State var name: String
     
+    @State var numberPerTest: Int
+    
     @State private var flashcard: Flashcard? = nil
 
     @State private var flashcardsFromUserDefaults: [Flashcard] = []
@@ -59,6 +61,7 @@ struct DeckView: View {
                     
                     Text("You haven't added any flashcards yet! Click on the card above to add one.")
                         .foregroundColor(.gray)
+                        .font(.custom("Quicksand-Regular", size: 18))
                         .padding(.top)
                         .frame(width: 320)
                 } else {
@@ -71,17 +74,17 @@ struct DeckView: View {
                                 
                             } label: {
                                 ZStack(alignment: .bottomTrailing) {
-                                    Rectangle()
+                                    Rectangle().fill(Color("FlashcardColor").gradient)
                                         .frame(width: 173, height: 250)
                                         .cornerRadius(4)
-                                        .foregroundColor(Color("FlashcardColor"))
-                                        .shadow(color: .gray, radius: 4, x: 0, y: 4)
+//                                        .foregroundColor(Color("FlashcardColor"))
+//                                        .shadow(color: .gray, radius: 4, x: 0, y: 4)
                                         .overlay(
                                             VStack(alignment: .trailing) {
                                                 Text(flashcard.question)
                                                     .foregroundColor(.black)
                                                     .frame(width: 160)
-                                                    .font(.subheadline)
+                                                    .font(.custom("Quicksand-Regular", size: 15))
                                                     .lineLimit(2)
                                             }
                                         )
@@ -106,6 +109,7 @@ struct DeckView: View {
                         } label: {
                             Text("Add Card")
                                 .foregroundColor(Color("ButtonAction"))
+                                .font(.custom("Quicksand-Regular", size: 18))
                                 .padding()
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 20)
@@ -124,6 +128,7 @@ struct DeckView: View {
                         } label: {
                             Text("Practice")
                                 .foregroundColor(Color("ButtonAction"))
+                                .font(.custom("Quicksand-Regular", size: 18))
                                 .padding()
                                 .background(
                                     RoundedRectangle(cornerRadius: 20).fill(Color("Header").gradient)
@@ -155,6 +160,13 @@ struct DeckView: View {
             }
             .onChange(of: presentCreateFlashcardView) { _ in
                 flashcardsFromUserDefaults = UserDefaultsService.getFlashcards(deckId: deck.deckId)
+                
+                deck.flashcards = flashcardsFromUserDefaults
+            }
+            .onChange(of: presentCreateDeckView) { _ in
+                if clickedSaveButton {
+                    deck.numberPerTest = numberPerTest + 1
+                }
             }
             .sheet(isPresented: $presentFlashcardView) {
                 FlashcardView(flashcards: Array(deck.flashcards.shuffled().prefix(deck.numberPerTest)), deck: deck)
@@ -175,7 +187,7 @@ struct DeckView: View {
                     dismiss()
                 }
             }) {
-                CreateDeckView(isEditing: true, deck: deck, name: $name, clickedSaveButton: $clickedSaveButton, clickedDeleteButton: $clickedDeleteButton)
+                CreateDeckView(isEditing: true, deck: deck, name: $name, numberPerTest: $numberPerTest, clickedSaveButton: $clickedSaveButton, clickedDeleteButton: $clickedDeleteButton)
             }
 //            .toolbarBackground(.visible, for: .navigationBar)
 //            .toolbarBackground(Color("Header"), for: .navigationBar)
@@ -186,6 +198,6 @@ struct DeckView: View {
 
 struct DeckView_Previews: PreviewProvider {
     static var previews: some View {
-        DeckView(deck: LoadDecksFromJson().decks[1], name: LoadDecksFromJson().decks[1].deckName)
+        DeckView(deck: LoadDecksFromJson().decks[1], name: LoadDecksFromJson().decks[1].deckName, numberPerTest: LoadDecksFromJson().decks[1].numberPerTest)
     }
 }

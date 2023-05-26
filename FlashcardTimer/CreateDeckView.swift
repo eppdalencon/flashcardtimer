@@ -12,7 +12,6 @@ enum ActiveAlertDeck {
 
 struct CreateDeckView: View {
     @FocusState private var textIsFocused: Bool
-    @State private var numberPerTest: Int = 0
 
     @State private var newDeck: Deck? = nil
     @State private var showingAlert = false
@@ -35,21 +34,24 @@ struct CreateDeckView: View {
     var isEditing: Bool
     var deck: Deck
     @Binding private var name: String
+    @Binding private var numberPerTest: Int
     @Binding var clickedSaveButton: Bool
     @Binding var clickedDeleteButton: Bool
 
-    init(isEditing: Bool, deck: Deck, name: Binding<String>, clickedSaveButton: Binding<Bool>, clickedDeleteButton: Binding<Bool>) {
+    init(isEditing: Bool, deck: Deck, name: Binding<String>, numberPerTest: Binding<Int>, clickedSaveButton: Binding<Bool>, clickedDeleteButton: Binding<Bool>) {
         self.isEditing = isEditing
         self.deck = deck
         self._name = name
+        self._numberPerTest = numberPerTest
         self._clickedSaveButton = clickedSaveButton
         self._clickedDeleteButton = clickedDeleteButton
     }
 
-    init(name: Binding<String>, clickedSaveButton: Binding<Bool>, clickedDeleteButton: Binding<Bool>) {
+    init(name: Binding<String>, numberPerTest: Binding<Int>, clickedSaveButton: Binding<Bool>, clickedDeleteButton: Binding<Bool>) {
         isEditing = false
         deck = LoadDecksFromJson().decks[0]
         self._name = name
+        self._numberPerTest = numberPerTest
         self._clickedSaveButton = clickedSaveButton
         self._clickedDeleteButton = clickedDeleteButton
     }
@@ -65,13 +67,16 @@ struct CreateDeckView: View {
                         VStack(alignment: .leading, spacing: 30) {
                             if isEditing && deck.flashcards.count != 0 {
                                 Text("Name of the deck")
+                                    .font(.custom("Quicksand-Regular", size: 16))
                                     .padding(.top, 24.0)
                             } else {
                                 Text("Name of the deck")
+                                    .font(.custom("Quicksand-Regular", size: 16))
                             }
                                 
                             if isEditing && deck.flashcards.count != 0 {
                                 Text("Number per test")
+                                    .font(.custom("Quicksand-Regular", size: 16))
                                     .padding(.bottom)
                             }
 
@@ -95,6 +100,7 @@ struct CreateDeckView: View {
                                     .disableAutocorrection(true)
                                     .focused($textIsFocused)
                                     .foregroundColor(Color("ButtonAction"))
+                                    .font(.custom("Quicksand-Regular", size: 16))
                             }
                             
                             if isEditing && deck.flashcards.count != 0 {
@@ -110,8 +116,10 @@ struct CreateDeckView: View {
                                                 ForEach(1 ..< 11) {
                                                     if $0 == 1 {
                                                         Text("\($0) flashcard")
+                                                            .font(.custom("Quicksand-Regular", size: 16))
                                                     } else {
                                                         Text("\($0) flashcards")
+                                                            .font(.custom("Quicksand-Regular", size: 16))
                                                     }
                                                 }
                                             }
@@ -120,8 +128,10 @@ struct CreateDeckView: View {
                                                 ForEach(1 ..< deck.flashcards.count + 1) {
                                                     if $0 == 1 {
                                                         Text("\($0) flashcard")
+                                                            .font(.custom("Quicksand-Regular", size: 16))
                                                     } else {
                                                         Text("\($0) flashcards")
+                                                            .font(.custom("Quicksand-Regular", size: 16))
                                                     }
                                                 }
                                             }
@@ -135,6 +145,7 @@ struct CreateDeckView: View {
                     
                     HStack(spacing: geometry.size.width * 0.75) {
                         Text("Alarms")
+                            .font(.custom("Quicksand-Regular", size: 16))
                             .bold()
 
                         Button {
@@ -180,11 +191,10 @@ struct CreateDeckView: View {
                             
                             Text("Add an alarm to be notified when to practice this deck! Try clicking on the plus button above.")
                                 .foregroundColor(.gray)
-                                .font(.subheadline)
+                                .font(.custom("Quicksand-Regular", size: 16))
                                 .padding(.bottom)
                                 .frame(width: 200)
                         }
-                        
                     }
                     
                     Spacer()
@@ -198,8 +208,9 @@ struct CreateDeckView: View {
                                 clickedDeleteButton.toggle()
                             } label: {
                                 Text("Delete Deck")
-                                    .frame(width: 100)
+                                    .frame(width: 109)
                                     .foregroundColor(Color("ButtonAction"))
+                                    .font(.custom("Quicksand-Regular", size: 18))
                                     .padding()
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 20)
@@ -230,9 +241,6 @@ struct CreateDeckView: View {
                 }
                 .padding(.leading)
                 .navigationTitle(isEditing ? "Edit deck" : "Create deck")
-//                .toolbarBackground(.visible, for: isEditing ? .tabBar : .navigationBar)
-//                .toolbarBackground(isEditing ? Color(.white) : Color("Header"), for: .navigationBar)
-//                .toolbarColorScheme(isEditing ? .light : .dark, for: .navigationBar)
                 .navigationBarTitleDisplayMode(.inline)
                 .navigationBarBackButtonHidden(true)
                 .navigationBarItems(trailing:
@@ -314,8 +322,6 @@ struct CreateDeckView: View {
                         if !isEditing {
                             Image(systemName: "chevron.left")
                                 .foregroundColor(Color("ButtonAction"))
-//                            Text("My decks")
-//                                .foregroundColor(Color("ButtonAction"))
                         } else {
                             Text("Cancel")
                                 .foregroundColor(Color("ButtonAction"))
@@ -365,7 +371,7 @@ struct CreateDeckView: View {
 
 struct CreateDeckView_Previews: PreviewProvider {
     static var previews: some View {
-        CreateDeckView(name: .constant(""), clickedSaveButton: .constant(false), clickedDeleteButton: .constant(false))
+        CreateDeckView(name: .constant(""), numberPerTest: .constant(1), clickedSaveButton: .constant(false), clickedDeleteButton: .constant(false))
     }
 }
 

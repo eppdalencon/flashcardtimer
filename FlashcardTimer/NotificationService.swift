@@ -14,8 +14,8 @@ class ReminderNotification {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
             if granted {
                 let content = UNMutableNotificationContent()
-                content.title = "FlashcardTimer"
-                content.body = "Don't forget to do your \(notificationText) flashcards."
+                content.title = "FlashcardTime"
+                content.body = "Don't forget to practice your \(notificationText) flashcards."
                 content.sound = UNNotificationSound.default
 
                 var dateComponentsArray: [DateComponents] = []
