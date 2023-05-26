@@ -15,18 +15,18 @@ struct DeckListView: View {
             .overlay(
                 VStack(alignment: .leading, spacing: 17) {
                     Text(deck.deckName)
-                        .font(.title2)
+                        .font(.custom("Quicksand-Regular", size: 25))
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .foregroundColor(Color("ButtonAction"))
                         .lineLimit(1)
                     
                     if deck.flashcards.count == 1 {
                         Text("\(deck.flashcards.count) card")
-                            .font(.headline)
+                            .font(.custom("Quicksand-Regular", size: 18))
                             .foregroundColor(.white)
                     } else {
                         Text("\(deck.flashcards.count) cards")
-                            .font(.headline)
+                            .font(.custom("Quicksand-Regular", size: 18))
                             .foregroundColor(.white)
                     }
                 }

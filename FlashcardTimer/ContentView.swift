@@ -39,6 +39,7 @@ struct ContentView: View {
                         Text("It looks like you haven't added any deck of flashcards yet! Try clicking on the plus button above.")
                             .foregroundColor(.gray)
                             .frame(width: 320)
+                            .font(.custom("Quicksand-Regular", size: 20))
                     }
                 }
             }

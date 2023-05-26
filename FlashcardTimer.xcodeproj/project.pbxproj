@@ -48,6 +48,7 @@
 		689DA7D02A097800008D720F /* ExemplosUserDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExemplosUserDefault.swift; sourceTree = "<group>"; };
 		689DA7D22A097869008D720F /* DeckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckView.swift; sourceTree = "<group>"; };
 		689DA7D42A097881008D720F /* DeckListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckListView.swift; sourceTree = "<group>"; };
+		68EE42262A202DD300ED1CB6 /* Quicksand-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Quicksand-Regular.ttf"; sourceTree = "<group>"; };
 		734C68E22A0D7B920023B7FE /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -68,6 +69,7 @@
 				6819CB6B2A1FDF03004243B8 /* OnBoardingView.swift */,
 				681183A62A0B15F800A2BEC9 /* HandlingErrors.swift */,
 				30EBDACB2A01A4AB003F9236 /* FlashcardTimer */,
+				68EE42262A202DD300ED1CB6 /* Quicksand-Regular.ttf */,
 				30EBDACA2A01A4AB003F9236 /* Products */,
 			);
 			sourceTree = "<group>";
