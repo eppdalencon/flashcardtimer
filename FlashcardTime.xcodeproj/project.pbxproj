@@ -32,7 +32,7 @@
 		3045AE9D2A05762200FC440C /* UserDefaultsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsService.swift; sourceTree = "<group>"; };
 		3045AEA12A0AD3BA00FC440C /* CreateDeckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateDeckView.swift; sourceTree = "<group>"; };
 		3045AEA72A0EAA1F00FC440C /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
-		30EBDAC92A01A4AB003F9236 /* FlashcardTimer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlashcardTimer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		30EBDAC92A01A4AB003F9236 /* FlashcardTime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlashcardTime.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		30EBDACC2A01A4AB003F9236 /* FlashcardTimerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashcardTimerApp.swift; sourceTree = "<group>"; };
 		30EBDACE2A01A4AB003F9236 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		30EBDAD02A01A4AC003F9236 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -77,7 +77,7 @@
 		30EBDACA2A01A4AB003F9236 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				30EBDAC92A01A4AB003F9236 /* FlashcardTimer.app */,
+				30EBDAC92A01A4AB003F9236 /* FlashcardTime.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -133,9 +133,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		30EBDAC82A01A4AB003F9236 /* FlashcardTimer */ = {
+		30EBDAC82A01A4AB003F9236 /* FlashcardTime */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 30EBDAD72A01A4AC003F9236 /* Build configuration list for PBXNativeTarget "FlashcardTimer" */;
+			buildConfigurationList = 30EBDAD72A01A4AC003F9236 /* Build configuration list for PBXNativeTarget "FlashcardTime" */;
 			buildPhases = (
 				30EBDAC52A01A4AB003F9236 /* Sources */,
 				30EBDAC62A01A4AB003F9236 /* Frameworks */,
@@ -145,9 +145,9 @@
 			);
 			dependencies = (
 			);
-			name = FlashcardTimer;
+			name = FlashcardTime;
 			productName = FlashcardTimer;
-			productReference = 30EBDAC92A01A4AB003F9236 /* FlashcardTimer.app */;
+			productReference = 30EBDAC92A01A4AB003F9236 /* FlashcardTime.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -165,7 +165,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 30EBDAC42A01A4AB003F9236 /* Build configuration list for PBXProject "FlashcardTimer" */;
+			buildConfigurationList = 30EBDAC42A01A4AB003F9236 /* Build configuration list for PBXProject "FlashcardTime" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -178,7 +178,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				30EBDAC82A01A4AB003F9236 /* FlashcardTimer */,
+				30EBDAC82A01A4AB003F9236 /* FlashcardTime */,
 			);
 		};
 /* End PBXProject section */
@@ -360,7 +360,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.arthursobrosa.FlashcardTimer;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = FlashcardTime;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -390,7 +390,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.arthursobrosa.FlashcardTimer;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = FlashcardTime;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -400,7 +400,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		30EBDAC42A01A4AB003F9236 /* Build configuration list for PBXProject "FlashcardTimer" */ = {
+		30EBDAC42A01A4AB003F9236 /* Build configuration list for PBXProject "FlashcardTime" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				30EBDAD52A01A4AC003F9236 /* Debug */,
@@ -409,7 +409,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		30EBDAD72A01A4AC003F9236 /* Build configuration list for PBXNativeTarget "FlashcardTimer" */ = {
+		30EBDAD72A01A4AC003F9236 /* Build configuration list for PBXNativeTarget "FlashcardTime" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				30EBDAD82A01A4AC003F9236 /* Debug */,

@@ -79,7 +79,6 @@ struct CreateDeckView: View {
                                     .font(.custom("Quicksand-Regular", size: 16))
                                     .padding(.bottom)
                             }
-
                         }
 
                         VStack {
@@ -143,57 +142,64 @@ struct CreateDeckView: View {
                         .padding(.trailing)
                     }
                     
-                    HStack(spacing: geometry.size.width * 0.75) {
-                        Text("Alarms")
-                            .font(.custom("Quicksand-Regular", size: 16))
-                            .bold()
-
-                        Button {
-                            presentTimerView.toggle()
-                        } label: {
-                            Image(systemName: "plus")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: geometry.size.width * 0.038)
-                                .foregroundColor(Color("ButtonAction"))
-                        }
-                    }
-                    .padding(.top)
-
-                    if alarmsArray.count != 0 {
-                        ForEach(alarmsArray.indices, id: \.self) { index in
-                            let textHour = format(alarmsArray[index][0])
-                            let textMinute = format(alarmsArray[index][1])
-
+                    VStack(alignment: .leading) {
+                        HStack {
+                            Text("Alarms")
+                                .font(.custom("Quicksand-Regular", size: 16))
+                                .bold()
+                            
+                            Spacer()
+                            
                             Button {
-                                if indexEdit != index {
-                                    indexEdit = index
-                                } else {
-                                    presentTimerViewEdit.toggle()
-                                }
+                                presentTimerView.toggle()
                             } label: {
-                                Text("\(textHour):\(textMinute)")
-                                    .font(.title)
+                                Image(systemName: "plus")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: geometry.size.width * 0.038)
                                     .foregroundColor(Color("ButtonAction"))
                             }
-                            
-                            if index + 1 != alarmsArray.count {
-                                Divider()
-                            }
+                            .padding(.trailing)
                         }
-                        .padding(.trailing)
-                    } else {
-                        HStack(spacing: 30) {
-                            Image("AlarmImage")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 120)
-                            
-                            Text("Add an alarm to be notified when to practice this deck! Try clicking on the plus button above.")
-                                .foregroundColor(.gray)
-                                .font(.custom("Quicksand-Regular", size: 16))
-                                .padding(.bottom)
-                                .frame(width: 200)
+                        .padding(.top)
+                        
+                        if alarmsArray.count != 0 {
+                            ForEach(alarmsArray.indices, id: \.self) { index in
+                                let textHour = format(alarmsArray[index][0])
+                                let textMinute = format(alarmsArray[index][1])
+
+                                Button {
+                                    if indexEdit != index {
+                                        indexEdit = index
+                                    } else {
+                                        presentTimerViewEdit.toggle()
+                                    }
+                                } label: {
+                                    Text("\(textHour):\(textMinute)")
+                                        .font(.title)
+                                        .foregroundColor(Color("ButtonAction"))
+                                }
+                                
+                                if index + 1 != alarmsArray.count {
+                                    Divider()
+                                }
+                            }
+                            .padding(.trailing)
+                        } else {
+                            HStack(alignment: .center) {
+                                Image("AlarmImage")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 120)
+                                
+                                Spacer()
+                                
+                                Text("Add an alarm to be notified when to practice this deck! Try clicking on the plus button above.")
+                                    .foregroundColor(.gray)
+                                    .font(.custom("Quicksand-Regular", size: 16))
+                                    .padding(.trailing)
+                                    .frame(width: 210)
+                            }
                         }
                     }
                     
