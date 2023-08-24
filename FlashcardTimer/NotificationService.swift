@@ -4,7 +4,6 @@
 //
 //  Created by Eduardo Dalencon on 11/05/23.
 //
-
 import Foundation
 
 import UserNotifications
@@ -16,7 +15,7 @@ class ReminderNotification {
             if granted {
                 let content = UNMutableNotificationContent()
                 content.title = "FlashcardTimer"
-                content.body = notificationText
+                content.body = "Don't forget to do your \(notificationText) flashcards."
                 content.sound = UNNotificationSound.default
 
                 var dateComponentsArray: [DateComponents] = []
@@ -33,8 +32,6 @@ class ReminderNotification {
                         dateComponentsArray.append(dateComponents)
                     }
                 }
-                
-                
                 
                 for (index, time) in dateComponentsArray.enumerated() {
                     let identifier = "\(deckId)_\(index)"
@@ -54,23 +51,27 @@ class ReminderNotification {
         }
     }
 
-
-    static func removeNotifications(deckId baseKey: Int) {
-        let notificationCenter = UNUserNotificationCenter.current()
-        notificationCenter.getPendingNotificationRequests { requests in
-            print(requests)
-            let matchingRequests = requests.filter { $0.identifier.hasPrefix("\(baseKey)_") }
-            let matchingIdentifiers = matchingRequests.map { $0.identifier }
-            notificationCenter.removePendingNotificationRequests(withIdentifiers: matchingIdentifiers)
-        }
-        print(notificationCenter.getPendingNotificationRequests)
+    static func removeNotifications(deckId baseKey: Int, completion: @escaping () -> Void) {
+            let notificationCenter = UNUserNotificationCenter.current()
+        
+            notificationCenter.getPendingNotificationRequests { requests in
+                let matchingRequests = requests.filter { $0.identifier.hasPrefix("\(baseKey)_") }
+                
+                let matchingIdentifiers = matchingRequests.map { $0.identifier }
+                
+                notificationCenter.removePendingNotificationRequests(withIdentifiers: matchingIdentifiers)
+                
+                completion()
+            }
     }
-    
-    static func listNotifications(deckId baseKey: Int) {
+
+    static func listNotifications(deckId baseKey: Int, completion: @escaping ([[Int]]) -> Void) {
         let notificationCenter = UNUserNotificationCenter.current()
         notificationCenter.getPendingNotificationRequests { requests in
             let matchingRequests = requests.filter { $0.identifier.hasPrefix("\(baseKey)_") }
+            
             var processedArray: [[Int]] = []
+            
             for request in matchingRequests {
                 if let trigger = request.trigger as? UNCalendarNotificationTrigger {
                     let hour = trigger.dateComponents.hour ?? 0
@@ -78,12 +79,10 @@ class ReminderNotification {
                     processedArray.append([hour, minute])
                 }
             }
-            print(processedArray)
+            
+            completion(processedArray)
+            
         }
     }
-    
-   
-
-
 }
 

@@ -38,13 +38,14 @@ struct DeckView: View {
                             Rectangle()
                                 .frame(width: 98, height: 141)
                                 .cornerRadius(4)
-                                .foregroundColor(Color("DeckColor"))
-                                .shadow(color: .gray, radius: 4, x: 7, y: 5)
-                            
-                            VStack(spacing: 16) {
+                                .foregroundColor(.white)
+                                
+                            VStack(alignment: .center) {
                                 Image(systemName: "plus")
+                                    .foregroundColor(.black)
                                 
                                 Text("Add card")
+                                    .foregroundColor(.black)
                             }
                         }
                     }
@@ -55,8 +56,8 @@ struct DeckView: View {
                                 Rectangle()
                                     .frame(width: 98, height: 141)
                                     .cornerRadius(4)
-                                    .foregroundColor(Color("DeckColor"))
-                                    .shadow(color: .gray, radius: 4, x: 7, y: 5)
+                                    .foregroundColor(Color("FlashcardColor"))
+                                    .shadow(color: .gray, radius: 4, x: 0, y: 4)
                                     .overlay(
                                         VStack(alignment: .leading) {
                                             Text(flashcard.question)
@@ -64,17 +65,16 @@ struct DeckView: View {
                                                 .font(.caption)
                                                 .lineLimit(2)
                                                 .rotation3DEffect(.degrees(flipped ? 180 : 0), axis: (x: 0, y: 1, z: 0))
-                                            
-                                            Text("Q")
-                                                .offset(y: 40)
+
+                                        
                                         }
                                     )
                             } else {
                                 Rectangle()
                                     .frame(width: 98, height: 141)
                                     .cornerRadius(4)
-                                    .foregroundColor(Color("DeckColor"))
-                                    .shadow(color: .gray, radius: 4, x: 7, y: 5)
+                                    .foregroundColor(Color("FlashcardColor"))
+                                    .shadow(color: .gray, radius: 4, x: 0, y: 4)
                                     .overlay(
                                         VStack(alignment: .trailing) {
                                             Text(flashcard.answer)
@@ -82,13 +82,12 @@ struct DeckView: View {
                                                 .font(.caption)
                                                 .lineLimit(2)
                                                 .rotation3DEffect(.degrees(flipped ? 180 : 0), axis: (x: 0, y: 1, z: 0))
-                                            
-                                            Text("A")
-                                                .offset(y: 40)
+
+                                        
                                         }
                                     )
                             }
-                            
+
                             if !showingEditButtons {
                                 if !flipped {
                                     Text("\(flashcard.flashcardId)")
@@ -102,14 +101,17 @@ struct DeckView: View {
                                 if !flipped {
                                     Text("\(flashcard.flashcardId)")
                                         .offset(x: -5, y: -5)
-                                    
+
                                     Button {
+                                        self.flashcard = flashcard
+                                        editFlashcard.toggle()
                                         presentCreateFlashcardView.toggle()
                                     } label: {
                                         Image(systemName: "pencil")
+                                            .foregroundColor(.black)
                                     }
                                     .offset(x: -5, y: -120)
-                                    
+
                                     Button {
                                         UserDefaultsService.deleteFlashcard(flashcardId: flashcard.flashcardId, deckId: deck!.deckId)
                                         clickedDeleteButton.toggle()
@@ -121,19 +123,21 @@ struct DeckView: View {
                                             .foregroundColor(.red)
                                     }
                                     .offset(x: -80, y: -122)
-                                        
                                 } else {
                                     Text("\(flashcard.flashcardId)")
                                         .offset(x: -5, y: -5)
                                         .rotation3DEffect(.degrees(flipped ? 180 : 0), axis: (x: 0, y: 1, z: 0))
-                                    
+
                                     Button {
-                                        presentDeckConfigView.toggle()
+                                        self.flashcard = flashcard
+                                        editFlashcard.toggle()
+                                        presentCreateFlashcardView.toggle()
                                     } label: {
                                         Image(systemName: "pencil")
+                                            .foregroundColor(.black)
                                     }
                                     .offset(x: 3, y: -120)
-                                    
+
                                     Button {
                                         UserDefaultsService.deleteFlashcard(flashcardId: flashcard.flashcardId, deckId: deck!.deckId)
                                         clickedDeleteButton.toggle()
@@ -172,16 +176,17 @@ struct DeckView: View {
                         .cornerRadius(15)
                         .overlay(alignment: .center) {
                             Text("Play")
-                                .foregroundColor(.black)
+                                .foregroundColor(Color("Background"))
                                 .font(.title)
                         }
-                        .foregroundColor(.gray)
+                        .foregroundColor(Color("ButtonAction"))
                 }
                 .alert(isPresented: $showingAlert) {
                     Alert(title: Text("You don't have enough cards to play"), dismissButton: .default(Text("Try again")))
                 }
             }
             .navigationTitle(name)
+            .toolbarColorScheme(.dark, for: .navigationBar)
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarItems(trailing:
                 HStack {
@@ -189,14 +194,20 @@ struct DeckView: View {
                         presentDeckConfigView.toggle()
                     } label: {
                         Image(systemName: "bell.fill")
+                            .foregroundColor(Color("Background"))
                     }
-                
+
                     Button {
                         showingEditButtons.toggle()
+                         if(editFlashcard == true){
+                           editFlashcard.toggle()
+                         }
                     } label: {
                         Text(showingEditButtons ? "Done" : "Edit")
+                            .foregroundColor(Color("Background"))
                     }
                 }
+                
             )
             .buttonStyle(PlainButtonStyle())
             .onAppear {
@@ -227,13 +238,14 @@ struct DeckView: View {
                 DeckConfigView(deck: deck!)
             }
             .toolbarBackground(.visible, for: .navigationBar)
-            .toolbarBackground(Color("DeckColor"), for: .navigationBar)
+            .toolbarBackground(Color("Header"), for: .navigationBar)
         }
+        .preferredColorScheme(.light)
     }
 }
 
-//struct DeckView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        DeckView(name: LoadDecksFromJson().decks[0].deckName)
-//    }
-//}
+struct DeckView_Previews: PreviewProvider {
+    static var previews: some View {
+        DeckView(name: LoadDecksFromJson().decks[0].deckName)
+    }
+}

@@ -38,70 +38,69 @@ struct TimerView: View {
     var numero = 15
     
     var body: some View {
-        VStack {
-            VStack(alignment: .leading) {
-                Button {
-                    showingAlert = true
-                } label: {
-                    Text("Cancel")
-                        .foregroundColor(.red)
-                }
-                .alert(isPresented: $showingAlert) {
-                    Alert(title: Text("Are you sure you want to go back?"), message: nil, primaryButton: .destructive( Text("Yes"), action: {
+        NavigationStack{
+            VStack {
+                VStack(alignment: .leading) {
+                    Button {
+                        showingAlert = true
+                    } label: {
+                        Text("Cancel")
+                            .foregroundColor(.red)
+                    }
+                    .alert(isPresented: $showingAlert) {
+                        Alert(title: Text("Are you sure you want to go back?"), message: nil, primaryButton: .destructive( Text("Yes"), action: {
                             dismiss()
                         }),
-                        secondaryButton: .cancel(Text("No"))
-                    )
-                }
-                
-                Spacer()
-               
-                DatePicker("", selection: $alarme, displayedComponents: .hourAndMinute)
-                    .datePickerStyle(.wheel)
-                    .labelsHidden()
-                
-                Spacer()
-            }
-            
-            Button {
-                let calendar = Calendar.current
-                let hour = calendar.component(.hour, from: alarme)
-                let minute = calendar.component(.minute, from: alarme)
-                
-                if !isEditing {
-                    let hourAndMinute: [Int] = [hour, minute]
-                    alarmsArray.append(hourAndMinute)
-                } else {
-                    alarmsArray[index][0] = hour
-                    alarmsArray[index][1] = minute
-                }
-                
-                dismiss()
-            } label: {
-                ZStack {
-                    Rectangle()
-                        .frame(width: 80, height: 40)
-                        .foregroundColor(.blue)
-                        .cornerRadius(10)
+                              secondaryButton: .cancel(Text("No"))
+                        )
+                    }
                     
-                    Text("Set")
-                        .foregroundColor(.white)
+                    Spacer()
+                    
+                    DatePicker("", selection: $alarme, displayedComponents: .hourAndMinute)
+                        .datePickerStyle(.wheel)
+                        .labelsHidden()
+                    
+                    Spacer()
                 }
+                
+                Button {
+                    let calendar = Calendar.current
+                    let hour = calendar.component(.hour, from: alarme)
+                    let minute = calendar.component(.minute, from: alarme)
+                    
+                    if !isEditing {
+                        let hourAndMinute: [Int] = [hour, minute]
+                        alarmsArray.append(hourAndMinute)
+                    } else {
+                        alarmsArray[index][0] = hour
+                        alarmsArray[index][1] = minute
+                    }
+                    
+                    dismiss()
+                } label: {
+                    ZStack {
+                        Rectangle()
+                            .frame(width: 80, height: 40)
+                            .foregroundColor(Color("ButtonAction"))
+                            .cornerRadius(10)
+                        
+                        Text("Set")
+                            .foregroundColor(.white)
+                    }
+                }
+                .offset(y: -230)
+                
             }
-            .offset(y: -230)
-
+            .onAppear {
+                var components = DateComponents()
+                components.hour = hourRecieved
+                components.minute = minuteRecieved
+                
+                alarme = Calendar.current.date(from: components)!
+            }
         }
-        .onAppear {
-            var components = DateComponents()
-            components.hour = hourRecieved
-            components.minute = minuteRecieved
-            
-            alarme = Calendar.current.date(from: components)!
-        }
-        
-        VStack {
-            
-        }
+        .preferredColorScheme(.light)
     }
 }
 

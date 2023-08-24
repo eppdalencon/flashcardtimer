@@ -11,8 +11,9 @@ import SwiftUI
 
 final class LoadDecksFromJson {
     var decks: [Deck] {
-        if UserDefaultsService.getDecks().count < 3 {
+        if UserDefaultsService.isFirstTime() {
             putDecksFromJsonInUserDefaults()
+            UserDefaultsService.setFirstTime()
         }
         
         return loadArrayOfDecksFromJson()

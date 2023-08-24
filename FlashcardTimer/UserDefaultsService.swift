@@ -8,6 +8,18 @@
 import Foundation
 
 class UserDefaultsService {
+    
+    // MARK: - Set FirstTime
+    static func setFirstTime() {
+        UserDefaults.standard.set(1, forKey: "FirstTime")
+    }
+    
+    // MARK: - Get FirstTime
+    static func isFirstTime() -> Bool {
+        return UserDefaults.standard.object(forKey: "FirstTime") == nil
+    }
+    
+    
 
     // MARK: - Create Deck
     static func createDeck(_ deck: Deck) {
@@ -61,14 +73,15 @@ class UserDefaultsService {
     }
     
     // MARK: - Get Deck by Id
-    static func getDeckById(deckId: Int) -> Deck? {
+    static func getDeckById(deckId: Int, completion: @escaping (Deck?) -> Void) {
         let currentDecks = self.getDecks()
         
         guard let deckWithId = currentDecks.first(where: { $0.deckId == deckId }) else {
-            return nil
+            completion(nil)
+            return
         }
         
-        return deckWithId
+        completion(deckWithId)
     }
 
     // MARK: - Create Flashcard
@@ -363,7 +376,5 @@ class UserDefaultsService {
         }
         
     }
-    
-    
 }
 

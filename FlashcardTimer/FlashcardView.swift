@@ -13,7 +13,6 @@ struct FlashcardView: View {
     @State var currentIndex = 0
 
     @State private var flipped = false
-    @State private var changeColor = true
     @State private var reveal = false
     @State private var showFlashmark = false
     @State private var showingAlert = false
@@ -29,17 +28,17 @@ struct FlashcardView: View {
                             Rectangle()
                                 .frame(width: 342, height: 430)
                                 .cornerRadius(8)
-                                .foregroundColor(changeColor ? Color("FlashcardQuestionColor") : Color("FlashcardAnswerColor"))
-                                .shadow(color: .gray, radius: 4, x: 10, y: 13)
+                                .foregroundColor(Color("FlashcardColor"))
+                                .shadow(color: .gray, radius: 4, x: 0, y: 4)
 
                             if !flipped {
                                 Text(flashcards[index].question)
-                                    .frame(width: 340)
+                                    .frame(width: 300)
                                     .font(.title3)
                                     .rotation3DEffect(.degrees(flipped ? 180 : 0), axis: (x: 0, y: 1, z: 0))
                             } else {
                                 Text(flashcards[index].answer)
-                                    .frame(width: 340)
+                                    .frame(width: 300)
                                     .font(.title3)
                                     .rotation3DEffect(.degrees(flipped ? 180 : 0), axis: (x: 0, y: 1, z: 0))
                             }
@@ -48,7 +47,6 @@ struct FlashcardView: View {
                             withAnimation(.easeInOut(duration: 0.5)) {
                                 flipped.toggle()
                             }
-                            changeColor.toggle()
                             reveal.toggle()
                         }
                         .rotation3DEffect(.degrees(flipped ? -180 : 0), axis: (x: 0, y: 1, z: 0))
@@ -57,36 +55,25 @@ struct FlashcardView: View {
                             .padding(.top)
                             .foregroundColor(.gray)
 
+                        Spacer()
+                        
                         if reveal {
-                            HStack(spacing: 52) {
-                                Button {
-                                    currentIndex = updatedIndex(currentIndex)
-                                    flipped.toggle()
-                                    reveal.toggle()
-                                    changeColor.toggle()
-                                } label: {
-                                    Image(systemName: "xmark.circle.fill")
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 150, height: 115)
-                                        .foregroundColor(.red)
-                                }
-                                
-                                Button {
-                                    currentIndex = updatedIndex(currentIndex)
-                                    flipped.toggle()
-                                    reveal.toggle()
-                                    changeColor.toggle()
+                            Button {
+                                currentIndex = updatedIndex(currentIndex)
+                                flipped.toggle()
+                                reveal.toggle()
 
-                                } label: {
-                                    Image(systemName: "checkmark.circle.fill")
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 150, height: 115)
-                                        .foregroundColor(.green)
+                            } label: {
+                                ZStack {
+                                    Rectangle()
+                                        .frame(width: 100, height: 70)
+                                        .cornerRadius(10)
+                                        .foregroundColor(Color("ButtonAction"))
+                                    Text("Next")
+                                        .font(.title)
+                                    .foregroundColor(.white)
                                 }
                             }
-                            .padding(.top)
                         }
                         
                         Spacer()
@@ -95,27 +82,30 @@ struct FlashcardView: View {
             }
             .padding(.top)
             .tabViewStyle(.page(indexDisplayMode: .never))
-
             .navigationTitle("Flashcard \(flashcards[currentIndex].flashcardId)")
+            .toolbarColorScheme(.dark, for: .navigationBar)
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarItems(leading:
                 Button {
                     showingAlert.toggle()
                 } label: {
                     Image(systemName: "chevron.left")
+                        
                     Text("Back")
                 }
+                .foregroundColor(Color("Background"))
                 .alert(isPresented: $showingAlert) {
-                    Alert(title: Text("Are you sure you want to go back?"), message: nil, primaryButton: .destructive( Text("Yes"), action: {
+                    Alert(title: Text("Are you sure you want to go back? Your progress will be lost."), message: nil, primaryButton: .destructive( Text("Quit"), action: {
                             dismiss()
                         }),
-                        secondaryButton: .cancel(Text("No"))
+                        secondaryButton: .cancel(Text("Stay"))
                     )
                 }
             )
             .toolbarBackground(.visible, for: .navigationBar)
-            .toolbarBackground(Color("DeckColor"), for: .navigationBar)
+            .toolbarBackground(Color("Header"), for: .navigationBar)
         }
+        .preferredColorScheme(.light)
     }
 
     func updatedIndex(_ index: Int) -> Int {

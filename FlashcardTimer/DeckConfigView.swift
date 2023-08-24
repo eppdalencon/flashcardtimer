@@ -12,48 +12,18 @@ struct DeckConfigView: View {
     @State private var showNotification = false
     @State private var alarme = Date()
     @State private var presentTimerView = false
+    @State private var presentTimerViewEdit = false
+    @State private var shouldUpdateTimerView = false
     @State private var showingAlert = false
-
-    @State var alarmsArray: [[Int]] = []
+    @State private var indexEdit = 0
+    @State private var alarmsArray: [[Int]] = []
     
-    @State var vibrar: Notification = Notification(tipo: "Vibrar", isOn: true)
-    @State var tocar: Notification = Notification(tipo: "Tocar", isOn: true)
     
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
         NavigationStack {
             ScrollView {
-                Group {
-                    VStack(alignment: .leading) {
-                        Toggle(isOn: $showNotification) {
-                            Text("Notifications")
-                                .bold()
-                                .font(.title3)
-                        }
-                        .padding(.trailing)
-                        
-                        if showNotification == true {
-                            Toggle(isOn: $vibrar.isOn) {
-                                Text(vibrar.tipo)
-                            }
-                            .padding(.trailing)
-                            
-                            Toggle(isOn: $tocar.isOn) {
-                                Text(tocar.tipo)
-                            }
-                            .padding(.trailing)
-                        } else {
-                            Text("Activate your notifications by clicking the button above")
-                                .font(.callout)
-                            .foregroundColor(.gray)
-                            
-                        }
-                    }
-                }
-                
-                Divider()
-                
                 Group {
                     VStack(alignment: .leading) {
                         HStack {
@@ -71,17 +41,7 @@ struct DeckConfigView: View {
                                     .scaledToFit()
                                     .frame(width: 20)
                                     .foregroundColor(.red)
-                                    .offset(x: -10)
                             }
-                        }
-                        
-                        VStack(alignment: .leading) {
-                            Text("19:30")
-                                .font(.title)
-                                .foregroundColor(.black)
-                            
-                            Text("Alarm")
-                                .foregroundColor(.gray)
                         }
                         
                         Divider()
@@ -89,18 +49,48 @@ struct DeckConfigView: View {
                         ForEach(alarmsArray.indices, id: \.self) { index in
                             let textHour = format(alarmsArray[index][0])
                             let textMinute = format(alarmsArray[index][1])
-                            
-                            NavigationLink(destination: TimerView(alarmsArray: $alarmsArray, hourRecieved: alarmsArray[index][0], minuteRecieved: alarmsArray[index][1], index: index)) {
-                                VStack(alignment: .leading) {
-                                    Text("\(textHour):\(textMinute)")
-                                        .font(.title)
-                                        .foregroundColor(.black)
+                            VStack{
+                                HStack{
+                                    Button(){
+                                        if (indexEdit != index) {
+                                            indexEdit = index
+                                        } else {
+                                            presentTimerViewEdit.toggle()
+                                        }
+                                    } label: {
+                                        VStack{
+                                            HStack{
+                                                VStack(alignment: .leading) {
+                                                    Text("\(textHour):\(textMinute)")
+                                                        .font(.title)
+                                                        .foregroundColor(.black)
+                                                    
+                                                    Text("Alarm")
+                                                        .foregroundColor(.gray)
+                                                }
+                                                
+                                                Spacer()
+                                                
+                                            }
+                                        }
+                                    }
                                     
-                                    Text("Alarm")
-                                        .foregroundColor(.gray)
+                                    Spacer()
                                     
-                                    Divider()
+                                    Button {
+                                        alarmsArray.remove(at: index)
+                                    } label: {
+                                        Image(systemName: "minus")
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: 20)
+                                            .foregroundColor(.red)
+                                            
+                                    }
                                 }
+                                
+                                Divider()
+                                
                             }
                         }
                     }
@@ -112,35 +102,55 @@ struct DeckConfigView: View {
                 showingAlert.toggle()
                 } label: {
                     Text("Cancel")
-                        .foregroundColor(.red)
+                        .foregroundColor(Color("Background"))
                 }
                 .alert(isPresented: $showingAlert) {
-                    Alert(title: Text("Are you sure you want to go back?"), message: nil, primaryButton: .destructive( Text("Yes"), action: {
+                    Alert(title: Text("Are you sure you want to quit? Your alarms will not be saved."), message: nil, primaryButton: .destructive( Text("Quit"), action: {
                             dismiss()
                         }),
-                        secondaryButton: .cancel(Text("No"))
+                        secondaryButton: .cancel(Text("Continue"))
                     )
                 }
             )
+            .navigationTitle("Notifications")
+            .toolbarColorScheme(.dark, for: .navigationBar)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbarBackground(.visible, for: .navigationBar)
+            .toolbarBackground(Color("Header"), for: .navigationBar)
             .navigationBarItems(trailing:
                 Button {
-                    dismiss()
+                
+                    ReminderNotification.removeNotifications(deckId: deck.deckId){
+                        ReminderNotification.setupNotifications(deckId: deck.deckId, notificationText: deck.deckName, times: alarmsArray)
+                            dismiss()
+                    }
+                
+               
                 } label : {
                     Text("Save")
-                        .foregroundColor(.blue)
+                        .foregroundColor(Color("Background"))
                 }
             )
             .padding([.top, .leading])
             .fullScreenCover(isPresented: $presentTimerView) {
                 TimerView(alarmsArray: $alarmsArray)
             }
-            .onChange(of: vibrar.isOn) { newValue in
-                showNotification = newValue || tocar.isOn
+            .onChange(of: indexEdit) { newIndex in
+                presentTimerViewEdit.toggle()
+               
             }
-            .onChange(of: tocar.isOn) { newValue in
-                showNotification = newValue || vibrar.isOn
+            .fullScreenCover(isPresented: $presentTimerViewEdit) {
+                TimerView(alarmsArray: $alarmsArray, hourRecieved: alarmsArray[indexEdit][0], minuteRecieved: alarmsArray[indexEdit][1], index: indexEdit)
+                    .id(shouldUpdateTimerView)
             }
+            .onAppear {
+              
+                ReminderNotification.listNotifications(deckId: deck.deckId) { alarms in
+                        self.alarmsArray = alarms
+                    }
+                        }
         }
+        .preferredColorScheme(.light)
     }
     
     func format(_ number: Int) -> String {
@@ -156,3 +166,4 @@ struct DeckConfigView_Previews: PreviewProvider {
         DeckConfigView(deck: LoadDecksFromJson().decks[0])
     }
 }
+

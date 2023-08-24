@@ -87,7 +87,10 @@ struct CreateDeckView: View {
                 }
             }
             
-            .navigationTitle("Create a deck")
+            .navigationTitle(isEditing ? "Edit your deck" : "Create a deck")
+            .toolbarBackground(.visible, for: .navigationBar)
+            .toolbarBackground(Color("Header"), for: .navigationBar)
+            .toolbarColorScheme(.dark, for: .navigationBar)
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarBackButtonHidden(true)
             .navigationBarItems(trailing:
@@ -144,10 +147,10 @@ struct CreateDeckView: View {
                     Text("My decks")
                 }
                 .alert(isPresented: $showingAlert) {
-                    Alert(title: Text("Are you sure you want to go back?"), message: nil, primaryButton: .destructive( Text("Yes"), action: {
+                    Alert(title: Text(isEditing ? "Are you sure you want to quit editing? Your alterations will be dismissed." : "Are you sure you want to quit this creation? Your alterations will be dismissed."), message: nil, primaryButton: .destructive( Text("Quit"), action: {
                             dismiss()
                         }),
-                        secondaryButton: .cancel(Text("No"))
+                          secondaryButton: .cancel(Text("Stay"))
                     )
                 }
             )
@@ -164,6 +167,14 @@ struct CreateDeckView: View {
                 DeckView(name: name)
             }
         }
+        .onAppear(){
+          if(isEditing){
+                       
+            name = self.deck.deckName
+            
+            }
+            }
+        .preferredColorScheme(.light)
     }
 }
 

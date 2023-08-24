@@ -29,7 +29,7 @@ func checkForEmptyText(_ text: String) -> Bool {
 }
 
 func checkForSameNameError(_ text: String) throws {
-    var decks = UserDefaultsService.getDecks()
+    let decks = UserDefaultsService.getDecks()
     
     for deck in decks {
         if text == deck.deckName {
@@ -48,7 +48,7 @@ func checkForSameName(_ text: String) -> Bool {
 }
 
 func checkForSameId(_ id: Int, _ name: String) -> Bool {
-    var decks = UserDefaultsService.getDecks()
+    let decks = UserDefaultsService.getDecks()
     
     for deck in decks {
         if name == deck.deckName {

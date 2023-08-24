@@ -10,10 +10,10 @@ struct DeckListView: View {
     var deck: Deck
     var body: some View {
         Rectangle()
-            .frame(width: 310, height: 60)
+            .frame(height: 60)
             .cornerRadius(8)
             .foregroundColor(Color("DeckColor"))
-            .shadow(color: .gray, radius: 4, x: 7, y: 5)
+            .shadow(color: .gray, radius: 4, x: 0, y: 4)
             .overlay(
                 VStack(alignment: .leading) {
                     Text(deck.deckName)
